@@ -1,6 +1,7 @@
 import { keyPressed, onKey, onPointer } from 'kontra'
 import { PLAYER_STATS, UPGRADES, GRAVITY } from '../constants'
-import { ShipSprite, Trajectory } from './sprite'
+import { ShipSprite } from './sprite'
+import { Trajectory } from './Trajectory'
 
 interface PlayerUpgrades {
   mine_count?: number
