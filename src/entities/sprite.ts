@@ -1,4 +1,5 @@
 import { movePoint, SpriteClass } from 'kontra'
+import { GRAVITY } from '../constants'
 import { playSound } from '../utils'
 
 export class Sprite extends SpriteClass {
@@ -6,26 +7,9 @@ export class Sprite extends SpriteClass {
     super(properties)
   }
 
-  addCharge(n) {
-    this.charge += n
-    if (this.charge >= this.maxCharge) {
-      playSound('enemyShoot')
-      this.shoot()
-      this.charge = 0
-    }
-  }
-
-  takeDamage(n, ignoreShield = false) {
+  takeDamage(n) {
     if (this.health <= 0) return
-    if (this.shield > 0 && !ignoreShield) {
-      if (n > this.shield) {
-        n -= this.shield
-        this.shield = 0
-      } else {
-        this.shield -= n
-        n = 0
-      }
-    }
+
     if (n > 0) this.health -= n
     if (this.health <= 0) this.die()
     this.justDamaged = true
@@ -37,8 +21,8 @@ export class Sprite extends SpriteClass {
     this.opacity = this.isAlive() ? 1 : 0
   }
 
-  update() {
-    super.update()
+  update(dt?: number) {
+    super.update(dt)
   }
 
   render() {
@@ -48,13 +32,11 @@ export class Sprite extends SpriteClass {
 
 export class ShipSprite extends Sprite {
   constructor(properties) {
-    super({ anchor: { x: 0.5, y: 0.5 }, ...properties })
+    super({ anchor: { x: 0, y: 1 }, ...properties })
   }
 
   draw() {
     this.strobeTimer--
-    const w = this.width * 0.6
-    const w2 = this.innerSize || w / 2
     const o = this.width / 2
 
     // base circle
@@ -63,66 +45,110 @@ export class ShipSprite extends Sprite {
     this.context.fillStyle = '#999'
     this.context.beginPath()
     this.context.moveTo(o, o)
-    this.context.arc(o, o, w, 0, 2 * Math.PI)
+    this.context.rect(0, 0, this.width, this.height)
     this.context.closePath()
     this.context.stroke()
     this.context.fill()
+  }
+}
 
-    // health
+export class TrajectorySprite extends Sprite {
+  constructor(properties) {
+    super({
+      anchor: { x: 0, y: 0 },
+      ...properties,
+      dx: 0,
+      dy: 0,
+      ddy: 0,
+      opacity: 0,
+    })
+    this.particles = properties.particles
+    this.initialX = properties.x
+    this.initialY = properties.y
+    this.maxY = properties.maxY
+    this.context.fillStyle = '#fff'
     this.context.beginPath()
-    this.context.moveTo(o, o)
-    this.context.fillStyle = this.color
-    const f = 360 * (this.health / this.maxHealth)
-    this.context.arc(o, o, w, getRads(-90), getRads(f - 90))
-    this.context.closePath()
-    this.context.fill()
+    this.opacity = 0
+  }
 
-    // inner circle
-    this.context.lineWidth = 1
-    this.context.strokeStyle = '#555'
-    this.context.fillStyle = '#111'
-    this.context.beginPath()
-    this.context.arc(o, o, w2, 0, 2 * Math.PI)
-    this.context.closePath()
-    this.context.stroke()
-    this.context.fill()
+  update(dt?) {
+    super.update(dt)
 
-    // energy
-    this.context.beginPath()
-    this.context.moveTo(o, o)
-    this.context.fillStyle = this.isPlayer ? '#0ff' : '#a00'
-    const c = this.charge > 0 ? this.charge : 0
-    const f2 = 360 * (c / this.maxCharge)
-    this.context.arc(o, o, w / 2, getRads(-90), getRads(f2 - 90))
-    this.context.closePath()
-    this.context.fill()
-
-    // energy
-    if (this.type === 'defender') {
-      this.shield = this.maxShield || 100
+    if (this.opacity === 0) return
+    const size = 2
+    this.opacity -= 0.02
+    if (this.y > this.maxY) {
+      // this.particles.spawn({
+      //   x: this.x + size / 2,
+      //   y: this.maxY,
+      //   size,
+      //   ttl: 20,
+      // })
+      this.opacity = 0
     }
-    if (this.shield > 0) {
-      this.context.beginPath()
-      this.context.lineWidth = 3
-      this.context.strokeStyle = `rgba(0,200,0,1)`
-      const f2 = 360 * (this.shield / this.maxShield || 100)
-      this.context.arc(o, o, w + 6, getRads(-90), getRads(f2 - 90))
-      this.context.stroke()
+  }
+
+  reset(speed, angle) {
+    this.x = this.initialX
+    this.y = this.initialY
+    this.dx = speed * Math.cos(angle)
+    this.dy = speed * Math.sin(angle)
+    this.ddy = GRAVITY
+    this.opacity = 1
+  }
+
+  draw() {
+    // if (this.opacity === 0) return
+    const size = 10
+    this.context.beginPath()
+    this.context.fillStyle = `rgba(255,255,255,${this.opacity})`
+    this.context.arc(0, 0, size / 2, 0, Math.PI * 2)
+    this.context.fill()
+  }
+}
+
+export class Trajectory {
+  sprites: TrajectorySprite[]
+  spawnTimer: number
+  spawnTimerMax: number
+  speed: number
+  angle: number
+  active: boolean
+
+  constructor(properties) {
+    this.sprites = []
+    for (let i = 0; i < 50; i++) {
+      this.sprites.push(new TrajectorySprite(properties))
     }
+    this.spawnTimerMax = 20
+    this.spawnTimer = 0
+    this.active = false
+    this.speed = properties.speed
+    this.angle = properties.angle
+  }
 
-    // // debug line
-    // this.context.lineWidth = 1
-    // this.context.strokeStyle = '#0f0'
+  show() {
+    this.active = true
+  }
 
-    // const p = movePoint(
-    //   { x: this.width / 2, y: this.width / 2 },
-    //   this.angle || 0,
-    //   10,
-    // )
-    // this.context.beginPath()
-    // this.context.moveTo(this.width / 2, this.width / 2)
-    // this.context.lineTo(p.x, p.y)
-    // this.context.stroke()
+  hide() {
+    this.active = false
+    this.sprites.forEach((s) => (s.opacity = 0))
+  }
+
+  update() {
+    this.sprites.forEach((s) => s.update())
+    if (!this.active) return
+
+    this.spawnTimer--
+    if (this.spawnTimer < 0) {
+      this.spawnTimer = this.spawnTimerMax
+      this.sprites.find((s) => s.opacity === 0)?.reset(this.speed, this.angle)
+    }
+  }
+
+  render() {
+    this.sprites.forEach((s) => s.render())
   }
 }
 

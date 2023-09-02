@@ -8,31 +8,30 @@ import { LEVELS } from '../constants'
 import { angleToTarget, movePoint, randInt } from 'kontra'
 
 export const RoadScene = ({ canvas, onNext, onWin, onLose }) => {
-  let bullets = Bullets()
+  const x = canvas.width - 40
+  const y = canvas.height / 2
   let particles = Particles()
+  let bullets = Bullets({ particles, maxY: y })
   let levelIndex = 0
   let endTriggered = false
   const nextLevel = () => {
     endTriggered = false
     player.sprite.health = 100
     let level = LEVELS[levelIndex]
-    level.waves.forEach((wave) =>
-      enemies.spawn(player.sprite, wave, wave.delay || 0),
-    )
+    // level.waves.forEach((wave) =>
+    //   enemies.spawn(player.sprite, wave, wave.delay || 0),
+    // )
     bullets.pool.clear()
     levelIndex++
   }
-  const x = canvas.width - 20
-  const y = canvas.height / 2
   let enemies = Enemies({ canvas, particles, bullets })
   let player = Player({
     canvas,
     x,
     y,
     bullets,
-    checkEnd: () => checkEnd(),
+    particles,
     enemies,
-    onNext,
   })
 
   let interval
@@ -157,6 +156,7 @@ export const RoadScene = ({ canvas, onNext, onWin, onLose }) => {
       bullets.pool.render()
       particles.pool.render()
       player.sprite.render()
+      player.trajectory.render()
       enemies.pool.render()
     },
   }

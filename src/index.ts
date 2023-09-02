@@ -1,4 +1,4 @@
-import { init, initPointer, GameLoop } from 'kontra'
+import { init, initPointer, initKeys, GameLoop } from 'kontra'
 // import MUSIC from './music'
 import { ShopScene, RoadScene, MapScene, MenuScene } from './scenes'
 import './zzfx'
@@ -6,6 +6,7 @@ import './zzfx'
 const { canvas } = init()
 
 initPointer()
+initKeys()
 let scene
 // //@ts-ignore
 // let musicNode = zzfxP(...zzfxM(...MUSIC))
@@ -91,8 +92,8 @@ const startLose = () => {
   })
 }
 
-startMenu()
-// startRoad()
+// startMenu()
+startRoad()
 
 GameLoop({
   update: (...rest) => scene && scene.update(...rest),
