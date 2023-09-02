@@ -1,8 +1,8 @@
 import { SpriteClass } from 'kontra'
 
 export class Sprite extends SpriteClass {
-  constructor(properties) {
-    super(properties)
+  constructor(properties = {}) {
+    super({ anchor: { x: 0.5, y: 0.5 }, ...properties })
   }
 
   takeDamage(n) {

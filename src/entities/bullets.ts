@@ -1,42 +1,31 @@
-import { angleToTarget, movePoint, Pool } from 'kontra'
-import { getSpeed, gradient } from '../utils'
+import { Pool } from 'kontra'
+import { GROUND_Y } from './player'
 import { Sprite } from './sprite'
 
 const MAX_BULLETS = 50
 
-export const Bullets = ({ particles, maxY }) => {
+export const Bullets = ({ particles }) => {
   let pool = Pool({ create: () => new Bullet(), maxSize: MAX_BULLETS })
 
   return {
     particles,
     pool,
     spawn(opts) {
-      const { health, speed = 0, angle = 0, enemies, isEnemyBullet } = opts
+      const { health, speed = 0, angle = 0 } = opts
       return pool.get({
         x: opts.x,
         y: opts.y,
         anchor: { x: 0.5, y: 0.5 },
-        width: opts.triggerRadius || opts.size || 0,
-        height: opts.triggerRadius || opts.size || 0,
+        width: opts.size || 0,
+        height: opts.size || 0,
         dx: speed * Math.cos(angle),
         dy: speed * Math.sin(angle),
-        ddx: opts.ddx || 0,
         ddy: opts.ddy || 0,
-        size: opts.size || 0,
-        innerSize: opts.innerSize,
-        originalSize: opts.size || 0,
-        explodeRadius: opts.explodeRadius || 0,
-        triggerDuration: opts.triggerDuration || 0,
-        isMine: opts.isMine || 0,
         ttl: opts.ttl || Infinity,
-        triggered: false,
         damage: opts.damage,
-        enemies,
         maxHealth: health,
         health,
-        maxY,
         particles: particles,
-        isEnemyBullet,
       })
     },
   }
@@ -50,20 +39,21 @@ class Bullet extends Sprite {
   init(props) {
     super.init(props)
     this.opacity = 1
+    this.angle = 0
   }
 
   update() {
     super.update()
-    this.rotation += 0.07
-    if (this.x < 0 || this.y > this.maxY) {
-      if (this.dx === 0) return
+    if (this.ttl <= 0) return
+    this.angle += 0.07
+    if (this.x < 0 || this.y > GROUND_Y) {
       this.particles?.spawn({
         x: this.x,
-        y: this.maxY,
-        size: this.size * 2,
+        y: this.y,
+        size: this.width,
         ttl: 30,
       })
-      this.rotation = 0
+      this.angle = 0
       this.dx = 0
       this.dy = 0
       this.ddy = 0
@@ -72,9 +62,10 @@ class Bullet extends Sprite {
   }
 
   draw() {
-    const size = 20
     this.context.beginPath()
-    this.context.rect(-size / 2, -size / 2, size, size)
+    // this.context.rotate(this.angle)
+    this.context.rect(0, 0, this.width * 1.5, this.width * 1.5)
+    // this.context.rotate(0)
     this.context.fill()
   }
 }

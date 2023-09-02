@@ -1,6 +1,5 @@
 import { Text, Sprite, track } from 'kontra'
 import { playSound } from '../utils'
-import { UPGRADES } from '../constants'
 
 // TODO: refactor
 export const Store = ({ x, y, canvas, onPurchase, onNext, getPlayer }) => {
@@ -92,12 +91,12 @@ export const Store = ({ x, y, canvas, onPurchase, onNext, getPlayer }) => {
   // buttons.push(purchase)
 
   const start = Text({
-    x: canvas.width - 50,
-    y: canvas.height - 50,
+    x: canvas.width - 10,
+    y: canvas.height - 10,
     text: 'Next',
     color: 'white',
-    font: '32px sans-serif',
-    anchor: { x: 0.5, y: 0.5 },
+    font: '16px sans-serif',
+    anchor: { x: 1, y: 1 },
     onDown() {
       active = false
       playSound('nextLevel')
@@ -108,9 +107,8 @@ export const Store = ({ x, y, canvas, onPurchase, onNext, getPlayer }) => {
   track(start)
   buttons.push(start)
 
-  const upgrades = getPlayer().upgrades
-
-  UPGRADES.forEach((upgrade, i) => {
+  const array = []
+  array.forEach((upgrade, i) => {
     const _x = x + 50
     const _y = y + 50 + 30 * i
     const onDown = () => {

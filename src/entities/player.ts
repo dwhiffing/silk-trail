@@ -1,47 +1,25 @@
-import { onKey } from 'kontra'
-import { PLAYER_STATS, UPGRADES, GRAVITY } from '../constants'
+import { onKey, onPointer } from 'kontra'
 import { ShipSprite } from './sprite'
 import { Trajectory } from './Trajectory'
 
-interface PlayerUpgrades {
-  mine_count?: number
-  mine_damage?: number
-  mine_speed?: number
-  charge_speed?: number
-  charge_max?: number
-  shield?: number
-  bullet_count?: number
-}
-
+export const GRAVITY = 0.5
+export const GROUND_Y = 129
 const MIN_SPEED = 4
-const MAX_SPEED = 10
+const MAX_SPEED = 12
+const SIZE = 35
+const BULLET_SIZE = 10
+const MIN_ANGLE = 3.8
+const MAX_ANGLE = 4.6
 
-const MIN_ANGLE = 3.7
-const MAX_ANGLE = 4.4
-const DEFAULT_ANGLE = 4
-
-export const Player = ({
-  canvas,
-  x: originX,
-  y: originY,
-  bullets,
-  particles,
-  enemies,
-}) => {
-  const { maxCharge, size, health, shield, maxShield } = PLAYER_STATS
+export const Player = ({ canvas, bullets, particles, enemies }) => {
   let sprite = new ShipSprite({
-    x: originX,
-    y: originY,
+    x: canvas.width - 40,
+    y: GROUND_Y,
     color: '#666',
-    width: size / 2,
-    height: size,
-    health: health,
-    maxHealth: health,
-    charge: -2,
-    maxCharge,
-    mineDuration: 0,
-    shield: shield,
-    maxShield,
+    width: SIZE / 2,
+    height: SIZE,
+    health: 100,
+    maxHealth: 100,
   })
   let angle = 0
   let speed = 0
@@ -53,33 +31,23 @@ export const Player = ({
   }
   let trajectory = new Trajectory({
     x: sprite.x,
-    y: sprite.y - size,
-    // ddy: GRAVITY,
+    y: sprite.y - SIZE,
     angle: 0,
     speed: 0,
-    // maxY: sprite.y,
-    // particles,
-  })
-  const upgrades: PlayerUpgrades = {}
-  UPGRADES.forEach((u) => {
-    upgrades[u.key] = 0
   })
 
-  sprite.isPlayer = true
-  onKey('space', (e) => {
-    if (e.repeat) return
-
+  const onClick = () => {
     if (trajectory.stage === 0) {
-      updateTrajectory(DEFAULT_ANGLE, MIN_SPEED)
+      updateTrajectory(MIN_ANGLE, MIN_SPEED)
     } else if (trajectory.stage === 1) {
     } else if (trajectory.stage === 2) {
       bullets.spawn({
         x: sprite.x,
-        y: sprite.y - size,
+        y: sprite.y - SIZE,
         ddy: GRAVITY,
         angle,
         speed,
-        size: 5,
+        size: BULLET_SIZE,
         health: 10,
         damage: 10,
       })
@@ -88,7 +56,10 @@ export const Player = ({
     if (trajectory.stage === 3) {
       trajectory.stage = 0
     }
-  })
+  }
+
+  onKey('space', (e) => !e.repeat && onClick())
+  onPointer('down', onClick)
 
   sprite.money = 0
   sprite.getMoney = (amount) => (sprite.money += amount)
@@ -96,7 +67,6 @@ export const Player = ({
   return {
     sprite,
     trajectory,
-    upgrades,
     update() {
       sprite.update()
       trajectory.update()

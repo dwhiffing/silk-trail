@@ -92,8 +92,8 @@ const startLose = () => {
   })
 }
 
-// startMenu()
-startRoad()
+startMenu()
+// startRoad()
 
 GameLoop({
   update: (...rest) => scene && scene.update(...rest),

@@ -1,23 +1,12 @@
-NOTES
-
-js13k silk road game
+js13k game: Silk Road
 
 similar to oregon trail
 
 start game in europe, and buy supplies for trip
 
-maybe plague comes in from west, forcing you to prioritize speed
-
 the more stuff you carry, the slower you move
 
 bandits will attack you while you ride, you must throw your goods at them to survive
-
-top half of screen is always wagon
-bottom half is always ui for trading/combat
-
-you still need to have enough food to feed your party
-
-you will encounter random things along the way
 
 Trade scene (buy/sell stuff)
 
@@ -52,3 +41,8 @@ entities
 player
 enemy
 item
+
+system for throwing stuff
+click once to start, click again to set angle, click once more to set power
+item trajectory based on weight, angle and power
+damage is based on weight

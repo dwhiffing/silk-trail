@@ -1,4 +1,4 @@
-import { GRAVITY } from '../constants'
+import { GRAVITY } from './player'
 import { Sprite } from './sprite'
 
 export class Trajectory {
