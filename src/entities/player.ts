@@ -47,12 +47,11 @@ export const Player = ({
   let trajectory = new Trajectory({
     x: sprite.x,
     y: sprite.y - size,
-    ddy: GRAVITY,
+    // ddy: GRAVITY,
     angle: 0,
     speed: 0,
-    maxY: sprite.y,
-    particles,
-    color: '#666',
+    // maxY: sprite.y,
+    // particles,
   })
   const upgrades: PlayerUpgrades = {}
   UPGRADES.forEach((u) => {
