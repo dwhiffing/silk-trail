@@ -1,4 +1,4 @@
-import { keyPressed, onKey, onPointer } from 'kontra'
+import { onKey } from 'kontra'
 import { PLAYER_STATS, UPGRADES, GRAVITY } from '../constants'
 import { ShipSprite } from './sprite'
 import { Trajectory } from './Trajectory'
@@ -12,6 +12,13 @@ interface PlayerUpgrades {
   shield?: number
   bullet_count?: number
 }
+
+const MIN_SPEED = 4
+const MAX_SPEED = 10
+
+const MIN_ANGLE = 3.7
+const MAX_ANGLE = 4.4
+const DEFAULT_ANGLE = 4
 
 export const Player = ({
   canvas,
@@ -62,10 +69,10 @@ export const Player = ({
   onKey('space', (e) => {
     if (e.repeat) return
 
-    if (stage === 0) {
-      updateTrajectory(4, 10)
-    } else if (stage === 1) {
-    } else if (stage === 2) {
+    if (trajectory.stage === 0) {
+      updateTrajectory(DEFAULT_ANGLE, MIN_SPEED)
+    } else if (trajectory.stage === 1) {
+    } else if (trajectory.stage === 2) {
       bullets.spawn({
         x: sprite.x,
         y: sprite.y - size,
@@ -77,17 +84,15 @@ export const Player = ({
         damage: 10,
       })
     }
-    stage++
-    if (stage === 3) {
-      updateTrajectory(4, 10)
-      stage = 0
+    trajectory.stage++
+    if (trajectory.stage === 3) {
+      trajectory.stage = 0
     }
   })
 
   sprite.money = 0
   sprite.getMoney = (amount) => (sprite.money += amount)
   let direction = -1
-  let stage = 0
   return {
     sprite,
     trajectory,
@@ -95,17 +100,15 @@ export const Player = ({
     update() {
       sprite.update()
       trajectory.update()
-      if (stage === 0) {
-        return trajectory.hide()
-      }
-      trajectory.show()
-      if (stage === 1) {
-        if (angle > 4.4 || angle < 3.7) {
+      if (trajectory.stage === 0) return
+
+      if (trajectory.stage === 1) {
+        if (angle > MAX_ANGLE || angle < MIN_ANGLE) {
           direction = direction === -1 ? 1 : -1
         }
-        updateTrajectory(angle + direction * 0.005, speed)
-      } else if (stage === 2) {
-        if (speed > 15 || speed < 4) {
+        updateTrajectory(angle + direction * 0.01, speed)
+      } else if (trajectory.stage === 2) {
+        if (speed > MAX_SPEED || speed < MIN_SPEED) {
           direction = direction === -1 ? 1 : -1
         }
         updateTrajectory(angle, speed + direction * 0.1)

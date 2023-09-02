@@ -34,18 +34,10 @@ export class ShipSprite extends Sprite {
   }
 
   draw() {
-    this.strobeTimer--
-    const o = this.width / 2
-
-    // base circle
-    this.context.lineWidth = 3
-    this.context.strokeStyle = '#222'
     this.context.fillStyle = '#999'
     this.context.beginPath()
-    this.context.moveTo(o, o)
     this.context.rect(0, 0, this.width, this.height)
     this.context.closePath()
-    this.context.stroke()
     this.context.fill()
   }
 }

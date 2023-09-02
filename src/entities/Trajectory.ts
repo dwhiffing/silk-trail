@@ -2,38 +2,50 @@ import { GRAVITY } from '../constants'
 import { Sprite } from './sprite'
 
 export class Trajectory {
+  sprites: TrajectorySprite[]
   angleSprite: AngleSprite
   spawnTimer: number
   spawnTimerMax: number
   speed: number
+  stage: number
   angle: number
-  active: boolean
 
   constructor(properties) {
+    this.sprites = []
+    for (let i = 0; i < 50; i++) {
+      this.sprites.push(new TrajectorySprite(properties))
+    }
+    this.spawnTimerMax = 20
+    this.spawnTimer = 0
     this.angleSprite = new AngleSprite(properties)
-    this.active = false
+    this.stage = 0
     this.speed = properties.speed
     this.angle = properties.angle
   }
 
-  show() {
-    this.active = true
-    this.angleSprite.opacity = 1
-  }
-
-  hide() {
-    this.active = false
-    this.angleSprite.opacity = 0
-  }
-
   update() {
+    this.sprites.forEach((s) => s.update())
+    this.angleSprite.opacity = this.stage > 0 ? 1 : 0
+    this.angleSprite.opacity = this.stage > 0 ? 1 : 0
+    if (this.stage === 0) {
+      return
+    }
+
+    if (this.stage === 2) {
+      this.spawnTimer--
+      if (this.spawnTimer < 0) {
+        this.spawnTimer = this.spawnTimerMax
+        this.sprites.find((s) => s.opacity <= 0)?.reset(this.speed, this.angle)
+      }
+    }
     this.angleSprite.angle = this.angle
+    this.angleSprite.speed = this.speed
     this.angleSprite.update()
-    if (!this.active) return
   }
 
   render() {
-    if (!this.active) return
+    if (this.stage === 0) return
+    if (this.stage === 2) this.sprites.forEach((s) => s.render())
     this.angleSprite.render()
   }
 }
@@ -51,14 +63,64 @@ class AngleSprite extends Sprite {
   }
 
   draw() {
-    // if (this.opacity === 0) return
-    console.log('asd', this.angle)
-    const size = 5
+    const s = 5
+    const d = 20 + 15 * ((this.speed - 4) / 11)
+
     this.context.beginPath()
     this.context.lineWidth = 2
     this.context.strokeStyle = `#fff`
-    this.context.moveTo(20 * Math.cos(this.angle), 20 * Math.sin(this.angle))
-    this.context.lineTo(40 * Math.cos(this.angle), 40 * Math.sin(this.angle))
+    this.context.moveTo(s * Math.cos(this.angle), s * Math.sin(this.angle))
+    this.context.lineTo(
+      (s + d) * Math.cos(this.angle),
+      (s + d) * Math.sin(this.angle),
+    )
     this.context.stroke()
+  }
+}
+
+class TrajectorySprite extends Sprite {
+  constructor(properties) {
+    super({
+      anchor: { x: 0, y: 0 },
+      ...properties,
+      dx: 0,
+      dy: 0,
+      ddy: 0,
+      opacity: 0,
+    })
+    this.particles = properties.particles
+    this.initialX = properties.x
+    this.initialY = properties.y
+    this.maxY = properties.maxY
+    this.context.fillStyle = '#fff'
+    this.context.beginPath()
+    this.opacity = 0
+  }
+
+  update(dt?) {
+    super.update(dt)
+
+    if (this.opacity === 0) return
+    this.opacity -= 0.015
+    if (this.y > this.maxY) {
+      this.opacity = 0
+    }
+  }
+
+  reset(speed, angle) {
+    this.x = this.initialX
+    this.y = this.initialY
+    this.dx = speed * Math.cos(angle)
+    this.dy = speed * Math.sin(angle)
+    this.ddy = GRAVITY
+    this.opacity = 0.4
+  }
+
+  draw() {
+    const size = 6
+    this.context.beginPath()
+    this.context.fillStyle = `rgba(255,255,255,${this.opacity})`
+    this.context.arc(0, 0, size / 2, 0, Math.PI * 2)
+    this.context.fill()
   }
 }

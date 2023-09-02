@@ -9,7 +9,7 @@ import { angleToTarget, movePoint, randInt } from 'kontra'
 
 export const RoadScene = ({ canvas, onNext, onWin, onLose }) => {
   const x = canvas.width - 40
-  const y = canvas.height / 2
+  const y = canvas.height / 1.6
   let particles = Particles()
   let bullets = Bullets({ particles, maxY: y })
   let levelIndex = 0
