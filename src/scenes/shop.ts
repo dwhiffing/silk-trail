@@ -7,7 +7,18 @@ const xt = 10
 
 export const ShopScene = ({ canvas, data, onNext }) => {
   const { width, height } = canvas
-  let shopItems = ['stuff', 'stuff', 'stuff', 'stuff']
+  let shopItems = [
+    'stone',
+    'stone',
+    'stone',
+    'stone',
+    'stone',
+    'box',
+    'box',
+    'box',
+    'box',
+    'box',
+  ]
   const sw = width / 2 - xt * 1.5
   const sh = height - yt * 2
   const x2 = width / 2 + xt / 2

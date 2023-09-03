@@ -1,4 +1,5 @@
 import { init, initPointer, initKeys, GameLoop } from 'kontra'
+import { LEVELS } from './scenes/map'
 // import MUSIC from './music'
 import { ShopScene, RoadScene, MapScene, MenuScene } from './scenes'
 import './zzfx'
@@ -15,10 +16,11 @@ const STARTING_ITEMS = [
   'stone',
   'box',
 ]
+const STARTING_DATA = { levelIndex: 0, gold: 100, items: STARTING_ITEMS }
 initPointer()
 initKeys()
 let scene
-let data = { gold: 0, items: STARTING_ITEMS }
+let data = STARTING_DATA
 // //@ts-ignore
 // let musicNode = zzfxP(...zzfxM(...MUSIC))
 // //@ts-ignore
@@ -63,7 +65,13 @@ const startRoad = () => {
   scene = RoadScene({
     canvas,
     data,
-    onNext: startShop,
+    onNext: () => {
+      if (data.levelIndex++ >= LEVELS.length - 1) {
+        startWin(data.gold)
+      } else {
+        startShop()
+      }
+    },
     onWin: startWin,
     onLose: startLose,
   })
@@ -75,6 +83,7 @@ const startMap = () => {
 }
 
 const startMenu = () => {
+  data = STARTING_DATA
   scene && scene.shutdown()
   scene = MenuScene({
     canvas,

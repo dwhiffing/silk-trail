@@ -15,7 +15,7 @@ const BASE_ANGLE_CHANGE = 0.02
 const MAX_HP = 5
 
 export const ITEM_TYPES = {
-  stone: { size: 10, damage: 2, weight: 0.8, value: 1, color: '#fff' },
+  stone: { size: 10, damage: 10, weight: 0.8, value: 1, color: '#fff' },
   box: { size: 20, damage: 10, weight: 1.2, value: 1, color: '#ff0' },
 }
 
