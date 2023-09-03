@@ -10,6 +10,7 @@ const SIZE = 35
 const BULLET_SIZE = 10
 const MIN_ANGLE = 3.8
 const MAX_ANGLE = 4.6
+const BASE_MOVEMENT_SPEED = 0.0001
 const MAX_HP = 5
 
 export const Player = ({ canvas, bullets, particles, enemies }) => {
@@ -24,6 +25,8 @@ export const Player = ({ canvas, bullets, particles, enemies }) => {
   })
   let angle = 0
   let speed = 0
+  sprite.progress = 0
+  let movementSpeed = BASE_MOVEMENT_SPEED
   let updateTrajectory = (_angle, _speed) => {
     angle = _angle
     speed = _speed
@@ -80,6 +83,8 @@ export const Player = ({ canvas, bullets, particles, enemies }) => {
     update() {
       sprite.update()
       trajectory.update()
+      sprite.progress += movementSpeed
+      if (sprite.progress >= 1) emit('level-end')
       if (trajectory.stage === 0) return
 
       if (trajectory.stage === 1) {
