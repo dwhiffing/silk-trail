@@ -11,25 +11,10 @@ export const RoadScene = ({ canvas, onNext, onWin, onLose }) => {
   let interval2
   const nextLevel = () => {
     enemies.spawn(player.sprite, { type: 'homer', count: 3, rate: 250 })
-    if (interval2) clearInterval(interval2)
-    interval2 = setInterval(() => {
-      enemies.attack()
-    }, 2000)
     bullets.pool.clear()
   }
   let enemies = Enemies({ canvas, particles, bullets })
   let player = Player({ canvas, bullets, particles, enemies })
-
-  let interval
-  const checkEnd = () => {
-    if (interval) clearInterval(interval)
-    interval = setInterval(() => {
-      if (enemies.getRemaining() > 0) return
-      clearInterval(interval)
-      onNext()
-      // nextLevel()
-    }, 1000)
-  }
 
   const bulletPlayerCollide = (b, p) => {
     b.takeDamage(b.health)
@@ -40,7 +25,6 @@ export const RoadScene = ({ canvas, onNext, onWin, onLose }) => {
   const bulletEnemyCollide = (b, e) => {
     b.takeDamage(b.health)
     e.takeDamage(b.damage, true)
-    checkEnd()
   }
 
   const healthText = Text({
@@ -61,14 +45,13 @@ export const RoadScene = ({ canvas, onNext, onWin, onLose }) => {
   return {
     nextLevel,
     shutdown() {
-      if (interval2) clearInterval(interval2)
-      if (interval) clearInterval(interval)
       enemies.pool.clear()
       bullets.pool.clear()
       player.shutdown()
     },
     update() {
       player.update()
+      enemies.update()
       enemies.pool.update()
       bullets.pool.update()
       particles.pool.update()
@@ -82,6 +65,7 @@ export const RoadScene = ({ canvas, onNext, onWin, onLose }) => {
         [player.sprite],
         bulletPlayerCollide,
       )
+      if (enemies.getRemaining() === 0) onNext()
     },
     render() {
       player.sprite.render()

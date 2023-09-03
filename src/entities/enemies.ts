@@ -6,8 +6,16 @@ import { ShipSprite } from './sprite'
 export const Enemies = ({ canvas, particles, bullets }) => {
   let pool = Pool({ create: () => new Enemy(), maxSize: 10 })
   let toSpawn = 0
+  let attackTimer = 200
   return {
     pool,
+    update() {
+      attackTimer--
+      if (attackTimer === 0) {
+        attackTimer = 200
+        this.attack()
+      }
+    },
     getRemaining() {
       return toSpawn + pool.getAliveObjects().length
     },
