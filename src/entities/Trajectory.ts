@@ -1,8 +1,9 @@
+import { Pool } from 'kontra'
 import { GRAVITY } from './player'
 import { Sprite } from './sprite'
 
 export class Trajectory {
-  sprites: TrajectorySprite[]
+  sprites: Pool
   angleSprite: AngleSprite
   spawnTimer: number
   spawnTimerMax: number
@@ -11,10 +12,10 @@ export class Trajectory {
   angle: number
 
   constructor(properties) {
-    this.sprites = []
-    for (let i = 0; i < 50; i++) {
-      this.sprites.push(new TrajectorySprite(properties))
-    }
+    this.sprites = Pool({
+      create: () => new TrajectorySprite(properties),
+      maxSize: 50,
+    })
     this.spawnTimerMax = 20
     this.spawnTimer = 0
     this.angleSprite = new AngleSprite(properties)
@@ -24,7 +25,7 @@ export class Trajectory {
   }
 
   update() {
-    this.sprites.forEach((s) => s.update())
+    this.sprites.update()
     this.angleSprite.opacity = this.stage > 0 ? 1 : 0
     this.angleSprite.opacity = this.stage > 0 ? 1 : 0
     if (this.stage === 0) {
@@ -35,7 +36,8 @@ export class Trajectory {
       this.spawnTimer--
       if (this.spawnTimer < 0) {
         this.spawnTimer = this.spawnTimerMax
-        this.sprites.find((s) => s.opacity <= 0)?.reset(this.speed, this.angle)
+        // @ts-ignore
+        this.sprites.get().reset(this.speed, this.angle)
       }
     }
     this.angleSprite.angle = this.angle
@@ -45,12 +47,12 @@ export class Trajectory {
 
   render() {
     if (this.stage === 0) return
-    if (this.stage === 2) this.sprites.forEach((s) => s.render())
+    if (this.stage === 2) this.sprites.render()
     this.angleSprite.render()
   }
 }
 class AngleSprite extends Sprite {
-  constructor(properties) {
+  constructor(properties = {}) {
     super({
       anchor: { x: 0, y: 0 },
       ...properties,
@@ -79,7 +81,7 @@ class AngleSprite extends Sprite {
 }
 
 class TrajectorySprite extends Sprite {
-  constructor(properties) {
+  constructor(properties: any = {}) {
     super({
       anchor: { x: 0, y: 0 },
       ...properties,
