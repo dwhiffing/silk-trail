@@ -1,4 +1,5 @@
 import { emit, onKey, onPointer } from 'kontra'
+import { LEVELS } from '../scenes/map'
 import { ShipSprite } from './sprite'
 import { Trajectory } from './Trajectory'
 
@@ -114,7 +115,8 @@ export const Player = ({ canvas, data, bullets, particles, enemies }) => {
       sprite.update()
       trajectory.update()
       sprite.progress += BASE_MOVEMENT_SPEED * sprite.speed
-      if (sprite.progress >= 1) emit('level-end')
+      if (sprite.progress >= LEVELS[data.levelIndex].totalLength)
+        emit('level-end')
       const totalWeight = data.items
         .map((k) => ITEM_TYPES[k].weight)
         .reduce((sum, n) => sum + n, 0)

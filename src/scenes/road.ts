@@ -5,6 +5,7 @@ import { Bullets } from '../entities/bullets'
 import { checkCollisions } from '../utils'
 import { Particles } from '../entities/particles'
 import { emit, on, Sprite, Text } from 'kontra'
+import { LEVELS } from './map'
 
 export const RoadScene = ({ canvas, data, onNext, onWin, onLose }) => {
   const timers = {}
@@ -17,14 +18,12 @@ export const RoadScene = ({ canvas, data, onNext, onWin, onLose }) => {
   on('player-damaged', onPlayerDamaged)
   on('player-dead', onLose)
   on('level-end', onNext)
-  const level = {
-    wave: { type: 'homer', count: 3, rate: 250 },
-    totalLength: 1,
-  }
+  const levelIndex = data.levelIndex
+  const level = LEVELS[levelIndex]
 
   let particles = Particles()
   let bullets = Bullets({ particles })
-  let enemies = Enemies({ canvas, particles, bullets })
+  let enemies = Enemies({ canvas, level, particles, bullets })
   let player = Player({ canvas, data, bullets, particles, enemies })
   let map = new Minimap({
     canvas,
@@ -52,11 +51,6 @@ export const RoadScene = ({ canvas, data, onNext, onWin, onLose }) => {
     e.takeDamage(b.damage, true)
   }
 
-  const nextLevel = () => {
-    enemies.spawn(player.sprite, level.wave)
-    bullets.pool.clear()
-  }
-
   const groundLine = Sprite({
     x: 0,
     y: GROUND_Y - 30,
@@ -75,10 +69,7 @@ export const RoadScene = ({ canvas, data, onNext, onWin, onLose }) => {
     anchor: { x: 0, y: 0 },
   })
 
-  nextLevel()
-
   return {
-    nextLevel,
     shutdown() {
       enemies.pool.clear()
       bullets.pool.clear()

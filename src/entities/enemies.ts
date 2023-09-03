@@ -7,10 +7,12 @@ const ENEMY_BUFFER = 60
 const PLAYER_BUFFER = 100
 const ATTACK_RANGE = 200
 
-export const Enemies = ({ canvas, particles, bullets }) => {
+export const Enemies = ({ canvas, level, particles, bullets }) => {
   let pool = Pool({ create: () => new Enemy(), maxSize: 10 })
   let toSpawn = 0
   let target
+  let waveIndex = 0
+  let wave = level.waves[waveIndex]
   const attack = () => {
     const enemies = pool.getAliveObjects() as Enemy[]
     const inRange = enemies.filter((e) => target.x - e.x < ATTACK_RANGE)
@@ -18,6 +20,31 @@ export const Enemies = ({ canvas, particles, bullets }) => {
     const index = randInt(0, inRange.length - 1)
     inRange[index]?.attack()
     emit('delay', 'attack', 900 / enemies.length, attack)
+  }
+  const spawn = (target, wave, delay = 0) => {
+    let { type = 'normal', count = 1 } = wave
+    toSpawn += count
+    let x = -25
+    let y = GROUND_Y
+    for (let i = 0; i < count; i++) {
+      requestTimeout(
+        () => {
+          const ttl = Infinity
+          pool.get({
+            x: x + i * -80,
+            y,
+            ttl,
+            target,
+            pool,
+            bullets,
+            particles,
+            type,
+          })
+          toSpawn--
+        },
+        delay + i * 0,
+      )
+    }
   }
   emit('delay', 'attack', 120, attack), 0
   return {
@@ -36,36 +63,16 @@ export const Enemies = ({ canvas, particles, bullets }) => {
             ? enemy.speed - target.speed
             : 0
       })
+      if (wave && target.progress / level.totalLength > wave.progress) {
+        spawn(player, wave)
+        wave = level.waves[++waveIndex]
+      }
     },
     getRemaining() {
       return toSpawn + pool.getAliveObjects().length
     },
     attack,
-    spawn(target, wave, delay = 0) {
-      let { type = 'homer', count = 1, rate = 0 } = wave
-      toSpawn += count
-      let x = -250
-      let y = GROUND_Y
-      for (let i = 0; i < count; i++) {
-        requestTimeout(
-          () => {
-            const ttl = Infinity
-            pool.get({
-              x: x + i * 80,
-              y,
-              ttl,
-              target,
-              pool,
-              bullets,
-              particles,
-              type,
-            })
-            toSpawn--
-          },
-          delay + i * rate,
-        )
-      }
-    },
+    spawn,
   }
 }
 

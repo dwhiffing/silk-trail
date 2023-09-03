@@ -3,7 +3,31 @@ import { playSound } from '../utils'
 const yt = 5
 const xt = 5
 
-export const LEVELS = [{ name: '1' }, { name: '2' }, { name: '3' }]
+export const LEVELS = [
+  {
+    name: '1',
+    totalLength: 0.25,
+    waves: [{ type: 'normal', count: 1, progress: 0.25 }],
+  },
+  {
+    name: '2',
+    totalLength: 0.5,
+    waves: [
+      { type: 'normal', count: 3, progress: 0.25 },
+      { type: 'normal', count: 3, progress: 0.5 },
+      { type: 'normal', count: 3, progress: 0.75 },
+    ],
+  },
+  {
+    name: '3',
+    totalLength: 1,
+    waves: [
+      { type: 'normal', count: 3, progress: 0.25 },
+      { type: 'normal', count: 3, progress: 0.5 },
+      { type: 'normal', count: 3, progress: 0.75 },
+    ],
+  },
+]
 export const MapScene = ({ canvas, data, onNext }) => {
   const { width, height } = canvas
   const sh = height - yt * 2
