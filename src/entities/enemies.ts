@@ -78,18 +78,19 @@ class Enemy extends ShipSprite {
     emit('delay', 'color', 120, () => {
       this.color = '#999'
 
-      this.bullets.spawn({
-        x: this.x,
-        y: this.y - 20,
-        ddy: GRAVITY,
-        angle: 5.5,
-        xSpeed: xValues[index],
-        ySpeed: yValues[index],
-        size: 10,
-        health: 10,
-        damage: 10,
-        isEnemyBullet: true,
-      })
+      if (this.ttl > 0)
+        this.bullets.spawn({
+          x: this.x,
+          y: this.y - 20,
+          ddy: GRAVITY,
+          angle: 5.5,
+          xSpeed: xValues[index],
+          ySpeed: yValues[index],
+          size: 10,
+          health: 10,
+          damage: 10,
+          isEnemyBullet: true,
+        })
     })
   }
 
