@@ -1,25 +1,26 @@
 import { onKey, onPointer } from 'kontra'
-import { ShipSprite } from './sprite'
+import { PlayerSprite } from './sprite'
 import { Trajectory } from './Trajectory'
 
-export const GRAVITY = 0.5
-export const GROUND_Y = 129
-const MIN_SPEED = 4
-const MAX_SPEED = 12
+export const GRAVITY = 0.175
+export const GROUND_Y = 150
+const MIN_SPEED = 3
+const MAX_SPEED = 8
 const SIZE = 35
 const BULLET_SIZE = 10
 const MIN_ANGLE = 3.8
 const MAX_ANGLE = 4.6
+const MAX_HP = 5
 
 export const Player = ({ canvas, bullets, particles, enemies }) => {
-  let sprite = new ShipSprite({
+  let sprite = new PlayerSprite({
     x: canvas.width - 40,
     y: GROUND_Y,
     color: '#666',
-    width: SIZE / 2,
+    width: SIZE * 2,
     height: SIZE,
-    health: 100,
-    maxHealth: 100,
+    health: MAX_HP,
+    maxHealth: MAX_HP,
   })
   let angle = 0
   let speed = 0

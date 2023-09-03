@@ -1,6 +1,6 @@
-import { Pool } from 'kontra'
+import { Pool, randInt } from 'kontra'
 import { requestTimeout } from '../utils'
-import { GROUND_Y } from './player'
+import { GRAVITY, GROUND_Y } from './player'
 import { ShipSprite } from './sprite'
 
 export const Enemies = ({ canvas, particles, bullets }) => {
@@ -10,6 +10,11 @@ export const Enemies = ({ canvas, particles, bullets }) => {
     pool,
     getRemaining() {
       return toSpawn + pool.getAliveObjects().length
+    },
+    attack() {
+      const enemies = pool.getAliveObjects() as Enemy[]
+      const index = randInt(0, enemies.length - 1)
+      enemies[index]?.attack()
     },
     spawn(target, wave, delay = 0) {
       let { type = 'homer', count = 1, rate = 0 } = wave
@@ -46,7 +51,7 @@ class Enemy extends ShipSprite {
 
   init(properties) {
     super.init({
-      color: '#f00',
+      color: '#999',
       width: 25,
       height: 25,
       exhaust: true,
@@ -64,6 +69,30 @@ class Enemy extends ShipSprite {
 
   update() {
     super.update()
+  }
+
+  attack() {
+    this.color = '#f00'
+    const xValues = [3, 5, 5]
+    const yValues = [7, 7, 10]
+    const index = Math.floor((this.target.x - this.x) / 80) - 1
+
+    this.bullets.spawn({
+      x: this.x,
+      y: this.y - 20,
+      ddy: GRAVITY,
+      angle: 5.5,
+      xSpeed: xValues[index],
+      ySpeed: yValues[index],
+      size: 10,
+      health: 10,
+      damage: 10,
+      isEnemyBullet: true,
+    })
+
+    setTimeout(() => {
+      this.color = '#999'
+    }, 500)
   }
 
   die() {
