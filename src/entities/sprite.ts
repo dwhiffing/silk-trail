@@ -6,7 +6,7 @@ export class Sprite extends SpriteClass {
   }
 
   takeDamage(n) {
-    if (this.health <= 0) return
+    if (this.health <= 0 || this.block) return
 
     if (n > 0) this.health -= n
     if (this.health <= 0) this.die()

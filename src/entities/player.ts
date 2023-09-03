@@ -1,4 +1,4 @@
-import { onKey, onPointer } from 'kontra'
+import { emit, onKey, onPointer } from 'kontra'
 import { PlayerSprite } from './sprite'
 import { Trajectory } from './Trajectory'
 
@@ -37,7 +37,7 @@ export const Player = ({ canvas, bullets, particles, enemies }) => {
     speed: 0,
   })
 
-  const onClick = () => {
+  const onThrow = () => {
     if (trajectory.stage === 0) {
       updateTrajectory(MIN_ANGLE, MIN_SPEED)
     } else if (trajectory.stage === 1) {
@@ -59,8 +59,17 @@ export const Player = ({ canvas, bullets, particles, enemies }) => {
     }
   }
 
-  onKey('space', (e) => !e.repeat && onClick())
-  onPointer('down', onClick)
+  const onBlock = () => {
+    sprite.color = '#00f'
+    sprite.block = true
+    emit('delay', 'block', 20, () => {
+      sprite.block = false
+      sprite.color = '#666'
+    })
+  }
+
+  onKey('space', (e) => !e.repeat && onBlock())
+  onPointer('down', onThrow)
 
   sprite.money = 0
   sprite.getMoney = (amount) => (sprite.money += amount)
@@ -82,7 +91,7 @@ export const Player = ({ canvas, bullets, particles, enemies }) => {
         if (speed > MAX_SPEED || speed < MIN_SPEED) {
           direction = direction === -1 ? 1 : -1
         }
-        updateTrajectory(angle, speed + direction * 0.1)
+        updateTrajectory(angle, speed + direction * 0.05)
       }
     },
     shutdown() {},

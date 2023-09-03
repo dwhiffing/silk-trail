@@ -57,6 +57,7 @@ class AngleSprite extends Sprite {
 
   update(dt?) {
     super.update(dt)
+    if (this.opacity <= 0) this.ttl = 0
   }
 
   draw() {
