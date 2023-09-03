@@ -2,6 +2,7 @@ import { Text, track } from 'kontra'
 
 export const MenuScene = ({
   canvas,
+  data,
   heading,
   description,
   texts,

@@ -5,9 +5,20 @@ import './zzfx'
 
 const { canvas } = init()
 
+const STARTING_ITEMS = [
+  'stone',
+  'box',
+  'stone',
+  'box',
+  'stone',
+  'box',
+  'stone',
+  'box',
+]
 initPointer()
 initKeys()
 let scene
+let data = { gold: 0, items: STARTING_ITEMS }
 // //@ts-ignore
 // let musicNode = zzfxP(...zzfxM(...MUSIC))
 // //@ts-ignore
@@ -30,6 +41,7 @@ const startHelp = () => {
 
   scene = MenuScene({
     canvas,
+    data,
     heading: 'How to play',
     texts: [
       'Your greatest foe has sent an army to\ndestroy your homeworld for resources.\n\nYou are one of the few survivors,\nProtect it at all costs!',
@@ -43,13 +55,14 @@ const startHelp = () => {
 
 const startShop = () => {
   scene && scene.shutdown()
-  scene = ShopScene({ canvas, onNext: startMap })
+  scene = ShopScene({ canvas, data, onNext: startMap })
 }
 
 const startRoad = () => {
   scene && scene.shutdown()
   scene = RoadScene({
     canvas,
+    data,
     onNext: startShop,
     onWin: startWin,
     onLose: startLose,
@@ -58,13 +71,14 @@ const startRoad = () => {
 
 const startMap = () => {
   scene && scene.shutdown()
-  scene = MapScene({ canvas, onNext: startRoad })
+  scene = MapScene({ canvas, data, onNext: startRoad })
 }
 
 const startMenu = () => {
   scene && scene.shutdown()
   scene = MenuScene({
     canvas,
+    data,
     heading: 'Silk Road',
     description: `Created by Daniel Whiffing`,
     button1: startShop,
@@ -76,6 +90,7 @@ const startWin = (finalMoney) => {
   scene && scene.shutdown()
   scene = MenuScene({
     canvas,
+    data,
     heading: 'Congratulations',
     description: `You cleaned out the Silk Road!\nYour final cash total was: $${finalMoney}`,
     button1: startMenu,
@@ -86,6 +101,7 @@ const startLose = () => {
   scene && scene.shutdown()
   scene = MenuScene({
     canvas,
+    data,
     heading: 'Game Over',
     description: 'You died and sealed the fate of the Silk Road.',
     button1: startMenu,
@@ -94,6 +110,7 @@ const startLose = () => {
 
 startMenu()
 // startRoad()
+// startShop()
 
 GameLoop({
   update: (...rest) => scene && scene.update(...rest),

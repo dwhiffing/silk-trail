@@ -6,7 +6,7 @@ import { checkCollisions } from '../utils'
 import { Particles } from '../entities/particles'
 import { emit, on, Text } from 'kontra'
 
-export const RoadScene = ({ canvas, onNext, onWin, onLose }) => {
+export const RoadScene = ({ canvas, data, onNext, onWin, onLose }) => {
   const timers = {}
 
   const onPlayerDamaged = () => (hpText.text = `HP: ${player.sprite.health}`)
@@ -21,7 +21,7 @@ export const RoadScene = ({ canvas, onNext, onWin, onLose }) => {
   let particles = Particles()
   let bullets = Bullets({ particles })
   let enemies = Enemies({ canvas, particles, bullets })
-  let player = Player({ canvas, bullets, particles, enemies })
+  let player = Player({ canvas, data, bullets, particles, enemies })
   let map = new Minimap({ canvas, x: 80, y: 0, player })
   const hpText = Text({
     x: 10,

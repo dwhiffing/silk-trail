@@ -43,22 +43,14 @@ export class ShipSprite extends Sprite {
 }
 
 export class PlayerSprite extends ShipSprite {
-  items: string[]
   itemIndex: number
-  money: number
   progress: number
   block: boolean
   constructor(properties) {
     super({ anchor: { x: 0, y: 1 }, ...properties })
     this.block = false
-    this.money = 0
     this.itemIndex = 0
     this.progress = 0
-    this.items = []
-  }
-
-  getMoney(amount: number) {
-    this.money += amount
   }
 
   die() {
@@ -74,8 +66,8 @@ export class PlayerSprite extends ShipSprite {
     this.context.closePath()
     this.context.fill()
 
-    if (this.items[this.itemIndex]) {
-      const item = ITEM_TYPES[this.items[this.itemIndex]]
+    if (this.data.items[this.itemIndex]) {
+      const item = ITEM_TYPES[this.data.items[this.itemIndex]]
       this.context.fillStyle = item.color
       this.context.beginPath()
       this.context.rect(-10, -10, item.size, item.size)

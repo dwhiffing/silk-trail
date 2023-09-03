@@ -1,6 +1,6 @@
 import { Map } from '../entities/map'
 
-export const MapScene = ({ canvas, onNext }) => {
+export const MapScene = ({ canvas, data, onNext }) => {
   const x = canvas.width / 2
   const y = canvas.height / 2
 

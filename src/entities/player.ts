@@ -7,17 +7,19 @@ export const GROUND_Y = 150
 const MIN_SPEED = 3
 const MAX_SPEED = 8
 const SIZE = 35
-const MIN_ANGLE = 3.8
-const MAX_ANGLE = 4.6
+const MIN_ANGLE = 3.2
+const MAX_ANGLE = 4
 const BASE_MOVEMENT_SPEED = 0.0001
+const BASE_SPEED_CHANGE = 0.12
+const BASE_ANGLE_CHANGE = 0.02
 const MAX_HP = 5
 
 export const ITEM_TYPES = {
-  stone: { size: 10, value: 1, color: '#fff' },
-  box: { size: 20, value: 1, color: '#ff0' },
+  stone: { size: 10, damage: 2, weight: 0.8, value: 1, color: '#fff' },
+  box: { size: 20, damage: 10, weight: 1.2, value: 1, color: '#ff0' },
 }
 
-export const Player = ({ canvas, bullets, particles, enemies }) => {
+export const Player = ({ canvas, data, bullets, particles, enemies }) => {
   let sprite = new PlayerSprite({
     x: canvas.width - 40,
     y: GROUND_Y,
@@ -31,14 +33,17 @@ export const Player = ({ canvas, bullets, particles, enemies }) => {
   let speed = 0
   let canBlock = true
   sprite.itemIndex = 0
-  sprite.items = ['stone', 'box', 'stone', 'box']
   sprite.progress = 0
+  sprite.data = data
   let movementSpeed = BASE_MOVEMENT_SPEED
   let updateTrajectory = (_angle, _speed) => {
     angle = _angle
     speed = _speed
     trajectory.angle = _angle
-    trajectory.speed = _speed
+
+    const itemKey = data.items[sprite.itemIndex]
+    const item = ITEM_TYPES[itemKey]
+    trajectory.speed = _speed * (1 / item.weight)
   }
   let trajectory = new Trajectory({
     x: sprite.x,
@@ -48,25 +53,25 @@ export const Player = ({ canvas, bullets, particles, enemies }) => {
   })
 
   const onThrow = () => {
-    if (sprite.items.length === 0) return
+    if (data.items.length === 0) return
     if (trajectory.stage === 0) {
       updateTrajectory(MIN_ANGLE, MIN_SPEED)
     } else if (trajectory.stage === 1) {
     } else if (trajectory.stage === 2) {
-      const itemKey = sprite.items[sprite.itemIndex]
+      const itemKey = data.items[sprite.itemIndex]
       const item = ITEM_TYPES[itemKey]
-      sprite.items = sprite.items.filter((s, i) => i !== sprite.itemIndex)
+      data.items = data.items.filter((s, i) => i !== sprite.itemIndex)
       if (sprite.itemIndex > 0) sprite.itemIndex--
       bullets.spawn({
         x: sprite.x,
         y: sprite.y - SIZE,
         ddy: GRAVITY,
         angle,
-        speed,
+        speed: trajectory.speed,
         size: item.size,
         color: item.color,
+        damage: item.damage,
         health: 10,
-        damage: 10,
       })
     }
     trajectory.stage++
@@ -93,14 +98,13 @@ export const Player = ({ canvas, bullets, particles, enemies }) => {
   const onSwap = () => {
     if (trajectory.stage !== 0) trajectory.stage = 0
     sprite.itemIndex++
-    if (sprite.itemIndex > sprite.items.length - 1) sprite.itemIndex = 0
+    if (sprite.itemIndex > data.items.length - 1) sprite.itemIndex = 0
   }
 
   onKey('space', (e) => !e.repeat && onBlock())
   onKey('z', (e) => !e.repeat && onSwap())
   onPointer('down', onThrow)
 
-  sprite.money = 0
   let direction = -1
   return {
     sprite,
@@ -116,12 +120,13 @@ export const Player = ({ canvas, bullets, particles, enemies }) => {
         if (angle > MAX_ANGLE || angle < MIN_ANGLE) {
           direction = direction === -1 ? 1 : -1
         }
-        updateTrajectory(angle + direction * 0.01, speed)
+        updateTrajectory(angle + direction * BASE_ANGLE_CHANGE, speed)
       } else if (trajectory.stage === 2) {
         if (speed > MAX_SPEED || speed < MIN_SPEED) {
           direction = direction === -1 ? 1 : -1
         }
-        updateTrajectory(angle, speed + direction * 0.05)
+
+        updateTrajectory(angle, speed + direction * BASE_SPEED_CHANGE)
       }
     },
     shutdown() {},
