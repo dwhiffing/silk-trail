@@ -12,7 +12,7 @@ export const Enemies = ({ canvas, particles, bullets }) => {
     enemies[index]?.attack()
     emit('delay', 'attack', 900 / enemies.length, attack)
   }
-  emit('delay', 'attack', 300, attack), 0
+  emit('delay', 'attack', 120, attack), 0
   return {
     pool,
     getRemaining() {

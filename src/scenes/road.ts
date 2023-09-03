@@ -37,6 +37,9 @@ export const RoadScene = ({ canvas, onNext, onWin, onLose }) => {
   const bulletEnemyCollide = (b, e) => {
     b.takeDamage(b.health)
     e.takeDamage(b.damage, true)
+    emit('delay', 'check', 10, () => {
+      if (enemies.getRemaining() === 0) onNext()
+    })
   }
 
   const nextLevel = () => {
@@ -72,7 +75,6 @@ export const RoadScene = ({ canvas, onNext, onWin, onLose }) => {
         [player.sprite],
         bulletPlayerCollide,
       )
-      if (enemies.getRemaining() === 0) onNext()
     },
     render() {
       player.sprite.render()
