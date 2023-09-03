@@ -6,6 +6,7 @@ export const GRAVITY = 0.175
 export const GROUND_Y = 160
 const MIN_SPEED = 3
 const MAX_SPEED = 8
+const MAX_WAGON_SPEED = 6
 const SIZE = 35
 const MIN_ANGLE = 3.2
 const MAX_ANGLE = 4
@@ -13,6 +14,7 @@ const BASE_MOVEMENT_SPEED = 0.0001
 const BASE_SPEED_CHANGE = 0.12
 const BASE_ANGLE_CHANGE = 0.02
 const MAX_HP = 5
+const MAX_WEIGHT = 20
 
 export const ITEM_TYPES = {
   stone: { size: 10, damage: 10, weight: 0.8, value: 1, color: '#fff' },
@@ -113,6 +115,13 @@ export const Player = ({ canvas, data, bullets, particles, enemies }) => {
       trajectory.update()
       sprite.progress += BASE_MOVEMENT_SPEED * sprite.speed
       if (sprite.progress >= 1) emit('level-end')
+      const totalWeight = data.items
+        .map((k) => ITEM_TYPES[k].weight)
+        .reduce((sum, n) => sum + n, 0)
+
+      const ratio = 1 - totalWeight / MAX_WEIGHT
+      sprite.speed = MAX_WAGON_SPEED * ratio
+
       if (trajectory.stage === 0) return
 
       if (trajectory.stage === 1) {
