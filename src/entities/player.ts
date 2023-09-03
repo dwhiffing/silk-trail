@@ -1,5 +1,5 @@
 import { emit, onKey, onPointer } from 'kontra'
-import { PlayerSprite } from './sprite'
+import { ShipSprite } from './sprite'
 import { Trajectory } from './Trajectory'
 
 export const GRAVITY = 0.175
@@ -129,5 +129,42 @@ export const Player = ({ canvas, data, bullets, particles, enemies }) => {
       }
     },
     shutdown() {},
+  }
+}
+
+class PlayerSprite extends ShipSprite {
+  itemIndex: number
+  progress: number
+  speed: number
+  block: boolean
+  constructor(properties) {
+    super({ anchor: { x: 0, y: 1 }, ...properties })
+    this.block = false
+    this.itemIndex = 0
+    this.progress = 0
+    this.speed = 4.5
+  }
+
+  die() {
+    super.die()
+    emit('player-dead')
+  }
+
+  draw() {
+    if (this.opacity === 0) return
+    this.context.fillStyle = this.color
+    this.context.beginPath()
+    this.context.rect(0, 0, this.width, this.height)
+    this.context.closePath()
+    this.context.fill()
+
+    if (this.data.items[this.itemIndex]) {
+      const item = ITEM_TYPES[this.data.items[this.itemIndex]]
+      this.context.fillStyle = item.color
+      this.context.beginPath()
+      this.context.rect(-10, -10, item.size, item.size)
+      this.context.closePath()
+      this.context.fill()
+    }
   }
 }

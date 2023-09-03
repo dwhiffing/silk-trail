@@ -53,7 +53,7 @@ export const RoadScene = ({ canvas, data, onNext, onWin, onLose }) => {
   }
 
   const nextLevel = () => {
-    // enemies.spawn(player.sprite, level.wave)
+    enemies.spawn(player.sprite, level.wave)
     bullets.pool.clear()
   }
 
@@ -90,6 +90,7 @@ export const RoadScene = ({ canvas, data, onNext, onWin, onLose }) => {
       speedLine.update()
       speedLine.dx = player.sprite.speed * -1
       if (speedLine.x < 0) speedLine.x = canvas.width
+      enemies.update(player)
       enemies.pool.update()
       bullets.pool.update()
       particles.pool.update()

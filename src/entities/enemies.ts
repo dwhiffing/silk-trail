@@ -3,18 +3,40 @@ import { requestTimeout } from '../utils'
 import { GRAVITY, GROUND_Y } from './player'
 import { ShipSprite } from './sprite'
 
+const ENEMY_BUFFER = 60
+const PLAYER_BUFFER = 100
+const ATTACK_RANGE = 200
+
 export const Enemies = ({ canvas, particles, bullets }) => {
   let pool = Pool({ create: () => new Enemy(), maxSize: 10 })
   let toSpawn = 0
+  let target
   const attack = () => {
     const enemies = pool.getAliveObjects() as Enemy[]
-    const index = randInt(0, enemies.length - 1)
-    enemies[index]?.attack()
+    const inRange = enemies.filter((e) => target.x - e.x < ATTACK_RANGE)
+
+    const index = randInt(0, inRange.length - 1)
+    inRange[index]?.attack()
     emit('delay', 'attack', 900 / enemies.length, attack)
   }
   emit('delay', 'attack', 120, attack), 0
   return {
     pool,
+    update(player) {
+      target = player.sprite
+      const _enemies = (pool.getAliveObjects() as any[]).sort(
+        (a, b) => a.x - b.x,
+      )
+      _enemies.forEach((enemy: any) => {
+        const enemyInFront = _enemies.find((e) => e.x > enemy.x) || target
+        const distToNeighbour = enemyInFront.x - enemy.x
+        enemy.dx =
+          distToNeighbour >
+          (enemyInFront !== target ? ENEMY_BUFFER : PLAYER_BUFFER)
+            ? enemy.speed - target.speed
+            : 0
+      })
+    },
     getRemaining() {
       return toSpawn + pool.getAliveObjects().length
     },
@@ -22,7 +44,7 @@ export const Enemies = ({ canvas, particles, bullets }) => {
     spawn(target, wave, delay = 0) {
       let { type = 'homer', count = 1, rate = 0 } = wave
       toSpawn += count
-      let x = 50
+      let x = -250
       let y = GROUND_Y
       for (let i = 0; i < count; i++) {
         requestTimeout(
@@ -60,7 +82,7 @@ class Enemy extends ShipSprite {
       exhaust: true,
       explodes: true,
       maxSpeed: 4.2,
-      speed: 1,
+      speed: 5,
       health: 10,
       damage: 10,
       separateAmount: 30,
