@@ -23,6 +23,7 @@ export const Bullets = ({ particles }) => {
         ddy: opts.ddy || 0,
         ttl: opts.ttl || Infinity,
         damage: opts.damage,
+        color: opts.color,
         isEnemyBullet: opts.isEnemyBullet,
         maxHealth: health,
         health,
@@ -65,6 +66,7 @@ class Bullet extends Sprite {
   draw() {
     this.context.beginPath()
     // this.context.rotate(this.angle)
+    this.context.fillStyle = this.color
     this.context.rect(0, 0, this.width, this.width)
     // this.context.rotate(0)
     this.context.fill()
