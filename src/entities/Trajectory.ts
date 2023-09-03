@@ -12,7 +12,7 @@ export class Trajectory {
   constructor(properties) {
     this.sprites = Pool({
       create: () => new TrajectorySprite(properties),
-      maxSize: 50,
+      maxSize: 10,
     })
     this.angleSprite = new AngleSprite(properties)
     this.stage = 0
@@ -23,7 +23,7 @@ export class Trajectory {
 
   spawn() {
     // @ts-ignore
-    this.sprites.get().reset(this.speed, this.angle)
+    this.sprites.get()?.reset(this.speed, this.angle)
     emit('delay', 'spawn', 20, () => this.spawn())
   }
 
@@ -57,7 +57,6 @@ class AngleSprite extends Sprite {
 
   update(dt?) {
     super.update(dt)
-    if (this.opacity <= 0) this.ttl = 0
   }
 
   draw() {
@@ -93,15 +92,18 @@ class TrajectorySprite extends Sprite {
     this.context.fillStyle = '#fff'
     this.context.beginPath()
     this.opacity = 0
+    this.ttl = 0
   }
 
   update(dt?) {
     super.update(dt)
 
+    if (this.opacity <= 0) this.ttl = 0
     if (this.opacity === 0) return
     this.opacity -= 0.015
     if (this.y > this.maxY) {
       this.opacity = 0
+      this.ttl = 0
     }
   }
 
