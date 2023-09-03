@@ -7,11 +7,14 @@ export const GROUND_Y = 150
 const MIN_SPEED = 3
 const MAX_SPEED = 8
 const SIZE = 35
-const BULLET_SIZE = 10
 const MIN_ANGLE = 3.8
 const MAX_ANGLE = 4.6
 const BASE_MOVEMENT_SPEED = 0.0001
 const MAX_HP = 5
+
+export const ITEM_TYPES = {
+  stone: { size: 10 },
+}
 
 export const Player = ({ canvas, bullets, particles, enemies }) => {
   let sprite = new PlayerSprite({
@@ -25,6 +28,7 @@ export const Player = ({ canvas, bullets, particles, enemies }) => {
   })
   let angle = 0
   let speed = 0
+  sprite.items = ['stone', 'stone', 'stone', 'stone']
   sprite.progress = 0
   let movementSpeed = BASE_MOVEMENT_SPEED
   let updateTrajectory = (_angle, _speed) => {
@@ -41,17 +45,20 @@ export const Player = ({ canvas, bullets, particles, enemies }) => {
   })
 
   const onThrow = () => {
+    if (sprite.items.length === 0) return
     if (trajectory.stage === 0) {
       updateTrajectory(MIN_ANGLE, MIN_SPEED)
     } else if (trajectory.stage === 1) {
     } else if (trajectory.stage === 2) {
+      const itemKey = sprite.items.shift()
+      const item = ITEM_TYPES[itemKey]
       bullets.spawn({
         x: sprite.x,
         y: sprite.y - SIZE,
         ddy: GRAVITY,
         angle,
         speed,
-        size: BULLET_SIZE,
+        size: item.size,
         health: 10,
         damage: 10,
       })

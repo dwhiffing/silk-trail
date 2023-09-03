@@ -65,7 +65,7 @@ class Bullet extends Sprite {
   draw() {
     this.context.beginPath()
     // this.context.rotate(this.angle)
-    this.context.rect(0, 0, this.width * 1.5, this.width * 1.5)
+    this.context.rect(0, 0, this.width, this.width)
     // this.context.rotate(0)
     this.context.fill()
   }
