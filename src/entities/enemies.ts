@@ -77,6 +77,9 @@ class Enemy extends ShipSprite {
 
   update() {
     super.update()
+    if (this.delayTimer-- <= 0) {
+      this.color = '#999'
+    }
   }
 
   attack() {
@@ -84,6 +87,7 @@ class Enemy extends ShipSprite {
     const xValues = [3, 5, 5]
     const yValues = [7, 7, 10]
     const index = Math.floor((this.target.x - this.x) / 80) - 1
+    this.delayTimer = 20
 
     this.bullets.spawn({
       x: this.x,
@@ -97,10 +101,6 @@ class Enemy extends ShipSprite {
       damage: 10,
       isEnemyBullet: true,
     })
-
-    setTimeout(() => {
-      this.color = '#999'
-    }, 500)
   }
 
   die() {
