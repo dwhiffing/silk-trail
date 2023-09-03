@@ -13,7 +13,7 @@ const BASE_MOVEMENT_SPEED = 0.0001
 const MAX_HP = 5
 
 export const ITEM_TYPES = {
-  stone: { size: 10 },
+  stone: { size: 10, value: 1 },
 }
 
 export const Player = ({ canvas, bullets, particles, enemies }) => {
