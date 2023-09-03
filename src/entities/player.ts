@@ -3,7 +3,7 @@ import { PlayerSprite } from './sprite'
 import { Trajectory } from './Trajectory'
 
 export const GRAVITY = 0.175
-export const GROUND_Y = 150
+export const GROUND_Y = 160
 const MIN_SPEED = 3
 const MAX_SPEED = 8
 const SIZE = 35
@@ -35,7 +35,6 @@ export const Player = ({ canvas, data, bullets, particles, enemies }) => {
   sprite.itemIndex = 0
   sprite.progress = 0
   sprite.data = data
-  let movementSpeed = BASE_MOVEMENT_SPEED
   let updateTrajectory = (_angle, _speed) => {
     angle = _angle
     speed = _speed
@@ -112,7 +111,7 @@ export const Player = ({ canvas, data, bullets, particles, enemies }) => {
     update() {
       sprite.update()
       trajectory.update()
-      sprite.progress += movementSpeed
+      sprite.progress += BASE_MOVEMENT_SPEED * sprite.speed
       if (sprite.progress >= 1) emit('level-end')
       if (trajectory.stage === 0) return
 

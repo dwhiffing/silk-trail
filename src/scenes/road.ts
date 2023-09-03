@@ -1,10 +1,10 @@
 import { Enemies } from '../entities/enemies'
-import { Player } from '../entities/player'
+import { GROUND_Y, Player } from '../entities/player'
 import { Minimap } from '../entities/minimap'
 import { Bullets } from '../entities/bullets'
 import { checkCollisions } from '../utils'
 import { Particles } from '../entities/particles'
-import { emit, on, Text } from 'kontra'
+import { emit, on, Sprite, Text } from 'kontra'
 
 export const RoadScene = ({ canvas, data, onNext, onWin, onLose }) => {
   const timers = {}
@@ -17,12 +17,22 @@ export const RoadScene = ({ canvas, data, onNext, onWin, onLose }) => {
   on('player-damaged', onPlayerDamaged)
   on('player-dead', onLose)
   on('level-end', onNext)
+  const level = {
+    wave: { type: 'homer', count: 3, rate: 250 },
+    totalLength: 1,
+  }
 
   let particles = Particles()
   let bullets = Bullets({ particles })
   let enemies = Enemies({ canvas, particles, bullets })
   let player = Player({ canvas, data, bullets, particles, enemies })
-  let map = new Minimap({ canvas, x: 80, y: 0, player })
+  let map = new Minimap({
+    canvas,
+    maxProgress: level.totalLength,
+    x: 80,
+    y: 0,
+    player,
+  })
   const hpText = Text({
     x: 10,
     y: 15,
@@ -40,15 +50,31 @@ export const RoadScene = ({ canvas, data, onNext, onWin, onLose }) => {
   const bulletEnemyCollide = (b, e) => {
     b.takeDamage(b.health)
     e.takeDamage(b.damage, true)
-    emit('delay', 'check', 10, () => {
-      if (enemies.getRemaining() === 0) onNext()
-    })
   }
 
   const nextLevel = () => {
-    enemies.spawn(player.sprite, { type: 'homer', count: 3, rate: 250 })
+    // enemies.spawn(player.sprite, level.wave)
     bullets.pool.clear()
   }
+
+  const groundLine = Sprite({
+    x: 0,
+    y: GROUND_Y - 30,
+    width: canvas.width,
+    height: 1,
+    color: '#444',
+    anchor: { x: 0, y: 0 },
+  })
+
+  const speedLine = Sprite({
+    x: 0,
+    y: 0,
+    width: 1,
+    height: GROUND_Y - 30,
+    color: '#444',
+    anchor: { x: 0, y: 0 },
+  })
+
   nextLevel()
 
   return {
@@ -61,6 +87,9 @@ export const RoadScene = ({ canvas, data, onNext, onWin, onLose }) => {
     update() {
       player.update()
       map.update()
+      speedLine.update()
+      speedLine.dx = player.sprite.speed * -1
+      if (speedLine.x < 0) speedLine.x = canvas.width
       enemies.pool.update()
       bullets.pool.update()
       particles.pool.update()
@@ -81,6 +110,8 @@ export const RoadScene = ({ canvas, data, onNext, onWin, onLose }) => {
       )
     },
     render() {
+      speedLine.render()
+      groundLine.render()
       player.sprite.render()
       map.render()
       player.trajectory.render()

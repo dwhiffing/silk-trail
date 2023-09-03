@@ -45,12 +45,14 @@ export class ShipSprite extends Sprite {
 export class PlayerSprite extends ShipSprite {
   itemIndex: number
   progress: number
+  speed: number
   block: boolean
   constructor(properties) {
     super({ anchor: { x: 0, y: 1 }, ...properties })
     this.block = false
     this.itemIndex = 0
     this.progress = 0
+    this.speed = 1
   }
 
   die() {
