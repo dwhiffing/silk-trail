@@ -1,12 +1,10 @@
-import { Pool } from 'kontra'
+import { emit, Pool } from 'kontra'
 import { GRAVITY } from './player'
 import { Sprite } from './sprite'
 
 export class Trajectory {
   sprites: Pool
   angleSprite: AngleSprite
-  spawnTimer: number
-  spawnTimerMax: number
   speed: number
   stage: number
   angle: number
@@ -16,12 +14,17 @@ export class Trajectory {
       create: () => new TrajectorySprite(properties),
       maxSize: 50,
     })
-    this.spawnTimerMax = 20
-    this.spawnTimer = 0
     this.angleSprite = new AngleSprite(properties)
     this.stage = 0
     this.speed = properties.speed
     this.angle = properties.angle
+    emit('delay', 'spawn', 20, () => this.spawn())
+  }
+
+  spawn() {
+    // @ts-ignore
+    this.sprites.get().reset(this.speed, this.angle)
+    emit('delay', 'spawn', 20, () => this.spawn())
   }
 
   update() {
@@ -32,14 +35,6 @@ export class Trajectory {
       return
     }
 
-    if (this.stage === 2) {
-      this.spawnTimer--
-      if (this.spawnTimer < 0) {
-        this.spawnTimer = this.spawnTimerMax
-        // @ts-ignore
-        this.sprites.get().reset(this.speed, this.angle)
-      }
-    }
     this.angleSprite.angle = this.angle
     this.angleSprite.speed = this.speed
     this.angleSprite.update()

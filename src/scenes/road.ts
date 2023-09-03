@@ -6,15 +6,27 @@ import { Particles } from '../entities/particles'
 import { emit, on, Text } from 'kontra'
 
 export const RoadScene = ({ canvas, onNext, onWin, onLose }) => {
+  const timers = {}
+
+  const onPlayerDamaged = () => (hpText.text = `HP: ${player.sprite.health}`)
+  const onDelay = (name: string, delay: number, fn: any) => {
+    timers[name] = { fn, delay }
+  }
+  on('delay', onDelay)
+  on('player-damaged', onPlayerDamaged)
+  on('player-dead', onLose)
+
   let particles = Particles()
   let bullets = Bullets({ particles })
-  let interval2
-  const nextLevel = () => {
-    enemies.spawn(player.sprite, { type: 'homer', count: 3, rate: 250 })
-    bullets.pool.clear()
-  }
   let enemies = Enemies({ canvas, particles, bullets })
   let player = Player({ canvas, bullets, particles, enemies })
+  const hpText = Text({
+    x: 10,
+    y: 15,
+    text: `HP: ${player.sprite.health}`,
+    color: '#fff',
+    font: '16px sans-serif',
+  })
 
   const bulletPlayerCollide = (b, p) => {
     b.takeDamage(b.health)
@@ -27,21 +39,12 @@ export const RoadScene = ({ canvas, onNext, onWin, onLose }) => {
     e.takeDamage(b.damage, true)
   }
 
-  const healthText = Text({
-    x: 10,
-    y: 15,
-    text: `HP: ${player.sprite.health}`,
-    color: '#fff',
-    font: '16px sans-serif',
-  })
-
-  on('player-damaged', () => {
-    healthText.text = `HP: ${player.sprite.health}`
-  })
-
-  on('player-dead', onLose)
-
+  const nextLevel = () => {
+    enemies.spawn(player.sprite, { type: 'homer', count: 3, rate: 250 })
+    bullets.pool.clear()
+  }
   nextLevel()
+
   return {
     nextLevel,
     shutdown() {
@@ -51,10 +54,14 @@ export const RoadScene = ({ canvas, onNext, onWin, onLose }) => {
     },
     update() {
       player.update()
-      enemies.update()
       enemies.pool.update()
       bullets.pool.update()
       particles.pool.update()
+
+      Object.keys(timers).forEach((key) => {
+        if (timers[key].delay-- === 0) timers[key].fn()
+      })
+
       checkCollisions(
         bullets.pool.getAliveObjects().filter((b: any) => !b.isEnemyBullet),
         enemies.pool.getAliveObjects(),
@@ -73,7 +80,7 @@ export const RoadScene = ({ canvas, onNext, onWin, onLose }) => {
       enemies.pool.render()
       particles.pool.render()
       bullets.pool.render()
-      healthText.render()
+      hpText.render()
     },
   }
 }
