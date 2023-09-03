@@ -10,9 +10,9 @@ export const Enemies = ({ canvas, particles, bullets }) => {
     const enemies = pool.getAliveObjects() as Enemy[]
     const index = randInt(0, enemies.length - 1)
     enemies[index]?.attack()
-    emit('delay', 'attack', 600 / enemies.length, attack)
+    emit('delay', 'attack', 900 / enemies.length, attack)
   }
-  emit('delay', 'attack', 200, attack), 0
+  emit('delay', 'attack', 300, attack), 0
   return {
     pool,
     getRemaining() {
@@ -75,19 +75,21 @@ class Enemy extends ShipSprite {
     const xValues = [3, 5, 5]
     const yValues = [7, 7, 10]
     const index = Math.floor((this.target.x - this.x) / 80) - 1
-    emit('delay', 'color', 20, () => (this.color = '#999'))
+    emit('delay', 'color', 120, () => {
+      this.color = '#999'
 
-    this.bullets.spawn({
-      x: this.x,
-      y: this.y - 20,
-      ddy: GRAVITY,
-      angle: 5.5,
-      xSpeed: xValues[index],
-      ySpeed: yValues[index],
-      size: 10,
-      health: 10,
-      damage: 10,
-      isEnemyBullet: true,
+      this.bullets.spawn({
+        x: this.x,
+        y: this.y - 20,
+        ddy: GRAVITY,
+        angle: 5.5,
+        xSpeed: xValues[index],
+        ySpeed: yValues[index],
+        size: 10,
+        health: 10,
+        damage: 10,
+        isEnemyBullet: true,
+      })
     })
   }
 
