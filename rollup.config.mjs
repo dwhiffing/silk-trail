@@ -18,15 +18,15 @@ export default {
   },
   plugins: [
     kontra({
-      gameObject: { acceleration: true, velocity: true, anchor: true, group: true, ttl: true },
+      gameObject: { acceleration: true, velocity: true, anchor: true, ttl: true },
       sprite: { animation: false },
       text: { textAlign: true, newline: true },
       vector: {
-        add: true,
-        dot: true,
-        distance: true,
-        subtract: true,
-        angle: true,
+        add: false,
+        dot: false,
+        distance: false,
+        subtract: false,
+        angle: false,
       },
     }),
     // cleanup({ comments: "some", }),

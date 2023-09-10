@@ -83,7 +83,7 @@ class Enemy extends ShipSprite {
 
   init(properties) {
     super.init({
-      color: '#999',
+      color: '#F58328',
       width: 25,
       height: 25,
       exhaust: true,

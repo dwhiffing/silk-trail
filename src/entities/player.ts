@@ -4,7 +4,7 @@ import { ShipSprite } from './sprite'
 import { Trajectory } from './Trajectory'
 
 export const GRAVITY = 0.175
-export const GROUND_Y = 160
+export const GROUND_Y = 480
 const MIN_SPEED = 3
 const MAX_SPEED = 8
 const MAX_WAGON_SPEED = 6
