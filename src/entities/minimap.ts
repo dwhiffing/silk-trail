@@ -10,14 +10,18 @@ export class Minimap extends Sprite {
     if (this.opacity === 0) return
     this.context.fillStyle = this.color
     this.context.beginPath()
-
+    const width = this.context.canvas.width
     this.context.rect(
-      lerp(0, 220, this.player.sprite.progress / (this.maxProgress ?? 1)),
+      lerp(
+        0,
+        width - width / 5,
+        this.player.sprite.progress / (this.maxProgress ?? 1),
+      ),
       20,
       5,
       5,
     )
-    this.context.rect(0, 28, 220, 1)
+    this.context.rect(0, 28, width - width / 5, 1)
     this.context.closePath()
     this.context.fill()
   }

@@ -28,15 +28,16 @@ export const RoadScene = ({ canvas, data, onNext, onWin, onLose }) => {
   let map = new Minimap({
     canvas,
     maxProgress: level.totalLength,
-    x: 80,
+    x: canvas.width / 10,
     y: 0,
     player,
+    color: '#000',
   })
   const hpText = Text({
     x: 10,
     y: 15,
     text: `HP: ${player.sprite.health}`,
-    color: '#fff',
+    color: '#000',
     font: '16px sans-serif',
   })
 
@@ -53,7 +54,7 @@ export const RoadScene = ({ canvas, data, onNext, onWin, onLose }) => {
 
   const groundLine = Sprite({
     x: 0,
-    y: GROUND_Y - 30,
+    y: GROUND_Y - 130,
     width: canvas.width,
     height: 1,
     color: '#444',
@@ -64,7 +65,7 @@ export const RoadScene = ({ canvas, data, onNext, onWin, onLose }) => {
     x: 0,
     y: 0,
     width: 1,
-    height: GROUND_Y - 30,
+    height: GROUND_Y - 130,
     color: '#444',
     anchor: { x: 0, y: 0 },
   })
@@ -106,10 +107,10 @@ export const RoadScene = ({ canvas, data, onNext, onWin, onLose }) => {
       groundLine.render()
       player.sprite.render()
       map.render()
-      player.trajectory.render()
       enemies.pool.render()
       particles.pool.render()
       bullets.pool.render()
+      player.trajectory.render()
       hpText.render()
     },
   }

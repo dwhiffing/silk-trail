@@ -60,12 +60,12 @@ class AngleSprite extends Sprite {
   }
 
   draw() {
-    const s = 5
-    const d = 20 + 15 * ((this.speed - 4) / 11)
+    const s = 0
+    const d = 50 + 50 * ((this.speed - 4) / 11)
 
     this.context.beginPath()
-    this.context.lineWidth = 2
-    this.context.strokeStyle = `#fff`
+    this.context.lineWidth = 10
+    this.context.strokeStyle = `#000`
     this.context.moveTo(s * Math.cos(this.angle), s * Math.sin(this.angle))
     this.context.lineTo(
       (s + d) * Math.cos(this.angle),
@@ -113,11 +113,11 @@ class TrajectorySprite extends Sprite {
     this.dx = speed * Math.cos(angle)
     this.dy = speed * Math.sin(angle)
     this.ddy = GRAVITY
-    this.opacity = 0.4
+    this.opacity = 0.7
   }
 
   draw() {
-    const size = 6
+    const size = 40
     this.context.beginPath()
     this.context.fillStyle = `rgba(255,255,255,${this.opacity})`
     this.context.arc(0, 0, size / 2, 0, Math.PI * 2)
