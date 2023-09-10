@@ -1,11 +1,12 @@
 import { Enemies } from '../entities/enemies'
-import { GROUND_Y, Player } from '../entities/player'
+import { Player } from '../entities/player'
 import { Minimap } from '../entities/minimap'
 import { Bullets } from '../entities/bullets'
 import { checkCollisions } from '../utils'
 import { Particles } from '../entities/particles'
-import { emit, on, Sprite, Text } from 'kontra'
+import { emit, on, Text } from 'kontra'
 import { LEVELS } from './map'
+import { Background } from '../entities/bg'
 
 export const RoadScene = ({ canvas, data, onNext, onWin, onLose }) => {
   const timers = {}
@@ -25,6 +26,7 @@ export const RoadScene = ({ canvas, data, onNext, onWin, onLose }) => {
   let bullets = Bullets({ particles })
   let enemies = Enemies({ canvas, level, particles, bullets })
   let player = Player({ canvas, data, bullets, particles, enemies })
+  const background = Background({ canvas, getSpeed: () => player.sprite.speed })
   let map = new Minimap({
     canvas,
     maxProgress: level.totalLength,
@@ -52,24 +54,6 @@ export const RoadScene = ({ canvas, data, onNext, onWin, onLose }) => {
     e.takeDamage(b.damage, true)
   }
 
-  const groundLine = Sprite({
-    x: 0,
-    y: GROUND_Y - 130,
-    width: canvas.width,
-    height: 1,
-    color: '#444',
-    anchor: { x: 0, y: 0 },
-  })
-
-  const speedLine = Sprite({
-    x: 0,
-    y: 0,
-    width: 1,
-    height: GROUND_Y - 130,
-    color: '#444',
-    anchor: { x: 0, y: 0 },
-  })
-
   return {
     shutdown() {
       enemies.pool.clear()
@@ -79,9 +63,8 @@ export const RoadScene = ({ canvas, data, onNext, onWin, onLose }) => {
     update() {
       player.update()
       map.update()
-      speedLine.update()
-      speedLine.dx = player.sprite.speed * -1
-      if (speedLine.x < 0) speedLine.x = canvas.width
+      background.update()
+
       enemies.update(player)
       enemies.pool.update()
       bullets.pool.update()
@@ -103,8 +86,7 @@ export const RoadScene = ({ canvas, data, onNext, onWin, onLose }) => {
       )
     },
     render() {
-      speedLine.render()
-      groundLine.render()
+      background.render()
       player.sprite.render()
       map.render()
       enemies.pool.render()

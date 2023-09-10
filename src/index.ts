@@ -95,7 +95,7 @@ const startMenu = () => {
   })
 }
 
-const startWin = (finalMoney) => {
+const startWin = (finalMoney = 0) => {
   scene && scene.shutdown()
   scene = MenuScene({
     canvas,
@@ -120,6 +120,9 @@ const startLose = () => {
 startMenu()
 // startRoad()
 // startShop()
+// startMap()
+// startWin()
+// startLose()
 
 GameLoop({
   update: (...rest) => scene && scene.update(...rest),

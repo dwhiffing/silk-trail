@@ -18,8 +18,22 @@ const MAX_HP = 5
 const MAX_WEIGHT = 20
 
 export const ITEM_TYPES = {
-  stone: { size: 64, damage: 10, weight: 0.8, value: 1, color: '#fff' },
-  box: { size: 64, damage: 10, weight: 1.2, value: 1, color: '#ff0' },
+  stone: {
+    size: 64,
+    health: 10,
+    damage: 10,
+    weight: 0.8,
+    value: 1,
+    color: '#fff',
+  },
+  box: {
+    size: 64,
+    health: 10,
+    damage: 10,
+    weight: 1.2,
+    value: 1,
+    color: '#ff0',
+  },
 }
 
 export const Player = ({ canvas, data, bullets, particles, enemies }) => {

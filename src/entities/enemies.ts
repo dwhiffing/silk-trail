@@ -126,7 +126,7 @@ class Enemy extends CamelRiderSprite {
       exhaust: true,
       explodes: true,
       maxSpeed: 4.2,
-      speed: 10,
+      speed: 5,
       health: 10,
       damage: 10,
       separateAmount: 30,

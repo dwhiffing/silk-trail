@@ -44,6 +44,7 @@ export class Sprite extends SpriteClass {
   }
 
   drawDebug() {
+    // return
     this.context.strokeStyle = '#0f0'
     this.context.lineWidth = 1
     this.context.beginPath()

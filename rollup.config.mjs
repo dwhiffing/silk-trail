@@ -18,7 +18,7 @@ export default {
   },
   plugins: [
     kontra({
-      gameObject: { acceleration: true, velocity: true, anchor: true, ttl: true },
+      gameObject: { acceleration: true, velocity: true, scale: true, anchor: true, ttl: true },
       sprite: { animation: false },
       text: { textAlign: true, newline: true },
       vector: {
