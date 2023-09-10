@@ -67,8 +67,14 @@ class Bullet extends Sprite {
     this.context.beginPath()
     // this.context.rotate(this.angle)
     this.context.fillStyle = this.color
-    this.context.rect(0, 0, this.width, this.width)
+    // this.context.rect(0, 0, this.width, this.width)
     // this.context.rotate(0)
-    this.context.fill()
+    // this.context.fill()
+    var path = new Path2D(
+      'M1 5.74725L4.27273 10.4945L6.27273 8.0467V17.2198L7.18182 19L8.03409 17.2198V8.0467L9.90909 10.4945L13 5.74725L9.90909 1L8.03409 3.71978L7.18182 2.38462L6.27273 3.71978L4.27273 1L1 5.74725Z',
+    )
+    this.context.scale(4.5, 4.5)
+    this.context.stroke(path)
+    this.context.fill(path)
   }
 }
