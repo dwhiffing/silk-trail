@@ -1,7 +1,7 @@
 import { init, initPointer, initKeys, GameLoop } from 'kontra'
 import { LEVELS } from './scenes/map'
 // import MUSIC from './music'
-import { ShopScene, RoadScene, MapScene, MenuScene } from './scenes'
+import { ShopScene, RoadScene, MenuScene, MapScene } from './scenes'
 import './zzfx'
 
 const { canvas } = init()
@@ -46,10 +46,11 @@ const startHelp = () => {
     data,
     heading: 'How to play',
     texts: [
-      'Your greatest foe has sent an army to\ndestroy your homeworld for resources.\n\nYou are one of the few survivors,\nProtect it at all costs!',
-      'Mouse controls your ship.\n\nClick to drop mines or hold to charge energy.\n\nRelease while moving to fire blasts\nor while still for a burst',
-      "You can only place a few mines at once to start\n\nMines won't explode if you are too close\n\nMines must be placed at least a few feet apart",
-      'Red enemies home in and explode\n\nGreen enemies shield themselves and nearby foes from mines, but not energy\n\nYellow enemies absorb blasts, but not mines and bursts',
+      'Help',
+      // 'Your greatest foe has sent an army to\ndestroy your homeworld for resources.\n\nYou are one of the few survivors,\nProtect it at all costs!',
+      // 'Mouse controls your ship.\n\nClick to drop mines or hold to charge energy.\n\nRelease while moving to fire blasts\nor while still for a burst',
+      // "You can only place a few mines at once to start\n\nMines won't explode if you are too close\n\nMines must be placed at least a few feet apart",
+      // 'Red enemies home in and explode\n\nGreen enemies shield themselves and nearby foes from mines, but not energy\n\nYellow enemies absorb blasts, but not mines and bursts',
     ],
     button1: startShop,
   })
@@ -101,7 +102,7 @@ const startWin = (finalMoney = 0) => {
     canvas,
     data,
     heading: 'Congratulations',
-    description: `You cleaned out the Silk Road!\nYour final cash total was: $${finalMoney}`,
+    description: `$${finalMoney}`,
     button1: startMenu,
   })
 }
@@ -112,7 +113,7 @@ const startLose = () => {
     canvas,
     data,
     heading: 'Game Over',
-    description: 'You died and sealed the fate of the Silk Road.',
+    description: '',
     button1: startMenu,
   })
 }

@@ -1,12 +1,15 @@
 import { Text, Sprite, track } from 'kontra'
+import { Background } from '../entities/bg'
 import { ITEM_TYPES } from '../entities/player'
 import { playSound } from '../utils'
 
-const yt = 40
-const xt = 10
+const yt = 70
+const yt2 = 20
+const xt = 50
 
 export const ShopScene = ({ canvas, data, onNext }) => {
   const { width, height } = canvas
+  const background = Background({ canvas, getSpeed: () => 0.1 })
   let shopItems = [
     'stone',
     'stone',
@@ -22,10 +25,21 @@ export const ShopScene = ({ canvas, data, onNext }) => {
   const sw = width / 2 - xt * 1.5
   const sh = height - yt * 2
   const x2 = width / 2 + xt / 2
-  const bg = Sprite({ x: 0, y: 0, width, height, color: '#555' })
-  const bg2 = Sprite({ x: xt, y: yt, width: sw, height: sh, color: '#333' })
-  const bg3 = Sprite({ x: x2, y: yt, width: sw, height: sh, color: '#333' })
-  const buttons: any[] = [bg, bg2, bg3]
+  const bg2 = Sprite({
+    x: xt,
+    y: yt,
+    width: sw,
+    height: sh,
+    color: '#000000aa',
+  })
+  const bg3 = Sprite({
+    x: x2,
+    y: yt,
+    width: sw,
+    height: sh,
+    color: '#000000aa',
+  })
+  const buttons: any[] = [bg2, bg3]
   const shopItemLabels: any[] = []
   const playerItemLabels: any[] = []
   let selectedItemId = ''
@@ -59,9 +73,9 @@ export const ShopScene = ({ canvas, data, onNext }) => {
   }
 
   const renderShopItem = (i, side) => {
-    const startX = side === 0 ? 0 : width / 2 - 5
-    const _x = startX + xt + 5
-    const _y = yt + 5 + 25 * i
+    const startX = side === 0 ? 0 : width / 2 - xt / 2
+    const _x = startX + xt + xt / 2
+    const _y = yt + xt / 2 + 32 * i
     const id = `${side === 0 ? 'player' : 'shop'}:${i}`
     const onDown = () => {
       selectedItemId = id
@@ -80,7 +94,7 @@ export const ShopScene = ({ canvas, data, onNext }) => {
       y: _y,
       text: '',
       color: `rgba(255,255,255,1)`,
-      font: '16px sans-serif',
+      font: '24px sans-serif',
       anchor: { x: 0, y: 0 },
       onDown,
       isLabel: true,
@@ -106,35 +120,13 @@ export const ShopScene = ({ canvas, data, onNext }) => {
   new Array(5).fill('').forEach((_, i) => renderShopItem(i, 0))
   new Array(5).fill('').forEach((_, i) => renderShopItem(i, 1))
 
-  const gold = Text({
-    x: width / 2,
-    y: height - xt,
-    text: `Gold: ${data.gold}`,
-    color: 'white',
-    font: '16px sans-serif',
-    anchor: { x: 0.5, y: 1 },
-  })
-  buttons.push(gold)
-
-  const buySell = Text({
-    x: width - xt,
-    y: height - xt,
-    text: 'Buy',
-    color: 'white',
-    font: '16px sans-serif',
-    anchor: { x: 1, y: 1 },
-    onDown: onBuySell,
-  })
-  buttons.push(buySell)
-  track(buySell)
-
   buttons.push(
     Text({
       x: width / 4,
-      y: xt,
+      y: yt2,
       text: 'Player',
       color: 'white',
-      font: '16px sans-serif',
+      font: '28px sans-serif',
       anchor: { x: 0.5, y: 0 },
     }),
   )
@@ -142,20 +134,42 @@ export const ShopScene = ({ canvas, data, onNext }) => {
   buttons.push(
     Text({
       x: width / 2 + width / 4 - 5,
-      y: xt,
+      y: yt2,
       text: 'Shop',
       color: 'white',
-      font: '16px sans-serif',
+      font: '28px sans-serif',
       anchor: { x: 0.5, y: 0 },
     }),
   )
 
+  const gold = Text({
+    x: width / 2,
+    y: height - yt2,
+    text: `Gold: ${data.gold}`,
+    color: 'white',
+    font: '28px sans-serif',
+    anchor: { x: 0.5, y: 1 },
+  })
+  buttons.push(gold)
+
+  const buySell = Text({
+    x: width - xt,
+    y: height - yt2,
+    text: 'Buy',
+    color: 'white',
+    font: '28px sans-serif',
+    anchor: { x: 1, y: 1 },
+    onDown: onBuySell,
+  })
+  buttons.push(buySell)
+  track(buySell)
+
   const start = Text({
     x: xt,
-    y: height - xt,
+    y: height - yt2,
     text: 'Next',
     color: 'white',
-    font: '16px sans-serif',
+    font: '28px sans-serif',
     anchor: { x: 0, y: 1 },
     onDown: onClickNext,
   })
@@ -165,8 +179,11 @@ export const ShopScene = ({ canvas, data, onNext }) => {
   updateShop()
   return {
     shutdown() {},
-    update() {},
+    update() {
+      background.update()
+    },
     render() {
+      background.render()
       buttons.forEach((b) => b.render())
       playerItemLabels.forEach((b) => b.render())
       shopItemLabels.forEach((b) => b.render())
