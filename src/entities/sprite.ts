@@ -1,4 +1,6 @@
+import { lerp } from 'kontra'
 import { SpriteClass } from 'kontra'
+import { GROUND_Y } from '../constants'
 
 export class Sprite extends SpriteClass {
   health: number
@@ -43,6 +45,16 @@ export class Sprite extends SpriteClass {
     this.context.translate(-x, -y)
   }
 
+  drawShadow() {
+    this.context.lineWidth = 1
+    this.context.beginPath()
+    const y = -this.y + this.height * 0.5
+    const s = lerp(this.width / 2, 5, (y + GROUND_Y) / 300)
+    this.context.fillStyle = `rgba(0,0,0,${lerp(0.4, 0, (y + GROUND_Y) / 300)})`
+    this.context.ellipse(this.width / 2, y + GROUND_Y, s, 3, 0, 0, Math.PI * 2)
+    this.context.closePath()
+    this.context.fill()
+  }
   drawDebug() {
     // return
     this.context.strokeStyle = '#0f0'

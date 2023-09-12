@@ -69,7 +69,7 @@ export class Bullet extends Sprite {
       this.particles?.spawn({
         x: this.x,
         y: this.y,
-        size: this.width,
+        size: this.width / 3,
         ttl: 30,
       })
       this.dx = 0
@@ -113,5 +113,6 @@ export class Bullet extends Sprite {
     this.context.rotate(this._frame / 5)
     this.context.translate(-s, -s)
     this.drawDebug()
+    this.drawShadow()
   }
 }
