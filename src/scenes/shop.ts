@@ -62,43 +62,30 @@ export const ShopScene = ({ canvas, data, onNext }) => {
   }
 
   const renderShopItem = (i, side) => {
-    const startX = side === 0 ? 0 : width / 2 - xt / 2
-    const _x = startX + xt + xt / 2
-    const _y = yt + xt / 2 + 32 * i
-    const id = `${side === 0 ? 'player' : 'shop'}:${i}`
-    const onDown = () => {
-      selectedItemId = id
+    const item = new ShopItem(canvas, side, i, () => {
+      const allItems = [...playerItemLabels, ...shopItemLabels]
+      allItems.find((l) => l.id === selectedItemId)?.toggleSelect()
+      selectedItemId = item.id
       playerItemLabels.forEach((i) => (i.color = 'white'))
       shopItemLabels.forEach((i) => (i.color = 'white'))
       buySell.text = side === 0 ? 'Sell' : 'Buy'
 
       // check if can afford and disable buy button
-      label.color = 'yellow'
+      item.toggleSelect()
       playSound('click')
       updateShop()
-    }
-
-    const label = Text({
-      x: _x,
-      y: _y,
-      text: '',
-      color: `rgba(255,255,255,1)`,
-      font: '24px sans-serif',
-      anchor: { x: 0, y: 0 },
-      onDown,
-      isLabel: true,
     })
-    track(label)
-    if (side === 0) playerItemLabels.push(label)
-    if (side === 1) shopItemLabels.push(label)
+
+    if (side === 0) playerItemLabels.push(item)
+    if (side === 1) shopItemLabels.push(item)
   }
 
   const updateShop = () => {
     const side = selectedItemId.split(':')[0]
-    playerItemLabels.forEach((t) => (t.text = ''))
-    shopItemLabels.forEach((t) => (t.text = ''))
-    data.items.slice(0, 5).forEach((l, i) => (playerItemLabels[i].text = l))
-    shopItems.slice(0, 5).forEach((l, i) => (shopItemLabels[i].text = l))
+    data.items
+      .filter((i) => i !== 'empty')
+      .forEach((l, i) => playerItemLabels[i].setItem(l))
+    shopItems.forEach((l, i) => shopItemLabels[i].setItem(l))
     gold.text = `Gold: ${data.gold}`
     const item = getSelected()
     buySell.color = `rgba(255,255,255,${
@@ -108,6 +95,27 @@ export const ShopScene = ({ canvas, data, onNext }) => {
 
   new Array(5).fill('').forEach((_, i) => renderShopItem(i, 0))
   new Array(5).fill('').forEach((_, i) => renderShopItem(i, 1))
+
+  buttons.push(
+    Text({
+      x: xt + xt / 2,
+      y: yt2 + 58,
+      text: 'Name                     Weight      Damage      Value',
+      color: 'white',
+      font: 'bold 22px sans-serif',
+      anchor: { x: 0, y: 0 },
+    }),
+  )
+  buttons.push(
+    Text({
+      x: width / 2 - xt / 2 + xt + xt / 2,
+      y: yt2 + 58,
+      text: 'Name                     Weight      Damage      Value',
+      color: 'white',
+      font: 'bold 22px sans-serif',
+      anchor: { x: 0, y: 0 },
+    }),
+  )
 
   buttons.push(
     Text({
@@ -188,5 +196,101 @@ export const ShopScene = ({ canvas, data, onNext }) => {
       playerItemLabels.forEach((b) => b.render())
       shopItemLabels.forEach((b) => b.render())
     },
+  }
+}
+
+class ShopItem {
+  nameLabel: Text
+  clickLabel: Text
+  weightLabel: Text
+  damageLabel: Text
+  valueLabel: Text
+  id: string
+  constructor(canvas, side, index, onDown) {
+    const { width, height } = canvas
+
+    const startX = side === 0 ? 0 : width / 2 - xt / 2
+    const _x = startX + xt + xt / 2
+    const _y = yt + xt / 2 + 32 * index + 15
+    this.id = `${side === 0 ? 'player' : 'shop'}:${index}`
+    const color = 'white'
+    const text = ''
+    const font = '24px sans-serif'
+    const anchor = { x: 0.5, y: 0 }
+
+    this.clickLabel = Text({
+      x: _x,
+      y: _y,
+      text: '',
+      width: 500,
+      color,
+      font,
+      anchor: { x: 0, y: 0 },
+      onDown,
+    })
+
+    this.nameLabel = Text({
+      x: _x,
+      y: _y,
+      text,
+      color,
+      font,
+      anchor: { x: 0, y: 0 },
+    })
+
+    this.weightLabel = Text({
+      x: _x + 225,
+      y: _y,
+      text,
+      color,
+      font,
+      anchor,
+    })
+
+    this.damageLabel = Text({
+      x: _x + 340,
+      y: _y,
+      text,
+      color,
+      font,
+      anchor,
+    })
+
+    this.valueLabel = Text({
+      x: _x + 450,
+      y: _y,
+      text,
+      color,
+      font,
+      anchor,
+    })
+    track(this.clickLabel)
+  }
+
+  setItem(i: any) {
+    const item = ITEM_TYPES[i]
+    if (!item) return
+    this.nameLabel.text = item.name
+    this.weightLabel.text = item.weight
+    this.valueLabel.text = item.value
+    this.damageLabel.text = item.damage
+  }
+
+  toggleSelect() {
+    const isSelected = this.nameLabel.color === '#ff0'
+    this.nameLabel.color = isSelected ? '#fff' : '#ff0'
+    this.weightLabel.color = isSelected ? '#fff' : '#ff0'
+    this.valueLabel.color = isSelected ? '#fff' : '#ff0'
+    this.damageLabel.color = isSelected ? '#fff' : '#ff0'
+  }
+
+  update(dt?: number) {}
+
+  render() {
+    this.nameLabel.render()
+    this.clickLabel.render()
+    this.weightLabel.render()
+    this.damageLabel.render()
+    this.valueLabel.render()
   }
 }

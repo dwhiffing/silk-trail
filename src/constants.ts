@@ -1,16 +1,13 @@
 export const STARTING_ITEMS = [
   'empty',
-  'bag',
-  'gem',
   'ingot',
-  'axe',
   'ingot',
-  'axe',
-  'gem',
+  'ingot',
+  'ingot',
+  'ingot',
 ]
 export const STARTING_DATA = { levelIndex: 0, gold: 100, items: STARTING_ITEMS }
 export const GRAVITY = 0.175
-
 export const GROUND_Y = 455
 export const MIN_SPEED = 3
 export const MAX_SPEED = 8
@@ -26,7 +23,13 @@ export const MAX_WEIGHT = 20
 export const ENEMY_BUFFER = 240
 export const PLAYER_BUFFER = 300
 export const ATTACK_RANGE = 900
-const ITEMS = [['axe'], ['ingot'], ['gem'], ['ingot', 'axe'], ['ingot', 'axe']]
+const ITEMS = [
+  ['axe', 'axe', 'axe'],
+  ['ingot', 'ingot', 'ingot'],
+  ['gem', 'gem', 'gem'],
+  ['ingot', 'axe'],
+  ['ingot', 'axe'],
+]
 
 const iToType = (t) => ({
   size: t[0],
@@ -36,6 +39,7 @@ const iToType = (t) => ({
   weight: t[4],
   value: t[5],
   color: t[6],
+  name: t[7],
 })
 const iToWave = (l) => ({ count: l[0], progress: l[1] })
 const iToLevel = (l) => ({
@@ -48,11 +52,11 @@ const iToLevel = (l) => ({
 })
 
 export const ITEM_TYPES = {
-  empty: iToType([0, 0, 0, 0, 0, 0, '#000']),
-  bag: iToType([32, 32, 10, 1, 0.8, 1, '#ff0']),
-  gem: iToType([32, 32, 10, 1, 0.8, 100, '#fff']),
-  ingot: iToType([32, 64, 10, 5, 1.3, 10, '#fff']),
-  axe: iToType([36, 64, 10, 10, 1, 10, '#ff0']),
+  empty: iToType([0, 0, 0, 0, 0, 0, '#000', 'empty']),
+  bag: iToType([32, 32, 10, 1, 0.8, 1, '#ff0', 'bag']),
+  gem: iToType([32, 32, 10, 1, 0.8, 100, '#fff', 'gem']),
+  ingot: iToType([32, 64, 10, 5, 1.3, 10, '#fff', 'ingot']),
+  axe: iToType([36, 64, 10, 10, 1, 10, '#ff0', 'axe']),
 }
 
 export const LEVELS = [
