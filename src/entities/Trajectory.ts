@@ -1,5 +1,5 @@
 import { emit, Pool } from 'kontra'
-import { GRAVITY } from './player'
+import { GRAVITY } from '../constants'
 import { Sprite } from './sprite'
 
 export class Trajectory {

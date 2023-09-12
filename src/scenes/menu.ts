@@ -1,64 +1,24 @@
 import { Background } from '../entities/bg'
 import { Text, track } from 'kontra'
 
-export const MenuScene = ({
-  canvas,
-  data,
-  heading,
-  description,
-  texts,
-  button1,
-  button2,
-}: any) => {
+export const MenuScene = ({ canvas, heading, description, button1 }: any) => {
   const width = canvas.width
   const height = canvas.height
   const background = Background({ canvas, getSpeed: () => 3 })
   let i = 0
-  let text = Text({
-    text: heading,
-    textAlign: 'center',
-    font: '64px sans-serif',
-    color: '#eee',
-    x: width / 2,
-    y: height / 2 - 180 - (heading === 'How to play' ? 60 : 0),
-  })
-  let text2 = Text({
-    text: description || texts[0],
-    font: '28px sans-serif',
-    textAlign: 'center',
-    lineHeight: 1,
-    color: '#ddd',
-    x: width / 2,
-    y: height / 2 - 100 - (heading === 'How to play' ? 60 : 0),
-  })
-  let helpButton
-  if (button2) {
-    helpButton = Text({
-      x: width / 2,
-      y: height / 2 + 130,
-      text: 'Help',
-      color: '#aaa',
-      font: '52px sans-serif',
-      anchor: { x: 0.5, y: 0.5 },
-      onDown: button2,
-    })
-    track(helpButton)
-  }
+  const x = width / 2
+  const y = height / 2
+  let text = getText(x, y - 175, heading, 64, '#eee', 'center')
+  const _description = description
+  let text2 = getText(x, y - 100, _description, 28, '#ddd', 'center')
   let button = Text({
-    x: width / 2,
-    y: height / 2 + 190,
-    text: texts ? 'Next' : 'Start',
-    color: '#aaa',
+    x,
+    y: y + 170,
+    text: 'Start',
+    color: '#fff',
     font: '52px sans-serif',
     anchor: { x: 0.5, y: 0.5 },
-    onDown: () => {
-      if (texts && i < texts.length - 1) {
-        text2.text = texts[++i]
-        if (i === texts.length - 1) button.text = 'Start'
-      } else {
-        button1()
-      }
-    },
+    onDown: () => button1(),
   })
 
   track(button)
@@ -73,7 +33,23 @@ export const MenuScene = ({
       text.render()
       text2.render()
       button.render()
-      helpButton?.render()
     },
   }
 }
+
+const getText = (
+  x: number,
+  y: number,
+  text: string,
+  size: number,
+  color: string,
+  textAlign = 'left',
+) =>
+  Text({
+    x,
+    y,
+    text,
+    color,
+    font: `${size}px sans-serif`,
+    textAlign,
+  })

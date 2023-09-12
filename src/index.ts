@@ -21,10 +21,15 @@ initPointer()
 initKeys()
 let scene
 let data = STARTING_DATA
-// //@ts-ignore
-// let musicNode = zzfxP(...zzfxM(...MUSIC))
-// //@ts-ignore
-// musicNode.loop = true
+// let music
+// onPointer('down', () => {
+//   if (!music) {
+//     //@ts-ignore
+//     music = zzfxP(...zzfxM(...MUSIC))
+//     //@ts-ignore
+//     music.loop = true
+//   }
+// })
 
 // let a = document.getElementsByTagName('a')[0]
 // a.addEventListener('click', (e) => {
@@ -37,24 +42,6 @@ let data = STARTING_DATA
 // })
 // // TODO: remove me
 // a.click()
-
-const startHelp = () => {
-  scene && scene.shutdown()
-
-  scene = MenuScene({
-    canvas,
-    data,
-    heading: 'How to play',
-    texts: [
-      'Help',
-      // 'Your greatest foe has sent an army to\ndestroy your homeworld for resources.\n\nYou are one of the few survivors,\nProtect it at all costs!',
-      // 'Mouse controls your ship.\n\nClick to drop mines or hold to charge energy.\n\nRelease while moving to fire blasts\nor while still for a burst',
-      // "You can only place a few mines at once to start\n\nMines won't explode if you are too close\n\nMines must be placed at least a few feet apart",
-      // 'Red enemies home in and explode\n\nGreen enemies shield themselves and nearby foes from mines, but not energy\n\nYellow enemies absorb blasts, but not mines and bursts',
-    ],
-    button1: startShop,
-  })
-}
 
 const startShop = () => {
   scene && scene.shutdown()
@@ -92,7 +79,6 @@ const startMenu = () => {
     heading: 'Silk Road',
     description: `Created by Daniel Whiffing`,
     button1: startShop,
-    button2: startHelp,
   })
 }
 

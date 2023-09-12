@@ -1,13 +1,11 @@
 import { Pool } from 'kontra'
-import { GROUND_Y, ITEM_TYPES } from './player'
+import { GROUND_Y, ITEM_TYPES } from '../constants'
 import { Sprite } from './sprite'
-
-const MAX_BULLETS = 50
 
 export const Bullets = ({ particles }) => {
   let pool = Pool({
     create: () => new Bullet({ anchor: { x: 0.5, y: 0.5 } }),
-    maxSize: MAX_BULLETS,
+    maxSize: 10,
   })
   let activeItem: Bullet
 

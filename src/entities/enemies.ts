@@ -1,11 +1,7 @@
 import { emit, Pool, randInt } from 'kontra'
 import { requestTimeout } from '../utils'
-import { GRAVITY, GROUND_Y } from './player'
+import { ENEMY_BUFFER, GRAVITY, GROUND_Y, PLAYER_BUFFER } from '../constants'
 import { Sprite } from './sprite'
-
-const ENEMY_BUFFER = 240
-const PLAYER_BUFFER = 400
-const ATTACK_RANGE = 400
 
 export const Enemies = ({ canvas, level, particles, bullets }) => {
   let pool = Pool({ create: () => new Enemy(), maxSize: 10 })

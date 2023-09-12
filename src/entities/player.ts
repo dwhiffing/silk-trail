@@ -1,50 +1,18 @@
 import { emit, onKey, onPointer } from 'kontra'
 import { LEVELS } from '../scenes/map'
+import * as constants from '../constants'
 import { Sprite } from './sprite'
 import { Trajectory } from './Trajectory'
-
-export const GRAVITY = 0.175
-export const GROUND_Y = 455
-const MIN_SPEED = 3
-const MAX_SPEED = 8
-const MAX_WAGON_SPEED = 6
-const SIZE = 102
-const MIN_ANGLE = 3.2
-const MAX_ANGLE = 4
-const BASE_MOVEMENT_SPEED = 0.0001
-const BASE_SPEED_CHANGE = 0.12
-const BASE_ANGLE_CHANGE = 0.02
-const MAX_HP = 5
-const MAX_WEIGHT = 20
-
-export const ITEM_TYPES = {
-  stone: {
-    size: 64,
-    health: 10,
-    damage: 10,
-    weight: 0.8,
-    value: 1,
-    color: '#fff',
-  },
-  box: {
-    size: 64,
-    health: 10,
-    damage: 10,
-    weight: 1.2,
-    value: 1,
-    color: '#ff0',
-  },
-}
 
 export const Player = ({ canvas, data, bullets, particles, enemies }) => {
   let sprite = new PlayerSprite({
     x: canvas.width - 70,
-    y: GROUND_Y - SIZE / 3,
+    y: constants.GROUND_Y - constants.SIZE / 3,
     color: '#666',
-    width: SIZE,
-    height: SIZE,
-    health: MAX_HP,
-    maxHealth: MAX_HP,
+    width: constants.SIZE,
+    height: constants.SIZE,
+    health: constants.MAX_HP,
+    maxHealth: constants.MAX_HP,
   })
   let angle = 0
   let speed = 0
@@ -52,15 +20,15 @@ export const Player = ({ canvas, data, bullets, particles, enemies }) => {
   sprite.itemIndex = 0
   sprite.progress = 0
   sprite.data = data
-  const _x = () => sprite.x - SIZE * 0.5
-  const _y = () => sprite.y - SIZE * 1.5
+  const _x = () => sprite.x - constants.SIZE * 0.5
+  const _y = () => sprite.y - constants.SIZE * 1.5
   let updateTrajectory = (_angle, _speed) => {
     angle = _angle
     speed = _speed
     trajectory.angle = _angle
 
     const itemKey = data.items[sprite.itemIndex]
-    const item = ITEM_TYPES[itemKey]
+    const item = constants.ITEM_TYPES[itemKey]
     trajectory.speed = _speed * (1 / item.weight)
   }
   let trajectory = new Trajectory({
@@ -81,10 +49,15 @@ export const Player = ({ canvas, data, bullets, particles, enemies }) => {
   const onThrow = () => {
     if (data.items.length === 0) return
     if (trajectory.stage === 0) {
-      updateTrajectory(MIN_ANGLE, MIN_SPEED)
+      updateTrajectory(constants.MIN_ANGLE, constants.MIN_SPEED)
     } else if (trajectory.stage === 1) {
     } else if (trajectory.stage === 2) {
-      bullets.shoot(trajectory.speed, trajectory.speed, angle, GRAVITY)
+      bullets.shoot(
+        trajectory.speed,
+        trajectory.speed,
+        angle,
+        constants.GRAVITY,
+      )
       getItem()
     }
     trajectory.stage++
@@ -125,29 +98,29 @@ export const Player = ({ canvas, data, bullets, particles, enemies }) => {
     update() {
       sprite.update()
       trajectory.update()
-      sprite.progress += BASE_MOVEMENT_SPEED * sprite.speed
+      sprite.progress += constants.BASE_MOVEMENT_SPEED * sprite.speed
       if (sprite.progress >= LEVELS[data.levelIndex].totalLength)
         emit('level-end')
       const totalWeight = data.items
-        .map((k) => ITEM_TYPES[k].weight)
+        .map((k) => constants.ITEM_TYPES[k].weight)
         .reduce((sum, n) => sum + n, 0)
 
-      const ratio = 1 - totalWeight / MAX_WEIGHT
-      sprite.speed = MAX_WAGON_SPEED * ratio
+      const ratio = 1 - totalWeight / constants.MAX_WEIGHT
+      sprite.speed = constants.MAX_WAGON_SPEED * ratio
 
       if (trajectory.stage === 0) return
 
       if (trajectory.stage === 1) {
-        if (angle > MAX_ANGLE || angle < MIN_ANGLE) {
+        if (angle > constants.MAX_ANGLE || angle < constants.MIN_ANGLE) {
           direction = direction === -1 ? 1 : -1
         }
-        updateTrajectory(angle + direction * BASE_ANGLE_CHANGE, speed)
+        updateTrajectory(angle + direction * constants.BASE_ANGLE_CHANGE, speed)
       } else if (trajectory.stage === 2) {
-        if (speed > MAX_SPEED || speed < MIN_SPEED) {
+        if (speed > constants.MAX_SPEED || speed < constants.MIN_SPEED) {
           direction = direction === -1 ? 1 : -1
         }
 
-        updateTrajectory(angle, speed + direction * BASE_SPEED_CHANGE)
+        updateTrajectory(angle, speed + direction * constants.BASE_SPEED_CHANGE)
       }
     },
     shutdown() {},
@@ -175,7 +148,7 @@ class PlayerSprite extends Sprite {
   draw() {
     if (this.opacity === 0) return
 
-    const s = SIZE / 2
+    const s = constants.SIZE / 2
     this.context.translate(s, s * 2)
     this.context.translate(5, -20)
     this.context.rotate(this._frame / 10 + 0.5)

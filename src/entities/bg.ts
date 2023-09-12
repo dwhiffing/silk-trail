@@ -1,4 +1,4 @@
-import { GROUND_Y } from './player'
+import { GROUND_Y } from '../constants'
 import { Sprite } from './sprite'
 
 export const Background = ({ canvas, getSpeed }) => {

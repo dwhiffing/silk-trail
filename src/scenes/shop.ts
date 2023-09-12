@@ -1,6 +1,6 @@
 import { Text, Sprite, track } from 'kontra'
 import { Background } from '../entities/bg'
-import { ITEM_TYPES } from '../entities/player'
+import { ITEM_TYPES } from '../constants'
 import { playSound } from '../utils'
 
 const yt = 70
