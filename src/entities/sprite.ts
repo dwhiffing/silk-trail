@@ -1,4 +1,4 @@
-import { lerp } from 'kontra'
+import { emit, lerp } from 'kontra'
 import { SpriteClass } from 'kontra'
 import { GROUND_Y } from '../constants'
 
@@ -15,6 +15,11 @@ export class Sprite extends SpriteClass {
     if (this.health <= 0 || this.block) return
 
     if (n > 0) this.health -= n
+    let color = this.color
+    this.color = '#f00'
+    emit('delay', 'unhurt', 15, () => {
+      this.color = color
+    })
     if (this.health <= 0) this.die()
   }
 
