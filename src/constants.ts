@@ -1,4 +1,6 @@
 export const STARTING_ITEMS = [
+  'bag',
+  'gem',
   'axe',
   'ingot',
   'axe',
@@ -28,6 +30,24 @@ export const ENEMY_BUFFER = 240
 export const PLAYER_BUFFER = 400
 export const ATTACK_RANGE = 900
 export const ITEM_TYPES = {
+  bag: {
+    size: 32,
+    size2: 32,
+    health: 10,
+    damage: 10,
+    weight: 0.8,
+    value: 1,
+    color: '#ff0',
+  },
+  gem: {
+    size: 32,
+    size2: 32,
+    health: 10,
+    damage: 10,
+    weight: 0.8,
+    value: 1,
+    color: '#fff',
+  },
   ingot: {
     size: 20,
     size2: 64,

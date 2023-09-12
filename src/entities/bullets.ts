@@ -83,7 +83,42 @@ export class Bullet extends Sprite {
     const s = this.width / 2
     this.context.translate(s, s)
     this.context.rotate(-(this._frame / 5))
-    if (this.type === 'ingot') {
+    if (this.type === 'bag') {
+      this.drawPath(
+        'M26 50L19 47L20 29L23 23L29 19H38L44 23L46 29L47 47L42 50L34 51L26 50Z',
+        '#000',
+        this.color,
+        0,
+        s * -2,
+        s * -2,
+      )
+      this.drawPath(
+        'M38 15H29L26 9H40L38 15Z',
+        '#000',
+        this.color,
+        0,
+        s * -2,
+        s * -2,
+      )
+      this.drawPath('M28 17H38.5', 'transparent', 'red', 0, s * 0.5, s * 0.5)
+    } else if (this.type === 'gem') {
+      this.drawPath(
+        'M32 8L53 20L53 44L32 56L11 44V20L20 25L11 20L32 8Z',
+        'transparent',
+        this.color,
+        0,
+        -(s * 2),
+        -(s * 2),
+      )
+      this.drawPath(
+        'M11 20L32 8M11 20V44M11 20L20 25M32 8L53 20M32 8V18M53 20V44M53 20L44 25M53 44L32 56M53 44L44 39M32 56L11 44M32 56V46M11 44L20 39M20 25V39M20 25L32 18M20 39L32 46M32 46L44 39M44 39V25M44 25L32 18',
+        '#000',
+        'transparent',
+        0,
+        -(s * 2),
+        -(s * 2),
+      )
+    } else if (this.type === 'ingot') {
       this.drawPath(
         'M1 20L3.5 10.5L17 0.5H25.5L28.5 9L17 20H1Z',
         'transparent',
