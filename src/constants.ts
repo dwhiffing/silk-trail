@@ -67,6 +67,7 @@ export const ITEM_TYPES = {
   gem: iToType([32, 32, 10, 1, 0.8, 100, '#fff', 'gem']),
   ingot: iToType([32, 64, 10, 5, 1.3, 10, '#fff', 'ingot']),
   axe: iToType([36, 64, 10, 10, 1, 10, '#ff0', 'axe']),
+  rock: iToType([20, 20, 10, 10, 0.7, 10, '#666', 'rock']),
 }
 
 export const LEVELS = [
