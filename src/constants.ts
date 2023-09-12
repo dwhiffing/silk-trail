@@ -23,12 +23,21 @@ export const MAX_WEIGHT = 20
 export const ENEMY_BUFFER = 240
 export const PLAYER_BUFFER = 300
 export const ATTACK_RANGE = 900
-const ITEMS = [
+const SHOP_ITEMS = [
+  ['axe', 'axe', 'axe', 'gem', 'ingot'],
   ['axe', 'axe', 'axe'],
   ['ingot', 'ingot', 'ingot'],
   ['gem', 'gem', 'gem'],
   ['ingot', 'axe'],
   ['ingot', 'axe'],
+]
+
+const MARKETS = [
+  { ingot: 0.1, gem: 1.3 },
+  { ingot: 0.1, gem: 1.3 },
+  { ingot: 0.1, gem: 1.3 },
+  { ingot: 0.1, gem: 1.3 },
+  { ingot: 0.1, gem: 1.3 },
 ]
 
 const iToType = (t) => ({
@@ -49,6 +58,7 @@ const iToLevel = (l) => ({
   totalLength: l[3],
   waves: l[4],
   items: l[5],
+  market: l[6],
 })
 
 export const ITEM_TYPES = {
@@ -66,7 +76,8 @@ export const LEVELS = [
     'ISKENDERUN',
     0.75,
     [iToWave([1, 0.25]), iToWave([1, 0.5])],
-    [],
+    SHOP_ITEMS[0],
+    MARKETS[0],
   ]),
   iToLevel([
     245,
@@ -74,7 +85,8 @@ export const LEVELS = [
     'BAGHDAD',
     1,
     [iToWave([1, 0.1]), iToWave([2, 0.5])],
-    ITEMS[0],
+    SHOP_ITEMS[0],
+    MARKETS[0],
   ]),
   iToLevel([
     412,
@@ -82,7 +94,8 @@ export const LEVELS = [
     'TEHRAN',
     1.25,
     [iToWave([2, 0.1]), iToWave([2, 0.33]), iToWave([2, 0.5])],
-    ITEMS[1],
+    SHOP_ITEMS[1],
+    MARKETS[1],
   ]),
   iToLevel([
     645,
@@ -90,7 +103,8 @@ export const LEVELS = [
     'MASHHAD',
     1.5,
     [iToWave([2, 0.1]), iToWave([3, 0.33]), iToWave([3, 0.5])],
-    ITEMS[2],
+    SHOP_ITEMS[2],
+    MARKETS[2],
   ]),
   iToLevel([
     908,
@@ -98,7 +112,8 @@ export const LEVELS = [
     'KABEL',
     1.75,
     [iToWave([3, 0.1]), iToWave([4, 0.33]), iToWave([4, 0.5])],
-    ITEMS[3],
+    SHOP_ITEMS[3],
+    MARKETS[3],
   ]),
-  iToLevel([1080, 195, 'KASHI', 1.75, [], ITEMS[4]]),
+  iToLevel([1080, 195, 'KASHI', 1.75, [], SHOP_ITEMS[4], MARKETS[4]]),
 ]

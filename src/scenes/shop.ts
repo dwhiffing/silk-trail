@@ -11,6 +11,7 @@ export const ShopScene = ({ canvas, data, onNext }) => {
   const { width, height } = canvas
   const background = Background({ canvas, getSpeed: () => 0.1 })
   let shopItems = LEVELS[data.levelIndex].items
+  let market = LEVELS[data.levelIndex].market
   const sw = width / 2 - xt * 1.5
   const sh = height - yt * 2
   const x2 = width / 2 + xt / 2
@@ -84,8 +85,8 @@ export const ShopScene = ({ canvas, data, onNext }) => {
     const side = selectedItemId.split(':')[0]
     data.items
       .filter((i) => i !== 'empty')
-      .forEach((l, i) => playerItemLabels[i].setItem(l))
-    shopItems.forEach((l, i) => shopItemLabels[i].setItem(l))
+      .forEach((l, i) => playerItemLabels[i].setItem(l, market))
+    shopItems.forEach((l, i) => shopItemLabels[i].setItem(l, market))
     gold.text = `Gold: ${data.gold}`
     const item = getSelected()
     buySell.color = `rgba(255,255,255,${
@@ -93,8 +94,8 @@ export const ShopScene = ({ canvas, data, onNext }) => {
     })`
   }
 
-  new Array(5).fill('').forEach((_, i) => renderShopItem(i, 0))
-  new Array(5).fill('').forEach((_, i) => renderShopItem(i, 1))
+  new Array(10).fill('').forEach((_, i) => renderShopItem(i, 0))
+  new Array(10).fill('').forEach((_, i) => renderShopItem(i, 1))
 
   buttons.push(
     Text({
@@ -267,21 +268,28 @@ class ShopItem {
     track(this.clickLabel)
   }
 
-  setItem(i: any) {
+  setItem(i: any, market: any) {
     const item = ITEM_TYPES[i]
     if (!item) return
+    const _v = market[item.name] ?? 1
     this.nameLabel.text = item.name
     this.weightLabel.text = item.weight
-    this.valueLabel.text = item.value
+    this.valueLabel.text = `${item.value * _v}`
     this.damageLabel.text = item.damage
+    if (_v < 0.8) this.toggleColor('#f66')
+    if (_v > 1.2) this.toggleColor('#6f6')
   }
 
   toggleSelect() {
     const isSelected = this.nameLabel.color === '#ff0'
-    this.nameLabel.color = isSelected ? '#fff' : '#ff0'
-    this.weightLabel.color = isSelected ? '#fff' : '#ff0'
-    this.valueLabel.color = isSelected ? '#fff' : '#ff0'
-    this.damageLabel.color = isSelected ? '#fff' : '#ff0'
+    this.toggleColor(isSelected ? '#fff' : '#ff0')
+  }
+
+  toggleColor(color: string) {
+    this.nameLabel.color = color
+    this.weightLabel.color = color
+    this.valueLabel.color = color
+    this.damageLabel.color = color
   }
 
   update(dt?: number) {}
