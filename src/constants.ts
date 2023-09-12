@@ -1,11 +1,4 @@
-export const STARTING_ITEMS = [
-  'empty',
-  'ingot',
-  'ingot',
-  'ingot',
-  'ingot',
-  'ingot',
-]
+export const STARTING_ITEMS = ['empty', 'rock']
 export const STARTING_DATA = { levelIndex: 0, gold: 100, items: STARTING_ITEMS }
 export const GRAVITY = 0.175
 export const GROUND_Y = 455
@@ -23,14 +16,8 @@ export const MAX_WEIGHT = 20
 export const ENEMY_BUFFER = 240
 export const PLAYER_BUFFER = 300
 export const ATTACK_RANGE = 900
-const SHOP_ITEMS = [
-  ['axe', 'axe', 'axe', 'gem', 'ingot'],
-  ['axe', 'axe', 'axe'],
-  ['ingot', 'ingot', 'ingot'],
-  ['gem', 'gem', 'gem'],
-  ['ingot', 'axe'],
-  ['ingot', 'axe'],
-]
+// express shop/player stock via index + multiplier
+const SHOP_ITEMS = [[], [], [], [], [], []]
 
 const MARKETS = [
   { ingot: 0.1, gem: 1.3 },
