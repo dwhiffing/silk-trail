@@ -4,7 +4,7 @@ import { Minimap } from '../entities/minimap'
 import { Bullets } from '../entities/bullets'
 import { checkCollisions } from '../utils'
 import { Particles } from '../entities/particles'
-import { emit, on, Text } from 'kontra'
+import { emit, off, on, Text } from 'kontra'
 import { LEVELS } from '../constants'
 import { Background } from '../entities/bg'
 
@@ -60,6 +60,10 @@ export const RoadScene = ({ canvas, data, onNext, onWin, onLose }) => {
 
   return {
     shutdown() {
+      off('delay', onDelay)
+      off('player-damaged', onPlayerDamaged)
+      off('player-dead', onLose)
+      off('level-end', onNext)
       enemies.pool.clear()
       bullets.pool.clear()
       player.shutdown()

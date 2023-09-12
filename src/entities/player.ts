@@ -1,4 +1,4 @@
-import { emit, on, onKey, onPointer } from 'kontra'
+import { emit, off, on, onKey, onPointer } from 'kontra'
 import * as constants from '../constants'
 import { BODY_PATH, FACE_PATH } from './enemies'
 import { Sprite } from './sprite'
@@ -155,7 +155,9 @@ export const Player = ({ canvas, data, bullets, particles, enemies }) => {
         updateTrajectory(angle, speed + direction * constants.BASE_SPEED_CHANGE)
       }
     },
-    shutdown() {},
+    shutdown() {
+      off('player-catch-item', catchItem)
+    },
   }
 }
 
