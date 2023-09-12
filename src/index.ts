@@ -64,7 +64,7 @@ const startMenu = () => {
   scene = MenuScene({
     canvas,
     data,
-    heading: 'Silk Road',
+    heading: 'The Silk Trail',
     description: `Created by Daniel Whiffing`,
     button1: startMap,
   })
