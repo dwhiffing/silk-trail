@@ -9,9 +9,10 @@ export const MapScene = ({ canvas, data, onNext }) => {
 
   LEVELS.forEach((_, i) => {
     const o = width / LEVELS.length
+    const y = _.y - 40
     const dot = new Circle({
       x: _.x,
-      y: _.y,
+      y: y,
       size: 22,
       color:
         data.levelIndex === i
@@ -28,7 +29,7 @@ export const MapScene = ({ canvas, data, onNext }) => {
     const b = _.name.match(/ISK|TEH|MASH/)
     const text = Text({
       x: _.x,
-      y: _.y + (a ? -20 : 20),
+      y: y + (a ? -20 : 20),
       text: _.name,
       color: '#000',
       font: 'bold 28px sans-serif',
@@ -58,31 +59,15 @@ export const MapScene = ({ canvas, data, onNext }) => {
   path.levelIndex = data.levelIndex
 
   const sky = new Rect(0, 0, canvas.width, canvas.height, [
-    '#FFF893',
-    '#FFE078',
+    '#B68E72',
+    '#B68E72',
   ])
-
-  const lake = new Rect(
-    -10,
-    -10,
-    canvas.width,
-    canvas.height / 2,
-    ['#D9FEFF', '#9EDFF7'],
-    [
-      'M138 90L0 44V-10L138 -3L168 44L175 71L138 90Z',
-      'M536 52L489 47L486 28L493 -7L510 -10L541 -3L558 11L541 28L536 52Z',
-      'M283 144L276 181L307 201L334 210L373 204V129L354 122L360 56L343 45V-3L381 -21H276L269 5L272 45L307 108L283 144Z',
-      'M387.244 118.014L361.306 115.966L362.879 76.9976L378.987 74.6455L392.926 101.23L387.244 118.014Z',
-      // 'M799 68L797 65L812 55L829 52L834 59L818 70L799 68Z',
-    ],
-  )
 
   return {
     shutdown() {},
     update() {},
     render() {
       sky.render()
-      lake.render()
       path.render()
       dots.forEach((b) => b.render())
       start.render()

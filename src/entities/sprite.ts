@@ -61,22 +61,23 @@ export class Sprite extends SpriteClass {
     this.context.fill()
   }
   drawDebug() {
-    this.context.strokeStyle = '#0f0'
-    this.context.lineWidth = 1
-    this.context.beginPath()
-    let x = this.width * -this.anchor.x
-    let y = this.height * -this.anchor.y
-    this.context.rect(0, 0, this.width, this.height)
-    this.context.closePath()
-    this.context.stroke()
-    this.context.fillStyle = '#f00'
-    this.context.strokeStyle = '#fff'
-    this.context.lineWidth = 1
-    this.context.beginPath()
-    this.context.rect(-2.5 + x * -1, -2.5 + y * -1, 5, 5)
-    this.context.closePath()
-    this.context.stroke()
-    this.context.fill()
+    // return
+    // this.context.strokeStyle = '#0f0'
+    // this.context.lineWidth = 1
+    // this.context.beginPath()
+    // let x = this.width * -this.anchor.x
+    // let y = this.height * -this.anchor.y
+    // this.context.rect(0, 0, this.width, this.height)
+    // this.context.closePath()
+    // this.context.stroke()
+    // this.context.fillStyle = '#f00'
+    // this.context.strokeStyle = '#fff'
+    // this.context.lineWidth = 1
+    // this.context.beginPath()
+    // this.context.rect(-2.5 + x * -1, -2.5 + y * -1, 5, 5)
+    // this.context.closePath()
+    // this.context.stroke()
+    // this.context.fill()
   }
 
   update(dt?: number) {

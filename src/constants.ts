@@ -1,4 +1,5 @@
 export const STARTING_ITEMS = [
+  'empty',
   'bag',
   'gem',
   'ingot',
@@ -6,7 +7,6 @@ export const STARTING_ITEMS = [
   'ingot',
   'axe',
   'gem',
-  'empty',
 ]
 export const STARTING_DATA = { levelIndex: 0, gold: 100, items: STARTING_ITEMS }
 export const GRAVITY = 0.175
@@ -26,99 +26,36 @@ export const MAX_WEIGHT = 20
 export const ENEMY_BUFFER = 240
 export const PLAYER_BUFFER = 300
 export const ATTACK_RANGE = 900
+const iToType = (t) => ({
+  size: t[0],
+  size2: t[1],
+  health: t[2],
+  damage: t[3],
+  weight: t[4],
+  value: t[5],
+  color: t[6],
+})
+const iToLevel = (l) => ({
+  x: l[0],
+  y: l[1],
+  name: l[2],
+  totalLength: l[3] || 0.1,
+  waves: l[4] || [{ type: 'normal', count: 1, progress: 0 }],
+})
+
 export const ITEM_TYPES = {
-  empty: {
-    size: 0,
-    size2: 0,
-    health: 0,
-    damage: 0,
-    weight: 0,
-    value: 0,
-    color: '#000',
-  },
-  bag: {
-    size: 32,
-    size2: 32,
-    health: 10,
-    damage: 1,
-    weight: 0.8,
-    value: 1,
-    color: '#ff0',
-  },
-  gem: {
-    size: 32,
-    size2: 32,
-    health: 10,
-    damage: 1,
-    weight: 0.8,
-    value: 100,
-    color: '#fff',
-  },
-  ingot: {
-    size: 32,
-    size2: 64,
-    health: 10,
-    damage: 5,
-    weight: 1.3,
-    value: 10,
-    color: '#fff',
-  },
-  axe: {
-    size: 36,
-    size2: 64,
-    health: 10,
-    damage: 10,
-    weight: 1,
-    value: 1,
-    color: '#ff0',
-  },
+  empty: iToType([0, 0, 0, 0, 0, 0, '#000']),
+  bag: iToType([32, 32, 10, 1, 0.8, 1, '#ff0']),
+  gem: iToType([32, 32, 10, 1, 0.8, 100, '#fff']),
+  ingot: iToType([32, 64, 10, 5, 1.3, 10, '#fff']),
+  axe: iToType([36, 64, 10, 10, 1, 10, '#ff0']),
 }
 
 export const LEVELS = [
-  {
-    x: 50,
-    y: 260,
-    name: 'ISKENDERUN',
-    totalLength: 5,
-    waves: [{ type: 'normal', count: 1, progress: 0 }],
-  },
-  {
-    name: 'BAGHDAD',
-    x: 245,
-    y: 400,
-    totalLength: 0.5,
-    waves: [{ type: 'normal', count: 1, progress: 0.5 }],
-  },
-  {
-    name: 'TEHRAN',
-    x: 412,
-    y: 330,
-    totalLength: 1,
-    waves: [{ type: 'normal', count: 1, progress: 0.5 }],
-  },
-  {
-    name: 'MASHHAD',
-    x: 645,
-    y: 325,
-    totalLength: 1,
-    waves: [{ type: 'normal', count: 1, progress: 0.5 }],
-  },
-  {
-    name: 'KABEL',
-    x: 908,
-    y: 380,
-    totalLength: 1,
-    waves: [{ type: 'normal', count: 1, progress: 0.5 }],
-  },
-  {
-    name: 'KASHI',
-    x: 1080,
-    y: 195,
-    totalLength: 1,
-    waves: [
-      { type: 'normal', count: 3, progress: 0.25 },
-      { type: 'normal', count: 3, progress: 0.5 },
-      { type: 'normal', count: 3, progress: 0.75 },
-    ],
-  },
+  iToLevel([50, 260, 'ISKENDERUN']),
+  iToLevel([245, 400, 'BAGHDAD']),
+  iToLevel([412, 330, 'TEHRAN']),
+  iToLevel([645, 325, 'MASHHAD']),
+  iToLevel([908, 380, 'KABEL']),
+  iToLevel([1080, 195, 'KASHI']),
 ]
