@@ -39,8 +39,8 @@ const iToLevel = (l) => ({
   x: l[0],
   y: l[1],
   name: l[2],
-  totalLength: l[3] || 0.1,
-  waves: l[4] || [{ type: 'normal', count: 1, progress: 0 }],
+  totalLength: l[3] || 1,
+  waves: l[4] || [{ type: 'normal', count: 1, progress: 0.5 }],
 })
 
 export const ITEM_TYPES = {

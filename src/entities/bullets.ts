@@ -9,6 +9,7 @@ export const Bullets = ({ particles }) => {
   })
 
   const spawn = (x: number, y: number, itemKey: string) => {
+    if (!ITEM_TYPES[itemKey]) return
     const { health, size, size2, damage, color } = ITEM_TYPES[itemKey]
     return pool.get({
       x,

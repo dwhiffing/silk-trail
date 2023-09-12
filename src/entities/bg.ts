@@ -29,6 +29,7 @@ export const Background = ({ canvas, getSpeed }) => {
         mountain.x = canvas.width
         mountain.scaleX = Math.random() * 0.5 + 0.5
         mountain.scaleY = Math.random() * 0.5 + 0.2
+        mountain.y = GROUND_Y - 129 + 160 * (1 - mountain.scaleY)
       }
     },
     shutdown() {},
@@ -86,6 +87,7 @@ export class Mountain extends Sprite {
   draw() {
     if (this.opacity === 0) return
 
+    this.context.scale(this.scaleX, this.scaleY)
     this.drawPath('M106 1L1 154H209L106 1Z', 'transparent', '#B78F73', 1)
   }
 }
