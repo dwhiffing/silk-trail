@@ -101,21 +101,31 @@ export class Path extends Sprite {
     this.context.scale(1.35, 1.35)
     this.drawPath(
       'M48 199L91 221L98 232H109L116 244L149 251L171 291',
-      '#f00',
+      this.levelIndex === 0 ? '#f00' : this.levelIndex > 0 ? '#000' : '#0003',
       '',
       5,
     )
-    this.drawPath('M193 296L209 287L243 284L264 260L294 249', '#000', '', 5)
+    this.drawPath(
+      'M193 296L209 287L243 284L264 260L294 249',
+      this.levelIndex === 1 ? '#f00' : this.levelIndex > 1 ? '#000' : '#0003',
+      '',
+      5,
+    )
     this.drawPath(
       'M316 242L330 240L338 231H349L400 216H437L467 234',
-      '#000',
+      this.levelIndex === 2 ? '#f00' : this.levelIndex > 2 ? '#000' : '#0003',
       '',
       5,
     )
-    this.drawPath('M486 250L507 280L541 293H586L633 298L662 287', '#000', '', 5)
+    this.drawPath(
+      'M486 250L507 280L541 293H586L633 298L662 287',
+      this.levelIndex === 3 ? '#f00' : this.levelIndex > 3 ? '#000' : '#0003',
+      '',
+      5,
+    )
     this.drawPath(
       'M684 283L711 290L734 287L755 294L767 287V263L785 252V234L807 209V191L794 170L796 156',
-      '#000',
+      this.levelIndex === 4 ? '#f00' : this.levelIndex > 4 ? '#000' : '#0003',
       '',
       5,
     )

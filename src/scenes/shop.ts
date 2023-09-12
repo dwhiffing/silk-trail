@@ -1,6 +1,6 @@
 import { Text, Sprite, track } from 'kontra'
 import { Background } from '../entities/bg'
-import { ITEM_TYPES } from '../constants'
+import { ITEM_TYPES, LEVELS } from '../constants'
 import { playSound } from '../utils'
 
 const yt = 70
@@ -127,6 +127,17 @@ export const ShopScene = ({ canvas, data, onNext }) => {
       text: 'Player',
       color: 'white',
       font: '28px sans-serif',
+      anchor: { x: 0.5, y: 0 },
+    }),
+  )
+
+  buttons.push(
+    Text({
+      x: width / 2,
+      y: yt2,
+      text: LEVELS[data.levelIndex].name,
+      color: 'white',
+      font: 'bold 32px sans-serif',
       anchor: { x: 0.5, y: 0 },
     }),
   )

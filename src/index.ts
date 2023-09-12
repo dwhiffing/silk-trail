@@ -67,7 +67,7 @@ const startMenu = () => {
     data,
     heading: 'Silk Road',
     description: `Created by Daniel Whiffing`,
-    button1: startShop,
+    button1: startMap,
   })
 }
 

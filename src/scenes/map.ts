@@ -14,17 +14,35 @@ export const MapScene = ({ canvas, data, onNext }) => {
       y: _.y,
       size: 22,
       color:
-        data.levelIndex === i ? '#f00' : data.levelIndex > i ? '#000' : '#000',
+        data.levelIndex === i
+          ? '#000'
+          : data.levelIndex + 1 === i
+          ? '#f00'
+          : data.levelIndex > i
+          ? '#000'
+          : '#0003',
       anchor: { x: 0.5, y: 0.5 },
     })
 
+    const a = _.name.match(/ISK|MASH|KA/)
+    const b = _.name.match(/ISK|TEH|MASH/)
+    const text = Text({
+      x: _.x,
+      y: _.y + (a ? -20 : 20),
+      text: _.name,
+      color: '#000',
+      font: 'bold 28px sans-serif',
+      anchor: { x: b ? 0 : 0.5, y: a ? 1 : 0 },
+    })
     dots.push(dot)
+    dots.push(text)
   })
 
   const onNextLevel = () => {
     playSound('nextLevel')
     onNext()
   }
+
   const start = Text({
     x: width - 20,
     y: height - 20,
@@ -37,6 +55,7 @@ export const MapScene = ({ canvas, data, onNext }) => {
   track(start)
 
   const path = new Path()
+  path.levelIndex = data.levelIndex
 
   const sky = new Rect(0, 0, canvas.width, canvas.height, [
     '#FFF893',
