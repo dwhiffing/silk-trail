@@ -1,10 +1,10 @@
-import { emit, off, on, onKey, onPointer } from 'kontra'
+import { emit, off, on, onPointer } from 'kontra'
 import * as constants from '../constants'
 import { BODY_PATH, FACE_PATH } from './enemies'
 import { Sprite } from './sprite'
 import { Trajectory } from './Trajectory'
 
-export const Player = ({ canvas, data, bullets, particles, enemies }) => {
+export const Player = ({ canvas, data, bullets }) => {
   let sprite = new PlayerSprite({
     x: canvas.width - 60,
     y: constants.GROUND_Y - constants.SIZE / 3,
@@ -119,8 +119,6 @@ export const Player = ({ canvas, data, bullets, particles, enemies }) => {
       onLeft()
     }
   }
-  onKey('space', (e) => !e.repeat && onLeft())
-  onKey('z', (e) => !e.repeat && onSwap())
   onPointer('down', onClick)
 
   let direction = -1

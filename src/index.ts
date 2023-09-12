@@ -1,4 +1,4 @@
-import { init, initPointer, initKeys, GameLoop } from 'kontra'
+import { init, initPointer, GameLoop } from 'kontra'
 import { LEVELS, STARTING_DATA } from './constants'
 import { ShopScene, RoadScene, MenuScene, MapScene } from './scenes'
 // import MUSIC from './music'
@@ -7,7 +7,6 @@ import './zzfx'
 const { canvas } = init()
 
 initPointer()
-initKeys()
 let scene
 let data = STARTING_DATA
 // let music
