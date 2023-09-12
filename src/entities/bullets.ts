@@ -97,10 +97,10 @@ export class Bullet extends Sprite {
       this.context.closePath()
       this.context.fill()
       this.context.stroke()
-    } else if (this.type === 'bag') {
-      this.drawPath(BAG_STROKE, '#000', this.color, 0, s2, s2)
-      this.drawPath('M38 15H29L26 9H40L38 15Z', '#000', this.color, 0, s2, s2)
-      this.drawPath('M28 17H38.5', 'transparent', 'red', 0, s * 0.5, s * 0.5)
+      // } else if (this.type === 'bag') {
+      //   this.drawPath(BAG_STROKE, '#000', this.color, 0, s2, s2)
+      //   this.drawPath('M38 15H29L26 9H40L38 15Z', '#000', this.color, 0, s2, s2)
+      //   this.drawPath('M28 17H38.5', 'transparent', 'red', 0, s * 0.5, s * 0.5)
     } else if (this.type === 'gem') {
       this.drawPath(GEM_FILL, 'transparent', this.color, 0, s2, s2)
       this.drawPath(GEM_STROKE, '#000', 'transparent', 0, s2, s2)

@@ -62,7 +62,7 @@ const iToLevel = (l) => ({
 
 export const ITEM_TYPES = {
   empty: iToType([0, 0, 0, 0, 0, 0, '#000', 'empty']),
-  bag: iToType([32, 32, 10, 1, 0.8, 1, '#ff0', 'bag']),
+  // bag: iToType([32, 32, 10, 1, 0.8, 1, '#ff0', 'bag']),
   gem: iToType([32, 32, 10, 1, 0.8, 100, '#fff', 'gem']),
   ingot: iToType([32, 64, 10, 5, 1.3, 10, '#fff', 'ingot']),
   axe: iToType([36, 64, 10, 10, 1, 10, '#ff0', 'axe']),
