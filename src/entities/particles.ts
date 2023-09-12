@@ -1,5 +1,4 @@
 import { Pool } from 'kontra'
-import { gradient } from '../utils'
 import { Sprite } from './sprite'
 
 export const Particles = () => {
@@ -23,14 +22,18 @@ class Particle extends Sprite {
   }
 
   draw() {
-    gradient({
-      ctx: this.context,
-      x: -this.width,
-      y: -this.width,
-      r1: this.width / 1.5,
-      r2: this.width,
-      c1: `rgba(255,255,255,${this.opacity})`,
-      c2: `rgba(255,255,255,0)`,
-    })
+    this.context.rect(-this.width, -this.width, this.width * 2, this.width * 2)
+    var g = this.context.createRadialGradient(
+      -this.width + this.width,
+      -this.width + this.width,
+      this.width / 1.5,
+      -this.width + this.width,
+      -this.width + this.width,
+      this.width,
+    )
+    g.addColorStop(0, `rgba(255,255,255,${this.opacity})`)
+    g.addColorStop(1, `rgba(255,255,255,0)`)
+    this.context.fillStyle = g
+    this.context.fill()
   }
 }
