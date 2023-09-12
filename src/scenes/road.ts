@@ -48,6 +48,7 @@ export const RoadScene = ({ canvas, data, onNext, onWin, onLose }) => {
 
   const bulletPlayerCollide = (b, p) => {
     b.takeDamage(b.health)
+    if (p.block) return emit('player-catch-item', b)
     p.takeDamage(1)
     emit('player-damaged')
   }

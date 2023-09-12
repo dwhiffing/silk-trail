@@ -12,7 +12,7 @@ export class Sprite extends SpriteClass {
   }
 
   takeDamage(n) {
-    if (this.health <= 0 || this.block) return
+    if (this.health <= 0) return
 
     if (n > 0) this.health -= n
     let color = this.color

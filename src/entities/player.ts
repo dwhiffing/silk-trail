@@ -1,4 +1,4 @@
-import { emit, onKey, onPointer } from 'kontra'
+import { emit, on, onKey, onPointer } from 'kontra'
 import * as constants from '../constants'
 import { BODY_PATH, FACE_PATH } from './enemies'
 import { Sprite } from './sprite'
@@ -17,6 +17,11 @@ export const Player = ({ canvas, data, bullets, particles, enemies }) => {
   let angle = 0
   let speed = 0
   let canBlock = true
+  const catchItem = (item) => {
+    data.items.unshift(item.type)
+    onSwap()
+  }
+  on('player-catch-item', catchItem)
   sprite.itemIndex = 0
   sprite.progress = 0
   sprite.data = data
