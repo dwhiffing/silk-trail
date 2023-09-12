@@ -1,5 +1,4 @@
 import { emit, Pool, randInt } from 'kontra'
-import { requestTimeout } from '../utils'
 import {
   ATTACK_RANGE,
   ENEMY_BUFFER,
@@ -23,28 +22,23 @@ export const Enemies = ({ canvas, level, particles, bullets }) => {
     inRange[index]?.attack()
     emit('delay', 'attack', 600 / (enemies.length + 1), attack)
   }
-  const spawn = (target, wave, delay = 0) => {
+  const spawn = (target, wave) => {
     let { count = 1 } = wave
     toSpawn += count
     let x = -25
     let y = GROUND_Y - 60
     for (let i = 0; i < count; i++) {
-      requestTimeout(
-        () => {
-          const ttl = Infinity
-          pool.get({
-            x: x + i * -80,
-            y,
-            ttl,
-            target,
-            pool,
-            bullets,
-            particles,
-          })
-          toSpawn--
-        },
-        delay + i * 0,
-      )
+      const ttl = Infinity
+      pool.get({
+        x: x + i * -80,
+        y,
+        ttl,
+        target,
+        pool,
+        bullets,
+        particles,
+      })
+      toSpawn--
     }
   }
   emit('delay', 'attack', 10, attack), 0

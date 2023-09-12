@@ -50,9 +50,6 @@ export const checkCollisions = (groupA, groupB, onCollide) => {
   )
 }
 
-export const checkCollisionsBool = (groupA, groupB) =>
-  groupA.some((itemA) => groupB.some((itemB) => collides(itemA, itemB)))
-
 export function gradient({ x = 0, y = 0, ctx, r2, r1, c1, c2 }) {
   ctx.rect(x, y, r2 * 2, r2 * 2)
   var g = ctx.createRadialGradient(x + r2, y + r2, r1, x + r2, y + r2, r2)
@@ -62,28 +59,17 @@ export function gradient({ x = 0, y = 0, ctx, r2, r1, c1, c2 }) {
   ctx.fill()
 }
 
-export const wrapNumber = (n, min, max) => {
-  if (n > max) return n - max * 2
-  if (n < min) return n + Math.abs(min) * 2
-  return n
-}
+// let focused = true
+// window.addEventListener('focus', () => (focused = true))
+// window.addEventListener('blur', () => (focused = false))
+// export const requestTimeout = (fn, delay) => {
+//   let _delay = delay / 10
 
-export const getSpeed = (x, y) => Math.sqrt(x * x + y * y)
+//   const loop = () => {
+//     if (focused) _delay -= 1
+//     if (_delay <= 0) return fn()
+//     requestAnimationFrame(loop)
+//   }
 
-export const distance = (a, b) =>
-  Math.sqrt((a.x - b.x) * (a.x - b.x) + (a.y - b.y) * (a.y - b.y))
-
-let focused = true
-window.addEventListener('focus', () => (focused = true))
-window.addEventListener('blur', () => (focused = false))
-export const requestTimeout = (fn, delay) => {
-  let _delay = delay / 10
-
-  const loop = () => {
-    if (focused) _delay -= 1
-    if (_delay <= 0) return fn()
-    requestAnimationFrame(loop)
-  }
-
-  requestAnimationFrame(loop)
-}
+//   requestAnimationFrame(loop)
+// }
