@@ -15,7 +15,7 @@ export const ENEMY_BUFFER = 240
 export const PLAYER_BUFFER = 400
 export const ATTACK_RANGE = 900
 export const ITEM_TYPES = {
-  stone: {
+  ingot: {
     size: 64,
     health: 10,
     damage: 10,
@@ -23,8 +23,7 @@ export const ITEM_TYPES = {
     value: 1,
     color: '#fff',
   },
-  box: {
-    size: 64,
+  axe: {
     health: 10,
     damage: 10,
     weight: 1.2,

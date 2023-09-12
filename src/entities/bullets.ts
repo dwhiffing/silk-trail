@@ -17,6 +17,7 @@ export const Bullets = ({ particles }) => {
       damage,
       color,
       health,
+      type: itemKey,
       active: false,
       ttl: Infinity,
       particles,
@@ -79,18 +80,38 @@ export class Bullet extends Sprite {
   }
 
   draw() {
-    this.context.translate(this.width / 2, this.height / 2)
+    const s = this.width / 2
+    this.context.translate(s, s)
     this.context.rotate(-(this._frame / 5))
-    this.drawPath(
-      'M11 21L22 34L29 27V51L33 56L36 51V27L42 34L53 21L42 9L36 16L33 13L29 16L22 9L11 21Z',
-      '#000',
-      this.color,
-      1,
-      -(this.width / 2),
-      -(this.height / 2),
-    )
+    if (this.type === 'ingot') {
+      this.drawPath(
+        'M1 20L3.5 10.5L17 0.5H25.5L28.5 9L17 20H1Z',
+        'transparent',
+        this.color,
+        0,
+        -10,
+        -10,
+      )
+      this.drawPath(
+        'M3.5 10.5L1 20H17M3.5 10.5H13.5M3.5 10.5L17 0.5H25.5M13.5 10.5L17 20M13.5 10.5L25.5 0.5M17 20L28.5 9L25.5 0.5',
+        '#000',
+        'transparent',
+        0,
+        -10,
+        -10,
+      )
+    } else if (this.type === 'axe') {
+      this.drawPath(
+        'M11 21L22 34L29 27V51L33 56L36 51V27L42 34L53 21L42 9L36 16L33 13L29 16L22 9L11 21Z',
+        '#000',
+        this.color,
+        1,
+        -s,
+        -s,
+      )
+    }
     this.context.rotate(this._frame / 5)
-    this.context.translate(-(this.width / 2), -(this.height / 2))
+    this.context.translate(-s, -s)
     this.drawDebug()
   }
 }

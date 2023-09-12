@@ -7,14 +7,14 @@ import './zzfx'
 const { canvas } = init()
 
 const STARTING_ITEMS = [
-  'stone',
-  'box',
-  'stone',
-  'box',
-  'stone',
-  'box',
-  'stone',
-  'box',
+  'ingot',
+  'axe',
+  'ingot',
+  'axe',
+  'ingot',
+  'axe',
+  'ingot',
+  'axe',
 ]
 const STARTING_DATA = { levelIndex: 0, gold: 100, items: STARTING_ITEMS }
 initPointer()

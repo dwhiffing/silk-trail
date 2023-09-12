@@ -11,16 +11,16 @@ export const ShopScene = ({ canvas, data, onNext }) => {
   const { width, height } = canvas
   const background = Background({ canvas, getSpeed: () => 0.1 })
   let shopItems = [
-    'stone',
-    'stone',
-    'stone',
-    'stone',
-    'stone',
-    'box',
-    'box',
-    'box',
-    'box',
-    'box',
+    'ingot',
+    'ingot',
+    'ingot',
+    'ingot',
+    'ingot',
+    'axe',
+    'axe',
+    'axe',
+    'axe',
+    'axe',
   ]
   const sw = width / 2 - xt * 1.5
   const sh = height - yt * 2
