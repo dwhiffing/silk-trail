@@ -25,7 +25,7 @@ export const RoadScene = ({ canvas, data, onNext, onWin, onLose }) => {
   let particles = Particles()
   let bullets = Bullets({ particles })
   let enemies = Enemies({ canvas, level, particles, bullets })
-  let player = Player({ canvas, data, bullets, particles, enemies })
+  let player = Player({ canvas, data, bullets })
   const background = Background({
     canvas,
     getSpeed: () => player.sprite.speed * 3,

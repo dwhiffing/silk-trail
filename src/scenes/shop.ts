@@ -10,18 +10,7 @@ const xt = 50
 export const ShopScene = ({ canvas, data, onNext }) => {
   const { width, height } = canvas
   const background = Background({ canvas, getSpeed: () => 0.1 })
-  let shopItems = [
-    'ingot',
-    'ingot',
-    'ingot',
-    'ingot',
-    'ingot',
-    'axe',
-    'axe',
-    'axe',
-    'axe',
-    'axe',
-  ]
+  let shopItems = LEVELS[data.levelIndex].items
   const sw = width / 2 - xt * 1.5
   const sh = height - yt * 2
   const x2 = width / 2 + xt / 2

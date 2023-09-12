@@ -21,11 +21,13 @@ export const MAX_ANGLE = 4
 export const BASE_MOVEMENT_SPEED = 0.0001
 export const BASE_SPEED_CHANGE = 0.12
 export const BASE_ANGLE_CHANGE = 0.02
-export const MAX_HP = 50
+export const MAX_HP = 5
 export const MAX_WEIGHT = 20
 export const ENEMY_BUFFER = 240
 export const PLAYER_BUFFER = 300
 export const ATTACK_RANGE = 900
+const ITEMS = [['axe'], ['ingot'], ['gem'], ['ingot', 'axe'], ['ingot', 'axe']]
+
 const iToType = (t) => ({
   size: t[0],
   size2: t[1],
@@ -35,12 +37,14 @@ const iToType = (t) => ({
   value: t[5],
   color: t[6],
 })
+const iToWave = (l) => ({ count: l[0], progress: l[1] })
 const iToLevel = (l) => ({
   x: l[0],
   y: l[1],
   name: l[2],
-  totalLength: l[3] || 1,
-  waves: l[4] || [{ type: 'normal', count: 1, progress: 0.5 }],
+  totalLength: l[3],
+  waves: l[4],
+  items: l[5],
 })
 
 export const ITEM_TYPES = {
@@ -52,10 +56,45 @@ export const ITEM_TYPES = {
 }
 
 export const LEVELS = [
-  iToLevel([50, 260, 'ISKENDERUN']),
-  iToLevel([245, 400, 'BAGHDAD']),
-  iToLevel([412, 330, 'TEHRAN']),
-  iToLevel([645, 325, 'MASHHAD']),
-  iToLevel([908, 380, 'KABEL']),
-  iToLevel([1080, 195, 'KASHI']),
+  iToLevel([
+    50,
+    260,
+    'ISKENDERUN',
+    0.75,
+    [iToWave([1, 0.25]), iToWave([1, 0.5])],
+    [],
+  ]),
+  iToLevel([
+    245,
+    400,
+    'BAGHDAD',
+    1,
+    [iToWave([1, 0.1]), iToWave([2, 0.5])],
+    ITEMS[0],
+  ]),
+  iToLevel([
+    412,
+    330,
+    'TEHRAN',
+    1.25,
+    [iToWave([2, 0.1]), iToWave([2, 0.33]), iToWave([2, 0.5])],
+    ITEMS[1],
+  ]),
+  iToLevel([
+    645,
+    325,
+    'MASHHAD',
+    1.5,
+    [iToWave([2, 0.1]), iToWave([3, 0.33]), iToWave([3, 0.5])],
+    ITEMS[2],
+  ]),
+  iToLevel([
+    908,
+    380,
+    'KABEL',
+    1.75,
+    [iToWave([3, 0.1]), iToWave([4, 0.33]), iToWave([4, 0.5])],
+    ITEMS[3],
+  ]),
+  iToLevel([1080, 195, 'KASHI', 1.75, [], ITEMS[4]]),
 ]

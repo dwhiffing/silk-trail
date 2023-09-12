@@ -24,7 +24,7 @@ export const Enemies = ({ canvas, level, particles, bullets }) => {
     emit('delay', 'attack', 600 / (enemies.length + 1), attack)
   }
   const spawn = (target, wave, delay = 0) => {
-    let { type = 'normal', count = 1 } = wave
+    let { count = 1 } = wave
     toSpawn += count
     let x = -25
     let y = GROUND_Y - 60
@@ -40,7 +40,6 @@ export const Enemies = ({ canvas, level, particles, bullets }) => {
             pool,
             bullets,
             particles,
-            type,
           })
           toSpawn--
         },
