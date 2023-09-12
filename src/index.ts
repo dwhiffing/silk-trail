@@ -44,6 +44,7 @@ const startRoad = () => {
     data,
     onNext: () => {
       if (data.levelIndex++ >= LEVELS.length - 1) {
+        data = STARTING_DATA
         startWin(data.gold)
       } else {
         startShop()
