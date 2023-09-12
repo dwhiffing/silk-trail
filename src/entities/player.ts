@@ -82,14 +82,11 @@ export const Player = ({ canvas, data, bullets }) => {
 
   const onBlock = () => {
     if (trajectory.stage !== 0 || !canBlock) return
-    sprite.color = '#00f'
     sprite.block = true
     canBlock = false
     emit('delay', 'block', 20, () => {
       sprite.block = false
-      sprite.color = 'white'
       emit('delay', 'allow-block', 60, () => {
-        sprite.color = 'white'
         canBlock = true
       })
     })
@@ -182,8 +179,10 @@ class PlayerSprite extends Sprite {
     this.context.translate(s, s * 2)
     this.context.scale(-1, 1)
     this.context.rotate(0.2)
+    this.context.translate(0, this.block ? -30 : 0)
     this.drawPath(BODY_PATH, '#B6AC88', this.color, 1, -150, -150)
     this.drawPath(FACE_PATH, '#B6AC88', '#DEA248', 1, -150, -150)
+    this.context.translate(-0, this.block ? 30 : 0)
     this.context.rotate(-0.2)
     this.context.scale(1, 1)
     this.context.translate(5, -20)

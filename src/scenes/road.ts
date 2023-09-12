@@ -41,9 +41,9 @@ export const RoadScene = ({ canvas, data, onNext, onWin, onLose }) => {
   const hpText = Text({
     x: canvas.width - 70,
     y: canvas.height / 2 - 20,
-    text: `HP = ${player.sprite.health}`,
-    color: '#000',
-    font: '16px sans-serif',
+    text: `HP: ${player.sprite.health}`,
+    color: '#fff',
+    font: 'bold 24px sans-serif',
     anchor: { x: 0.5, y: 0.5 },
   })
 
