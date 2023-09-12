@@ -161,7 +161,7 @@ class Enemy extends CamelRiderSprite {
       x: this.x + this.width / 2,
       y: this.y - this.width / 2,
       size: this.width,
-      ttl: 50,
+      ttl: 0,
     })
 
     super.die()

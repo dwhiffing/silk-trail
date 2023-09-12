@@ -22,7 +22,6 @@ export const Player = ({ canvas, data, bullets, particles, enemies }) => {
     onSwap()
   }
   on('player-catch-item', catchItem)
-  sprite.itemIndex = 0
   sprite.progress = 0
   sprite.data = data
   const _x = () => sprite.x - constants.SIZE * 0.4
@@ -152,14 +151,12 @@ export const Player = ({ canvas, data, bullets, particles, enemies }) => {
 }
 
 class PlayerSprite extends Sprite {
-  itemIndex: number
   progress: number
   speed: number
   block: boolean
   constructor(properties) {
     super({ ...properties })
     this.block = false
-    this.itemIndex = 0
     this.progress = 0
     this.speed = 4.5
   }

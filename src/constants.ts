@@ -55,7 +55,7 @@ export const ITEM_TYPES = {
     color: '#fff',
   },
   ingot: {
-    size: 20,
+    size: 32,
     size2: 64,
     health: 10,
     damage: 5,
