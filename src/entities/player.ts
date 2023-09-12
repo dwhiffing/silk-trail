@@ -21,6 +21,7 @@ export const Player = ({ canvas, data, bullets, particles, enemies }) => {
   sprite.data = data
   const _x = () => sprite.x - constants.SIZE * 0.5
   const _y = () => sprite.y - constants.SIZE * 1.5
+  let item
   let updateTrajectory = (_angle, _speed) => {
     angle = _angle
     speed = _speed
@@ -41,7 +42,7 @@ export const Player = ({ canvas, data, bullets, particles, enemies }) => {
     const itemKey = data.items[sprite.itemIndex]
     data.items = data.items.filter((s, i) => i !== sprite.itemIndex)
     if (sprite.itemIndex > 0) sprite.itemIndex--
-    bullets.spawn(_x(), _y(), itemKey)
+    item = bullets.spawn(_x(), _y(), itemKey)
   }
   getItem()
 
@@ -52,6 +53,7 @@ export const Player = ({ canvas, data, bullets, particles, enemies }) => {
     } else if (trajectory.stage === 1) {
     } else if (trajectory.stage === 2) {
       bullets.shoot(
+        item,
         trajectory.speed,
         trajectory.speed,
         angle,

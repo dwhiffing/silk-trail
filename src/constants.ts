@@ -1,4 +1,17 @@
+export const STARTING_ITEMS = [
+  'axe',
+  'ingot',
+  'axe',
+  'ingot',
+  'axe',
+  'ingot',
+  'axe',
+  'ingot',
+  'axe',
+]
+export const STARTING_DATA = { levelIndex: 0, gold: 100, items: STARTING_ITEMS }
 export const GRAVITY = 0.175
+
 export const GROUND_Y = 455
 export const MIN_SPEED = 3
 export const MAX_SPEED = 8
@@ -16,7 +29,8 @@ export const PLAYER_BUFFER = 400
 export const ATTACK_RANGE = 900
 export const ITEM_TYPES = {
   ingot: {
-    size: 64,
+    size: 20,
+    size2: 64,
     health: 10,
     damage: 10,
     weight: 0.8,
@@ -24,6 +38,8 @@ export const ITEM_TYPES = {
     color: '#fff',
   },
   axe: {
+    size: 36,
+    size2: 64,
     health: 10,
     damage: 10,
     weight: 1.2,

@@ -88,8 +88,8 @@ class CamelRiderSprite extends Sprite {
     if (this.opacity === 0) return
 
     const k = 30
-    const x2 = this.width * -1
-    const y2 = this.height * -0.5
+    const x2 = this.width * -3
+    const y2 = this.height * -0.4
     this.context.translate(x2, y2)
     const index = Math.round((this._frame % k) / k)
     this.drawPath(CAMEL_PATHS[index], '#84530A', this.color, 1)
@@ -123,8 +123,8 @@ class Enemy extends CamelRiderSprite {
   init(properties) {
     super.init({
       color: '#F58328',
-      width: 100,
-      height: 100,
+      width: 40,
+      height: 80,
       exhaust: true,
       explodes: true,
       maxSpeed: 4.2,
@@ -146,9 +146,10 @@ class Enemy extends CamelRiderSprite {
 
     emit('delay', 'color', 10, () => {
       this.color = '#F58328'
-
-      if (this.ttl > 0) this.bullets.spawn(this.x, this.y - 40, 'stone')
+      let item
+      if (this.ttl > 0) item = this.bullets.spawn(this.x, this.y - 40, 'axe')
       this.bullets.shoot(
+        item,
         xValues[index],
         yValues[index],
         5.5,

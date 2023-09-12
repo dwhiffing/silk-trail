@@ -7,11 +7,10 @@ export const Bullets = ({ particles }) => {
     create: () => new Bullet({ anchor: { x: 0.5, y: 0.5 } }),
     maxSize: 10,
   })
-  let activeItem: Bullet
 
   const spawn = (x: number, y: number, itemKey: string) => {
-    const { health, size, damage, color } = ITEM_TYPES[itemKey]
-    activeItem = pool.get({
+    const { health, size, size2, damage, color } = ITEM_TYPES[itemKey]
+    return pool.get({
       x,
       y,
       damage,
@@ -23,13 +22,14 @@ export const Bullets = ({ particles }) => {
       particles,
       width: size,
       height: size,
+      size: size2,
       maxHealth: health,
       anchor: { x: 0.5, y: 0.5 },
     }) as Bullet
-    return activeItem
   }
 
   const shoot = (
+    item: Bullet,
     xSpeed = 0,
     ySpeed = 0,
     angle = 0,
@@ -37,12 +37,12 @@ export const Bullets = ({ particles }) => {
     ttl = Infinity,
     isEnemyBullet = false,
   ) => {
-    activeItem.dx = xSpeed * Math.cos(angle)
-    activeItem.dy = ySpeed * Math.sin(angle)
-    activeItem.ddy = ddy
-    activeItem.ttl = ttl
-    activeItem.active = true
-    activeItem.isEnemyBullet = isEnemyBullet
+    item.dx = xSpeed * Math.cos(angle)
+    item.dy = ySpeed * Math.sin(angle)
+    item.ddy = ddy
+    item.ttl = ttl
+    item.active = true
+    item.isEnemyBullet = isEnemyBullet
   }
 
   return { particles, pool, spawn, shoot }
@@ -106,8 +106,8 @@ export class Bullet extends Sprite {
         '#000',
         this.color,
         1,
-        -s,
-        -s,
+        -(this.size / 2),
+        -(this.size / 2),
       )
     }
     this.context.rotate(this._frame / 5)

@@ -1,22 +1,11 @@
 import { init, initPointer, initKeys, GameLoop } from 'kontra'
-import { LEVELS } from './constants'
+import { LEVELS, STARTING_DATA } from './constants'
 import { ShopScene, RoadScene, MenuScene, MapScene } from './scenes'
 // import MUSIC from './music'
 import './zzfx'
 
 const { canvas } = init()
 
-const STARTING_ITEMS = [
-  'ingot',
-  'axe',
-  'ingot',
-  'axe',
-  'ingot',
-  'axe',
-  'ingot',
-  'axe',
-]
-const STARTING_DATA = { levelIndex: 0, gold: 100, items: STARTING_ITEMS }
 initPointer()
 initKeys()
 let scene
