@@ -2,7 +2,7 @@ import { Enemies } from '../entities/enemies'
 import { Player } from '../entities/player'
 // import { Minimap } from '../entities/minimap'
 import { Bullets } from '../entities/bullets'
-import { checkCollisions } from '../utils'
+import { checkCollisions, playSound } from '../utils'
 import { Particles } from '../entities/particles'
 import { emit, off, on, Text } from 'kontra'
 import { LEVELS } from '../constants'
@@ -12,6 +12,7 @@ export const RoadScene = ({ canvas, data, onNext, onWin, onLose }) => {
   const timers = {}
 
   const onPlayerDamaged = () => (hpText.text = `HP: ${player.sprite.health}`)
+
   const onDelay = (name: string, delay: number, fn: any) => {
     timers[name] = { fn, delay }
   }
@@ -52,11 +53,13 @@ export const RoadScene = ({ canvas, data, onNext, onWin, onLose }) => {
     if (p.block) return emit('player-catch-item', b)
     p.takeDamage(1)
     emit('player-damaged')
+    playSound('playerHit')
   }
 
   const bulletEnemyCollide = (b, e) => {
     b.takeDamage(b.health)
     e.takeDamage(b.damage, true)
+    playSound('playerHit')
   }
 
   return {

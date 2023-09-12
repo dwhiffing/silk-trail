@@ -63,7 +63,7 @@ export const LEVELS = [
     260,
     'ISKENDERUN',
     0.75,
-    [iToWave([1, 0.25]), iToWave([1, 0.5])],
+    [iToWave([1, 0.1]), iToWave([1, 0.5])],
     SHOP_ITEMS[0],
     MARKETS[0],
   ]),

@@ -1,5 +1,6 @@
 import { Background } from '../entities/bg'
 import { Text, track } from 'kontra'
+import { playSound } from '../utils'
 
 export const MenuScene = ({ canvas, heading, description, button1 }: any) => {
   const width = canvas.width
@@ -18,7 +19,10 @@ export const MenuScene = ({ canvas, heading, description, button1 }: any) => {
     color: '#fff',
     font: '52px sans-serif',
     anchor: { x: 0.5, y: 0.5 },
-    onDown: () => button1(),
+    onDown: () => {
+      playSound('click')
+      button1()
+    },
   })
 
   track(button)

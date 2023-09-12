@@ -1,4 +1,5 @@
 import { emit, Pool, randInt } from 'kontra'
+import { playSound } from '../utils'
 import {
   ATTACK_RANGE,
   ENEMY_BUFFER,
@@ -119,10 +120,11 @@ class Enemy extends CamelRiderSprite {
   init(properties) {
     super.init({
       color: '#F58328',
+      baseColor: '#F58328',
       width: 40,
       height: 80,
-      speed: 5,
-      health: 10,
+      speed: 15,
+      health: 100,
       damage: 10,
       ...properties,
       anchor: { x: 0.5, y: 1 },
@@ -134,6 +136,7 @@ class Enemy extends CamelRiderSprite {
     const xValues = [5, 8, 10]
     const yValues = [12, 12, 14]
     const index = Math.floor((this.target.sprite.x - this.x) / 250) - 1
+    playSound('catch')
 
     emit('delay', 'color', 10, () => {
       this.color = '#F58328'
@@ -152,7 +155,7 @@ class Enemy extends CamelRiderSprite {
   }
 
   die() {
-    // playSound('enemyExplode')
+    playSound('enemyExplode')
     this.particles.spawn({
       x: this.x + this.width / 2,
       y: this.y - this.width / 2,

@@ -1,4 +1,5 @@
 import { Pool } from 'kontra'
+import { playSound } from '../utils'
 import { GROUND_Y, ITEM_TYPES } from '../constants'
 import { Sprite } from './sprite'
 
@@ -78,6 +79,7 @@ export class Bullet extends Sprite {
       this.dy = 0
       this.ddy = 0
       this.ttl = 0
+      playSound('click')
     }
   }
 

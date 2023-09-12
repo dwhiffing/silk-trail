@@ -1,4 +1,5 @@
 import { emit, off, on, onPointer } from 'kontra'
+import { playSound } from '../utils'
 import * as constants from '../constants'
 import { BODY_PATH, FACE_PATH } from './enemies'
 import { Sprite } from './sprite'
@@ -18,6 +19,7 @@ export const Player = ({ canvas, data, bullets }) => {
   let speed = 0
   let canBlock = true
   const catchItem = (item) => {
+    playSound('catch')
     data.items.unshift(item.type)
     onSwap()
   }
@@ -55,16 +57,19 @@ export const Player = ({ canvas, data, bullets }) => {
     }
     data.items = data.items.slice(1)
     swapItem = bullets.spawn(_x() + 90, _y() + 30, data.items[0])
-    swapItem.small = true
+    if (swapItem) swapItem.small = true
   }
   getItem()
 
   const onThrow = () => {
     if (data.items.length === 0) return
     if (trajectory.stage === 0) {
+      playSound('clickDisabled')
       updateTrajectory(constants.MIN_ANGLE, constants.MIN_SPEED)
     } else if (trajectory.stage === 1) {
+      playSound('clickDisabled')
     } else if (trajectory.stage === 2) {
+      playSound('catch')
       bullets.shoot(
         item,
         trajectory.speed,
@@ -82,6 +87,7 @@ export const Player = ({ canvas, data, bullets }) => {
 
   const onBlock = () => {
     if (trajectory.stage !== 0 || !canBlock) return
+    playSound('swap')
     sprite.block = true
     canBlock = false
     emit('delay', 'block', 20, () => {
@@ -93,6 +99,7 @@ export const Player = ({ canvas, data, bullets }) => {
   }
 
   const onSwap = () => {
+    playSound('swap')
     if (trajectory.stage !== 0) trajectory.stage = 0
     if (item) {
       data.items.push(item.type)
@@ -110,7 +117,7 @@ export const Player = ({ canvas, data, bullets }) => {
   }
 
   const onClick = (e) => {
-    if (e.clientX / canvas.clientWidth > 0.75) {
+    if (e.clientX / canvas.clientWidth > 0.88) {
       onSwap()
     } else {
       onLeft()
@@ -163,6 +170,7 @@ class PlayerSprite extends Sprite {
   constructor(properties) {
     super({ ...properties })
     this.block = false
+    this.baseColor = '#fff'
     this.progress = 0
     this.speed = 4.5
   }

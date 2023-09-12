@@ -15,10 +15,9 @@ export class Sprite extends SpriteClass {
     if (this.health <= 0) return
 
     if (n > 0) this.health -= n
-    let color = this.color
     this.color = '#f00'
-    emit('delay', 'unhurt', 15, () => {
-      this.color = color
+    emit('delay', 'unhurt', 30, () => {
+      this.color = this.baseColor
     })
     if (this.health <= 0) this.die()
   }

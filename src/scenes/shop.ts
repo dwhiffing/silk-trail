@@ -35,7 +35,7 @@ export const ShopScene = ({ canvas, data, onNext }) => {
   let selectedItemId = ''
 
   const onClickNext = () => {
-    playSound('nextLevel')
+    playSound('click')
     onNext()
   }
 
@@ -48,7 +48,7 @@ export const ShopScene = ({ canvas, data, onNext }) => {
     const index = +selectedItemId.split(':')[1]
     const item = getSelected()
     if (!item) return
-    playSound('nextLevel')
+    playSound('click')
     if (selectedItemId.includes('player')) {
       shopItems.push(data.items[index])
       data.items = data.items.filter((d, i) => i !== index)
