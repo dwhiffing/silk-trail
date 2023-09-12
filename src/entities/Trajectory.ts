@@ -19,8 +19,6 @@ export class Trajectory {
   }
 
   update() {
-    this.trajectorySprite.opacity = this.stage === 2 ? 1 : 0
-    this.angleSprite.opacity = this.stage > 0 ? 1 : 0
     if (this.stage === 0) return
 
     this.angleSprite.angle = this.angle
@@ -44,7 +42,6 @@ class AngleSprite extends Sprite {
       anchor: { x: 0, y: 0 },
       ...properties,
     })
-    this.opacity = 1
   }
 
   update(dt?) {
@@ -72,7 +69,6 @@ class TrajectorySprite extends Sprite {
       anchor: { x: 0, y: 0 },
       ...properties,
     })
-    this.opacity = 1
   }
 
   update(dt?) {

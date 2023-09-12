@@ -1,15 +1,12 @@
 export const STARTING_ITEMS = [
   'bag',
   'gem',
-  'axe',
   'ingot',
   'axe',
   'ingot',
   'axe',
-  'ingot',
-  'axe',
-  'ingot',
-  'axe',
+  'gem',
+  'empty',
 ]
 export const STARTING_DATA = { levelIndex: 0, gold: 100, items: STARTING_ITEMS }
 export const GRAVITY = 0.175
@@ -30,6 +27,15 @@ export const ENEMY_BUFFER = 240
 export const PLAYER_BUFFER = 400
 export const ATTACK_RANGE = 900
 export const ITEM_TYPES = {
+  empty: {
+    size: 0,
+    size2: 0,
+    health: 0,
+    damage: 0,
+    weight: 0,
+    value: 0,
+    color: '#000',
+  },
   bag: {
     size: 32,
     size2: 32,
@@ -74,7 +80,7 @@ export const LEVELS = [
     y: 260,
     name: '1',
     totalLength: 5,
-    waves: [{ type: 'normal', count: 5, progress: 0 }],
+    waves: [{ type: 'normal', count: 1, progress: 0 }],
   },
   {
     name: '2',

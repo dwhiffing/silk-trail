@@ -28,9 +28,8 @@ export const Player = ({ canvas, data, bullets, particles, enemies }) => {
     speed = _speed
     trajectory.angle = _angle
 
-    const itemKey = data.items[sprite.itemIndex]
-    const item = constants.ITEM_TYPES[itemKey]
-    trajectory.speed = _speed * (1 / item.weight)
+    const _item = constants.ITEM_TYPES[item.type]
+    trajectory.speed = _speed * (1 / _item.weight)
   }
   let trajectory = new Trajectory({
     x: _x(),
@@ -92,9 +91,24 @@ export const Player = ({ canvas, data, bullets, particles, enemies }) => {
     getItem()
   }
 
-  onKey('space', (e) => !e.repeat && onBlock())
+  const onLeft = () => {
+    if (item.type === 'empty') {
+      onBlock()
+    } else {
+      onThrow()
+    }
+  }
+
+  const onClick = (e) => {
+    if (e.clientX / canvas.clientWidth > 0.75) {
+      onSwap()
+    } else {
+      onLeft()
+    }
+  }
+  onKey('space', (e) => !e.repeat && onLeft())
   onKey('z', (e) => !e.repeat && onSwap())
-  onPointer('down', onThrow)
+  onPointer('down', onClick)
 
   let direction = -1
   return {
