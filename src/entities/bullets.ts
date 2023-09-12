@@ -56,7 +56,7 @@ export class Bullet extends Sprite {
 
   init(props) {
     super.init(props)
-    this.opacity = 1
+    this.small = false
   }
 
   update() {
@@ -83,6 +83,8 @@ export class Bullet extends Sprite {
   draw() {
     const s = this.width / 2
     const s2 = s * -2
+
+    this.small && this.context.scale(0.6, 0.6)
     this.context.translate(s, s)
     this.context.rotate(-(this._frame / 5))
     if (this.type === 'bag') {

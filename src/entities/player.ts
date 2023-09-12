@@ -24,9 +24,10 @@ export const Player = ({ canvas, data, bullets, particles, enemies }) => {
   on('player-catch-item', catchItem)
   sprite.progress = 0
   sprite.data = data
-  const _x = () => sprite.x - constants.SIZE * 0.4
+  const _x = () => sprite.x - constants.SIZE * 0.5
   const _y = () => sprite.y - constants.SIZE * 1.2
   let item
+  let swapItem
   let updateTrajectory = (_angle, _speed) => {
     angle = _angle
     speed = _speed
@@ -43,10 +44,18 @@ export const Player = ({ canvas, data, bullets, particles, enemies }) => {
   })
 
   const getItem = () => {
-    const itemKey = data.items[sprite.itemIndex]
-    data.items = data.items.filter((s, i) => i !== sprite.itemIndex)
-    if (sprite.itemIndex > 0) sprite.itemIndex--
-    item = bullets.spawn(_x(), _y(), itemKey)
+    if (swapItem) {
+      swapItem.x = _x()
+      swapItem.y = _y()
+      swapItem.small = false
+      item = swapItem
+    } else {
+      const itemKey = data.items[0]
+      item = bullets.spawn(_x(), _y(), itemKey)
+    }
+    data.items = data.items.slice(1)
+    swapItem = bullets.spawn(_x() + 90, _y() + 30, data.items[0])
+    swapItem.small = true
   }
   getItem()
 
