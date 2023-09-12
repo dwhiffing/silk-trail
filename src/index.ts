@@ -1,7 +1,7 @@
-import { init, initPointer, GameLoop } from 'kontra'
+import { init, initPointer, GameLoop, onPointer } from 'kontra'
+import MUSIC from './music'
 import { LEVELS, STARTING_DATA } from './constants'
 import { ShopScene, RoadScene, MenuScene, MapScene } from './scenes'
-// import MUSIC from './music'
 import './zzfx'
 
 const { canvas } = init()
@@ -9,27 +9,26 @@ const { canvas } = init()
 initPointer()
 let scene
 let data = STARTING_DATA
-// let music
-// onPointer('down', () => {
-//   if (!music) {
-//     //@ts-ignore
-//     music = zzfxP(...zzfxM(...MUSIC))
-//     //@ts-ignore
-//     music.loop = true
-//   }
-// })
+let music
 
-// let a = document.getElementsByTagName('a')[0]
-// a.addEventListener('click', (e) => {
-//   //@ts-ignore
-//   e.target.innerHTML = e.target.innerHTML === 'mute' ? 'unmute' : 'mute'
-//   //@ts-ignore
-//   // musicNode.playbackRate.value = musicNode.playbackRate.value === 1 ? 0 : 1
-//   //@ts-ignore
-//   window.zzfxV = window.zzfxV === 0 ? 0.3 : 0
-// })
-// // TODO: remove me
-// a.click()
+let a = document.getElementsByTagName('a')[0]
+a.addEventListener('click', (e) => {
+  //@ts-ignore
+  music.playbackRate.value = e.target.innerHTML === 'mute' ? 0 : 1
+  //@ts-ignore
+  e.target.innerHTML = e.target.innerHTML === 'mute' ? 'unmute' : 'mute'
+  //@ts-ignore
+  window.zzfxV = window.zzfxV === 0 ? 0.3 : 0
+})
+onPointer('up', () => {
+  if (!music) {
+    // @ts-ignore
+    music = zzfxP(...zzfxM(...MUSIC))
+    music.loop = true
+    // TODO: remove me
+    a.click()
+  }
+})
 
 const startShop = () => {
   scene && scene.shutdown()
