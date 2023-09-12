@@ -24,7 +24,7 @@ export const BASE_ANGLE_CHANGE = 0.02
 export const MAX_HP = 50
 export const MAX_WEIGHT = 20
 export const ENEMY_BUFFER = 240
-export const PLAYER_BUFFER = 400
+export const PLAYER_BUFFER = 300
 export const ATTACK_RANGE = 900
 export const ITEM_TYPES = {
   empty: {
@@ -40,7 +40,7 @@ export const ITEM_TYPES = {
     size: 32,
     size2: 32,
     health: 10,
-    damage: 10,
+    damage: 1,
     weight: 0.8,
     value: 1,
     color: '#ff0',
@@ -49,18 +49,18 @@ export const ITEM_TYPES = {
     size: 32,
     size2: 32,
     health: 10,
-    damage: 10,
+    damage: 1,
     weight: 0.8,
-    value: 1,
+    value: 100,
     color: '#fff',
   },
   ingot: {
     size: 20,
     size2: 64,
     health: 10,
-    damage: 10,
-    weight: 0.8,
-    value: 1,
+    damage: 5,
+    weight: 1.3,
+    value: 10,
     color: '#fff',
   },
   axe: {
@@ -68,7 +68,7 @@ export const ITEM_TYPES = {
     size2: 64,
     health: 10,
     damage: 10,
-    weight: 1.2,
+    weight: 1,
     value: 1,
     color: '#ff0',
   },

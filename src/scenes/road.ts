@@ -26,7 +26,10 @@ export const RoadScene = ({ canvas, data, onNext, onWin, onLose }) => {
   let bullets = Bullets({ particles })
   let enemies = Enemies({ canvas, level, particles, bullets })
   let player = Player({ canvas, data, bullets, particles, enemies })
-  const background = Background({ canvas, getSpeed: () => player.sprite.speed })
+  const background = Background({
+    canvas,
+    getSpeed: () => player.sprite.speed * 3,
+  })
   let map = new Minimap({
     canvas,
     maxProgress: level.totalLength,

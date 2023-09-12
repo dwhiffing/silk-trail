@@ -176,7 +176,7 @@ class PlayerSprite extends Sprite {
     this.context.rotate(-0.2)
     this.context.scale(1, 1)
     this.context.translate(5, -20)
-    this.context.rotate(this._frame / 10 + 0.5)
+    this.context.rotate((this._frame / -10) * (this.speed / 4))
     this.drawPath(
       'M16 16L85 85M85 16L16 85M51 2V99M99 50H2',
       '#501502',
@@ -185,7 +185,7 @@ class PlayerSprite extends Sprite {
       -s,
       -s,
     )
-    this.context.rotate(-(this._frame / 10 + 0.5))
+    this.context.rotate((this._frame / 10) * (this.speed / 4))
 
     this.drawPath(
       'M100.5 51C100.5 78.6142 78.6142 100.5 51 100.5C23.3728 100.5 0.5 78.6014 0.5 51C0.5 23.3858 23.3858 0.5 51 0.5C78.6014 0.5 100.5 23.3728 100.5 51ZM51 95.5C75.8528 95.5 95.5 75.8528 95.5 51C95.5 26.1619 75.8673 5.5 51 5.5C26.1472 5.5 5.5 26.1472 5.5 51C5.5 75.8673 26.1619 95.5 51 95.5Z',
@@ -200,7 +200,7 @@ class PlayerSprite extends Sprite {
 
     this.drawPath('M19 67H142L158 1H1L19 67Z', '#000', '#7D1F01', 2, -30, 25)
     this.context.translate(s, s * 2)
-    this.context.rotate(this._frame / 10)
+    this.context.rotate((this._frame / -10) * (this.speed / 4))
     this.drawPath(
       'M16 16L85 85M85 16L16 85M51 2V99M99 50H2',
       '#501502',
@@ -209,7 +209,7 @@ class PlayerSprite extends Sprite {
       -s,
       -s,
     )
-    this.context.rotate(-(this._frame / 10))
+    this.context.rotate((this._frame / 10) * (this.speed / 4))
 
     this.drawPath(
       'M100.5 51C100.5 78.6142 78.6142 100.5 51 100.5C23.3728 100.5 0.5 78.6014 0.5 51C0.5 23.3858 23.3858 0.5 51 0.5C78.6014 0.5 100.5 23.3728 100.5 51ZM51 95.5C75.8528 95.5 95.5 75.8528 95.5 51C95.5 26.1619 75.8673 5.5 51 5.5C26.1472 5.5 5.5 26.1472 5.5 51C5.5 75.8673 26.1619 95.5 51 95.5Z',
