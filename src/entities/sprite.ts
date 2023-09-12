@@ -7,7 +7,7 @@ export class Sprite extends SpriteClass {
 
   constructor(properties: any = {}) {
     super({ anchor: { x: 0.5, y: 1 }, ...properties })
-    this.health = properties?.health ?? 10
+    this.health = properties?.health || 10
     this._frame = 0
   }
 

@@ -81,12 +81,32 @@ export const ShopScene = ({ canvas, data, onNext }) => {
     if (side === 1) shopItemLabels.push(item)
   }
 
+  let PAGE_SIZE = 10
+  let playerPage = 0
+  let shopPage = 0
+  const playerPageCount = Math.ceil(data.items.length / PAGE_SIZE)
+  const shopPageCount = Math.ceil(shopItems.length / PAGE_SIZE)
+  const changePlayerPage = (n) => {
+    playerPage = Math.max(0, Math.min(playerPageCount - 1, playerPage + n))
+    updateShop()
+  }
+  const changeShopPage = (n) => {
+    shopPage = Math.max(0, Math.min(shopPageCount - 1, shopPage + n))
+    updateShop()
+  }
   const updateShop = () => {
     const side = selectedItemId.split(':')[0]
+    playerItemLabels.forEach((l) => l.setItem())
+    shopItemLabels.forEach((l) => l.setItem())
+    pCount.text = `${playerPage + 1}/${playerPageCount}`
+    sCount.text = `${shopPage + 1}/${shopPageCount}`
     data.items
       .filter((i) => i !== 'empty')
+      .slice(playerPage * PAGE_SIZE, (playerPage + 1) * PAGE_SIZE)
       .forEach((l, i) => playerItemLabels[i].setItem(l, market))
-    shopItems.forEach((l, i) => shopItemLabels[i].setItem(l, market))
+    shopItems
+      .slice(shopPage * PAGE_SIZE, (shopPage + 1) * PAGE_SIZE)
+      .forEach((l, i) => shopItemLabels[i].setItem(l, market))
     gold.text = `Gold: ${data.gold}`
     const item = getSelected()
     buySell.color = `rgba(255,255,255,${
@@ -94,8 +114,8 @@ export const ShopScene = ({ canvas, data, onNext }) => {
     })`
   }
 
-  new Array(10).fill('').forEach((_, i) => renderShopItem(i, 0))
-  new Array(10).fill('').forEach((_, i) => renderShopItem(i, 1))
+  new Array(PAGE_SIZE).fill('').forEach((_, i) => renderShopItem(i, 0))
+  new Array(PAGE_SIZE).fill('').forEach((_, i) => renderShopItem(i, 1))
 
   buttons.push(
     Text({
@@ -117,6 +137,64 @@ export const ShopScene = ({ canvas, data, onNext }) => {
       anchor: { x: 0, y: 0 },
     }),
   )
+  const pNext = Text({
+    x: xt + (width / 2 - xt * 2) - 10,
+    y: height - yt - 30,
+    text: '>',
+    color: 'white',
+    font: 'bold 22px sans-serif',
+    anchor: { x: 0, y: 0 },
+    onDown: () => changePlayerPage(1),
+  })
+  buttons.push(pNext)
+  const pCount = Text({
+    x: width / 4 + xt / 4,
+    y: height - yt - 30,
+    text: `1/${playerPageCount}`,
+    color: 'white',
+    font: 'bold 22px sans-serif',
+    anchor: { x: 0.5, y: 0 },
+  })
+  buttons.push(pCount)
+  const sCount = Text({
+    x: width / 2 + (width / 4 - xt / 4),
+    y: height - yt - 30,
+    text: `1/${shopPageCount}`,
+    color: 'white',
+    font: 'bold 22px sans-serif',
+    anchor: { x: 0.5, y: 0 },
+  })
+  buttons.push(sCount)
+  const pPrev = Text({
+    x: xt + 20,
+    y: height - yt - 30,
+    text: '<',
+    color: 'white',
+    font: 'bold 22px sans-serif',
+    anchor: { x: 0, y: 0 },
+    onDown: () => changePlayerPage(-1),
+  })
+  buttons.push(pPrev)
+  const sNext = Text({
+    x: width - (xt + 30),
+    y: height - yt - 30,
+    text: '>',
+    color: 'white',
+    font: 'bold 22px sans-serif',
+    anchor: { x: 0, y: 0 },
+    onDown: () => changeShopPage(1),
+  })
+  buttons.push(sNext)
+  const sPrev = Text({
+    x: xt + 20 + (width / 2 - xt / 2),
+    y: height - yt - 30,
+    text: '<',
+    color: 'white',
+    font: 'bold 22px sans-serif',
+    anchor: { x: 0, y: 0 },
+    onDown: () => changeShopPage(-1),
+  })
+  buttons.push(sPrev)
 
   buttons.push(
     Text({
@@ -183,6 +261,10 @@ export const ShopScene = ({ canvas, data, onNext }) => {
     onDown: onClickNext,
   })
   track(start)
+  track(pNext)
+  track(sNext)
+  track(pPrev)
+  track(sPrev)
   buttons.push(start)
 
   updateShop()
@@ -270,12 +352,11 @@ class ShopItem {
 
   setItem(i: any, market: any) {
     const item = ITEM_TYPES[i]
-    if (!item) return
-    const _v = market[item.name] ?? 1
-    this.nameLabel.text = item.name
-    this.weightLabel.text = item.weight
-    this.valueLabel.text = `${item.value * _v}`
-    this.damageLabel.text = item.damage
+    const _v = market?.[item?.name] || 1
+    this.nameLabel.text = item?.name || ''
+    this.weightLabel.text = item?.weight || ''
+    this.valueLabel.text = item?.value ? `${item?.value * _v}` : ''
+    this.damageLabel.text = item?.damage || ''
     if (_v < 0.8) this.toggleColor('#f66')
     if (_v > 1.2) this.toggleColor('#6f6')
   }

@@ -15,7 +15,7 @@ export class Minimap extends Sprite {
       lerp(
         0,
         width - width / 5,
-        this.player.sprite.progress / (this.maxProgress ?? 1),
+        this.player.sprite.progress / (this.maxProgress || 1),
       ),
       20,
       5,
