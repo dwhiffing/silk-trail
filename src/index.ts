@@ -1,7 +1,7 @@
 import { init, initPointer, initKeys, GameLoop } from 'kontra'
-import { LEVELS } from './scenes/map'
-// import MUSIC from './music'
+import { LEVELS } from './constants'
 import { ShopScene, RoadScene, MenuScene, MapScene } from './scenes'
+// import MUSIC from './music'
 import './zzfx'
 
 const { canvas } = init()

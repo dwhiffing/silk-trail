@@ -5,7 +5,7 @@ import { Bullets } from '../entities/bullets'
 import { checkCollisions } from '../utils'
 import { Particles } from '../entities/particles'
 import { emit, on, Text } from 'kontra'
-import { LEVELS } from './map'
+import { LEVELS } from '../constants'
 import { Background } from '../entities/bg'
 
 export const RoadScene = ({ canvas, data, onNext, onWin, onLose }) => {

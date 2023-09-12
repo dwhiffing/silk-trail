@@ -1,57 +1,8 @@
-import { Text, Sprite, track } from 'kontra'
+import { Text, track } from 'kontra'
+import { LEVELS } from '../constants'
 import { Circle, Path, Rect } from '../entities/bg'
 import { playSound } from '../utils'
-const yt = 5
-const xt = 5
 
-export const LEVELS = [
-  {
-    x: 50,
-    y: 260,
-    name: '1',
-    totalLength: 0.25,
-    waves: [{ type: 'normal', count: 1, progress: 0.5 }],
-  },
-  {
-    name: '2',
-    x: 245,
-    y: 400,
-    totalLength: 0.5,
-    waves: [{ type: 'normal', count: 1, progress: 0.5 }],
-  },
-  {
-    name: '3',
-    x: 412,
-    y: 330,
-    totalLength: 1,
-    waves: [{ type: 'normal', count: 1, progress: 0.5 }],
-  },
-  {
-    name: '4',
-    x: 645,
-    y: 325,
-    totalLength: 1,
-    waves: [{ type: 'normal', count: 1, progress: 0.5 }],
-  },
-  {
-    name: '5',
-    x: 908,
-    y: 380,
-    totalLength: 1,
-    waves: [{ type: 'normal', count: 1, progress: 0.5 }],
-  },
-  {
-    name: '6',
-    x: 1080,
-    y: 195,
-    totalLength: 1,
-    waves: [
-      { type: 'normal', count: 3, progress: 0.25 },
-      { type: 'normal', count: 3, progress: 0.5 },
-      { type: 'normal', count: 3, progress: 0.75 },
-    ],
-  },
-]
 export const MapScene = ({ canvas, data, onNext }) => {
   const { width, height } = canvas
   const dots: any[] = []

@@ -9,11 +9,11 @@ export const MAX_ANGLE = 4
 export const BASE_MOVEMENT_SPEED = 0.0001
 export const BASE_SPEED_CHANGE = 0.12
 export const BASE_ANGLE_CHANGE = 0.02
-export const MAX_HP = 5
+export const MAX_HP = 50
 export const MAX_WEIGHT = 20
 export const ENEMY_BUFFER = 240
 export const PLAYER_BUFFER = 400
-export const ATTACK_RANGE = 400
+export const ATTACK_RANGE = 900
 export const ITEM_TYPES = {
   stone: {
     size: 64,
@@ -32,3 +32,52 @@ export const ITEM_TYPES = {
     color: '#ff0',
   },
 }
+
+export const LEVELS = [
+  {
+    x: 50,
+    y: 260,
+    name: '1',
+    totalLength: 5,
+    waves: [{ type: 'normal', count: 5, progress: 0 }],
+  },
+  {
+    name: '2',
+    x: 245,
+    y: 400,
+    totalLength: 0.5,
+    waves: [{ type: 'normal', count: 1, progress: 0.5 }],
+  },
+  {
+    name: '3',
+    x: 412,
+    y: 330,
+    totalLength: 1,
+    waves: [{ type: 'normal', count: 1, progress: 0.5 }],
+  },
+  {
+    name: '4',
+    x: 645,
+    y: 325,
+    totalLength: 1,
+    waves: [{ type: 'normal', count: 1, progress: 0.5 }],
+  },
+  {
+    name: '5',
+    x: 908,
+    y: 380,
+    totalLength: 1,
+    waves: [{ type: 'normal', count: 1, progress: 0.5 }],
+  },
+  {
+    name: '6',
+    x: 1080,
+    y: 195,
+    totalLength: 1,
+    waves: [
+      { type: 'normal', count: 3, progress: 0.25 },
+      { type: 'normal', count: 3, progress: 0.5 },
+      { type: 'normal', count: 3, progress: 0.75 },
+    ],
+  },
+]

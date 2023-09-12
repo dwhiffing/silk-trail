@@ -1,5 +1,4 @@
 import { emit, onKey, onPointer } from 'kontra'
-import { LEVELS } from '../scenes/map'
 import * as constants from '../constants'
 import { Sprite } from './sprite'
 import { Trajectory } from './Trajectory'
@@ -99,7 +98,7 @@ export const Player = ({ canvas, data, bullets, particles, enemies }) => {
       sprite.update()
       trajectory.update()
       sprite.progress += constants.BASE_MOVEMENT_SPEED * sprite.speed
-      if (sprite.progress >= LEVELS[data.levelIndex].totalLength)
+      if (sprite.progress >= constants.LEVELS[data.levelIndex].totalLength)
         emit('level-end')
       const totalWeight = data.items
         .map((k) => constants.ITEM_TYPES[k].weight)
@@ -154,9 +153,9 @@ class PlayerSprite extends Sprite {
     this.context.rotate(this._frame / 10 + 0.5)
     this.drawPath(
       'M16 16L85 85M85 16L16 85M51 2V99M99 50H2',
-      '#000',
+      '#501502',
       '#7D1F01',
-      1,
+      6,
       -s,
       -s,
     )
@@ -178,9 +177,9 @@ class PlayerSprite extends Sprite {
     this.context.rotate(this._frame / 10)
     this.drawPath(
       'M16 16L85 85M85 16L16 85M51 2V99M99 50H2',
-      '#000',
+      '#501502',
       '#7D1F01',
-      1,
+      6,
       -s,
       -s,
     )

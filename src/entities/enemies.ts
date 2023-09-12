@@ -1,6 +1,12 @@
 import { emit, Pool, randInt } from 'kontra'
 import { requestTimeout } from '../utils'
-import { ENEMY_BUFFER, GRAVITY, GROUND_Y, PLAYER_BUFFER } from '../constants'
+import {
+  ATTACK_RANGE,
+  ENEMY_BUFFER,
+  GRAVITY,
+  GROUND_Y,
+  PLAYER_BUFFER,
+} from '../constants'
 import { Sprite } from './sprite'
 
 export const Enemies = ({ canvas, level, particles, bullets }) => {
@@ -11,11 +17,11 @@ export const Enemies = ({ canvas, level, particles, bullets }) => {
   let wave = level.waves[waveIndex]
   const attack = () => {
     const enemies = pool.getAliveObjects() as Enemy[]
-    const inRange = enemies //.filter((e) => target.x - e.x < ATTACK_RANGE)
+    const inRange = enemies.filter((e) => target.x - e.x < ATTACK_RANGE)
 
     const index = randInt(0, inRange.length - 1)
-    // inRange[index]?.attack()
-    // emit('delay', 'attack', 90 / enemies.length, attack)
+    inRange[index]?.attack()
+    emit('delay', 'attack', 600 / (enemies.length + 1), attack)
   }
   const spawn = (target, wave, delay = 0) => {
     let { type = 'normal', count = 1 } = wave
@@ -42,7 +48,7 @@ export const Enemies = ({ canvas, level, particles, bullets }) => {
       )
     }
   }
-  emit('delay', 'attack', 120, attack), 0
+  emit('delay', 'attack', 10, attack), 0
   return {
     pool,
     update(player) {
@@ -134,13 +140,14 @@ class Enemy extends CamelRiderSprite {
 
   attack() {
     this.color = '#f00'
-    const xValues = [3, 5, 5]
-    const yValues = [7, 7, 10]
-    const index = Math.floor((this.target.sprite.x - this.x) / 80) - 1
-    emit('delay', 'color', 10, () => {
-      this.color = '#999'
+    const xValues = [5, 8, 10]
+    const yValues = [12, 12, 14]
+    const index = Math.floor((this.target.sprite.x - this.x) / 250) - 1
 
-      if (this.ttl > 0) this.bullets.spawn(this.x, this.y, 'stone')
+    emit('delay', 'color', 10, () => {
+      this.color = '#F58328'
+
+      if (this.ttl > 0) this.bullets.spawn(this.x, this.y - 40, 'stone')
       this.bullets.shoot(
         xValues[index],
         yValues[index],
