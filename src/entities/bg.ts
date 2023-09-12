@@ -101,6 +101,7 @@ export class Path extends Sprite {
     if (this.opacity === 0) return
 
     this.context.scale(1.35, 1.35)
+    this.context.translate(0, -30)
     this.drawPath(
       'M48 199L91 221L98 232H109L116 244L149 251L171 291',
       this.levelIndex === 0 ? '#f00' : this.levelIndex > 0 ? '#000' : '#0003',
