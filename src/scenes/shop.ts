@@ -34,6 +34,7 @@ export const ShopScene = ({ canvas, data, onNext }) => {
   const playerItemLabels: any[] = []
   let selectedItemId = ''
 
+  playSound('nextLevel')
   const onClickNext = () => {
     playSound('click')
     onNext()
@@ -67,8 +68,8 @@ export const ShopScene = ({ canvas, data, onNext }) => {
       const allItems = [...playerItemLabels, ...shopItemLabels]
       allItems.find((l) => l.id === selectedItemId)?.toggleSelect()
       selectedItemId = item.id
-      playerItemLabels.forEach((i) => (i.color = 'white'))
-      shopItemLabels.forEach((i) => (i.color = 'white'))
+      playerItemLabels.forEach((i) => (i.color = '#fff'))
+      shopItemLabels.forEach((i) => (i.color = '#fff'))
       buySell.text = side === 0 ? 'Sell' : 'Buy'
 
       // check if can afford and disable buy button
@@ -122,7 +123,7 @@ export const ShopScene = ({ canvas, data, onNext }) => {
       x: xt + xt / 2,
       y: yt2 + 58,
       text: 'Name                     Weight      Damage      Value',
-      color: 'white',
+      color: '#fff',
       font: 'bold 22px sans-serif',
       anchor: { x: 0, y: 0 },
     }),
@@ -132,7 +133,7 @@ export const ShopScene = ({ canvas, data, onNext }) => {
       x: width / 2 - xt / 2 + xt + xt / 2,
       y: yt2 + 58,
       text: 'Name                     Weight      Damage      Value',
-      color: 'white',
+      color: '#fff',
       font: 'bold 22px sans-serif',
       anchor: { x: 0, y: 0 },
     }),
@@ -141,7 +142,7 @@ export const ShopScene = ({ canvas, data, onNext }) => {
     x: xt + (width / 2 - xt * 2) - 10,
     y: height - yt - 30,
     text: '>',
-    color: 'white',
+    color: '#fff',
     font: 'bold 22px sans-serif',
     anchor: { x: 0, y: 0 },
     onDown: () => changePlayerPage(1),
@@ -151,7 +152,7 @@ export const ShopScene = ({ canvas, data, onNext }) => {
     x: width / 4 + xt / 4,
     y: height - yt - 30,
     text: `1/${playerPageCount}`,
-    color: 'white',
+    color: '#fff',
     font: 'bold 22px sans-serif',
     anchor: { x: 0.5, y: 0 },
   })
@@ -160,7 +161,7 @@ export const ShopScene = ({ canvas, data, onNext }) => {
     x: width / 2 + (width / 4 - xt / 4),
     y: height - yt - 30,
     text: `1/${shopPageCount}`,
-    color: 'white',
+    color: '#fff',
     font: 'bold 22px sans-serif',
     anchor: { x: 0.5, y: 0 },
   })
@@ -169,7 +170,7 @@ export const ShopScene = ({ canvas, data, onNext }) => {
     x: xt + 20,
     y: height - yt - 30,
     text: '<',
-    color: 'white',
+    color: '#fff',
     font: 'bold 22px sans-serif',
     anchor: { x: 0, y: 0 },
     onDown: () => changePlayerPage(-1),
@@ -179,7 +180,7 @@ export const ShopScene = ({ canvas, data, onNext }) => {
     x: width - (xt + 30),
     y: height - yt - 30,
     text: '>',
-    color: 'white',
+    color: '#fff',
     font: 'bold 22px sans-serif',
     anchor: { x: 0, y: 0 },
     onDown: () => changeShopPage(1),
@@ -189,7 +190,7 @@ export const ShopScene = ({ canvas, data, onNext }) => {
     x: xt + 20 + (width / 2 - xt / 2),
     y: height - yt - 30,
     text: '<',
-    color: 'white',
+    color: '#fff',
     font: 'bold 22px sans-serif',
     anchor: { x: 0, y: 0 },
     onDown: () => changeShopPage(-1),
@@ -201,7 +202,7 @@ export const ShopScene = ({ canvas, data, onNext }) => {
       x: width / 4,
       y: yt2,
       text: 'Player',
-      color: 'white',
+      color: '#fff',
       font: '28px sans-serif',
       anchor: { x: 0.5, y: 0 },
     }),
@@ -212,7 +213,7 @@ export const ShopScene = ({ canvas, data, onNext }) => {
       x: width / 2,
       y: yt2,
       text: LEVELS[data.levelIndex].name,
-      color: 'white',
+      color: '#fff',
       font: 'bold 32px sans-serif',
       anchor: { x: 0.5, y: 0 },
     }),
@@ -223,7 +224,7 @@ export const ShopScene = ({ canvas, data, onNext }) => {
       x: width / 2 + width / 4 - 5,
       y: yt2,
       text: 'Shop',
-      color: 'white',
+      color: '#fff',
       font: '28px sans-serif',
       anchor: { x: 0.5, y: 0 },
     }),
@@ -233,7 +234,7 @@ export const ShopScene = ({ canvas, data, onNext }) => {
     x: width / 2,
     y: height - yt2,
     text: `Gold: ${data.gold}`,
-    color: 'white',
+    color: '#fff',
     font: '28px sans-serif',
     anchor: { x: 0.5, y: 1 },
   })
@@ -243,7 +244,7 @@ export const ShopScene = ({ canvas, data, onNext }) => {
     x: width - xt,
     y: height - yt2,
     text: 'Buy',
-    color: 'white',
+    color: '#fff',
     font: '28px sans-serif',
     anchor: { x: 1, y: 1 },
     onDown: onBuySell,
@@ -255,7 +256,7 @@ export const ShopScene = ({ canvas, data, onNext }) => {
     x: xt,
     y: height - yt2,
     text: 'Next',
-    color: 'white',
+    color: '#fff',
     font: '28px sans-serif',
     anchor: { x: 0, y: 1 },
     onDown: onClickNext,
@@ -296,7 +297,7 @@ class ShopItem {
     const _x = startX + xt + xt / 2
     const _y = yt + xt / 2 + 32 * index + 15
     this.id = `${side === 0 ? 'player' : 'shop'}:${index}`
-    const color = 'white'
+    const color = '#fff'
     const text = ''
     const font = '24px sans-serif'
     const anchor = { x: 0.5, y: 0 }

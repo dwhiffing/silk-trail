@@ -12,12 +12,12 @@ export class Sprite extends SpriteClass {
   }
 
   takeDamage(n) {
-    if (this.health <= 0) return
+    if (this.health <= 0 || this.color === '#f00') return
 
     if (n > 0) this.health -= n
     this.color = '#f00'
-    emit('delay', 'unhurt', 30, () => {
-      this.color = this.baseColor
+    emit('delay', 'unhurt', 20, () => {
+      this.color = '#fff'
     })
     if (this.health <= 0) this.die()
   }

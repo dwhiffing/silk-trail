@@ -1,12 +1,11 @@
 import { Enemies } from '../entities/enemies'
 import { Player } from '../entities/player'
-// import { Minimap } from '../entities/minimap'
 import { Bullets } from '../entities/bullets'
 import { checkCollisions, playSound } from '../utils'
 import { Particles } from '../entities/particles'
 import { emit, off, on, Text } from 'kontra'
 import { LEVELS } from '../constants'
-import { Background } from '../entities/bg'
+import { Background, Circle } from '../entities/bg'
 
 export const RoadScene = ({ canvas, data, onNext, onWin, onLose }) => {
   const timers = {}
@@ -23,6 +22,8 @@ export const RoadScene = ({ canvas, data, onNext, onWin, onLose }) => {
   const levelIndex = data.levelIndex
   const level = LEVELS[levelIndex]
 
+  let map = new Circle({ x: 0, y: 20, size: 10, color: '#fff' })
+
   let particles = Particles()
   let bullets = Bullets({ particles })
   let enemies = Enemies({ canvas, level, particles, bullets })
@@ -31,14 +32,7 @@ export const RoadScene = ({ canvas, data, onNext, onWin, onLose }) => {
     canvas,
     getSpeed: () => player.sprite.speed * 3,
   })
-  // let map = new Minimap({
-  //   canvas,
-  //   maxProgress: level.totalLength,
-  //   x: canvas.width / 10,
-  //   y: 0,
-  //   player,
-  //   color: '#000',
-  // })
+
   const hpText = Text({
     x: canvas.width - 70,
     y: canvas.height / 2 - 20,
@@ -96,11 +90,13 @@ export const RoadScene = ({ canvas, data, onNext, onWin, onLose }) => {
         [player.sprite],
         bulletPlayerCollide,
       )
+      const width = canvas.width
+      map.x = width * player.sprite.progress
     },
     render() {
       background.render()
       player.sprite.render()
-      // map.render()
+      map.render()
       enemies.pool.render()
       particles.pool.render()
       bullets.pool.render()

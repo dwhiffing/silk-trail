@@ -9,7 +9,7 @@ export const Player = ({ canvas, data, bullets }) => {
   let sprite = new PlayerSprite({
     x: canvas.width - 60,
     y: constants.GROUND_Y - constants.SIZE / 3,
-    color: 'white',
+    color: '#fff',
     width: constants.SIZE,
     height: constants.SIZE,
     health: constants.MAX_HP,
@@ -170,7 +170,6 @@ class PlayerSprite extends Sprite {
   constructor(properties) {
     super({ ...properties })
     this.block = false
-    this.baseColor = '#fff'
     this.progress = 0
     this.speed = 4.5
   }
