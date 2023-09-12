@@ -1,6 +1,6 @@
 import { Enemies } from '../entities/enemies'
 import { Player } from '../entities/player'
-import { Minimap } from '../entities/minimap'
+// import { Minimap } from '../entities/minimap'
 import { Bullets } from '../entities/bullets'
 import { checkCollisions } from '../utils'
 import { Particles } from '../entities/particles'
@@ -30,20 +30,21 @@ export const RoadScene = ({ canvas, data, onNext, onWin, onLose }) => {
     canvas,
     getSpeed: () => player.sprite.speed * 3,
   })
-  let map = new Minimap({
-    canvas,
-    maxProgress: level.totalLength,
-    x: canvas.width / 10,
-    y: 0,
-    player,
-    color: '#000',
-  })
+  // let map = new Minimap({
+  //   canvas,
+  //   maxProgress: level.totalLength,
+  //   x: canvas.width / 10,
+  //   y: 0,
+  //   player,
+  //   color: '#000',
+  // })
   const hpText = Text({
-    x: 10,
-    y: 15,
-    text: `HP: ${player.sprite.health}`,
+    x: canvas.width - 70,
+    y: canvas.height / 2 - 20,
+    text: `HP = ${player.sprite.health}`,
     color: '#000',
     font: '16px sans-serif',
+    anchor: { x: 0.5, y: 0.5 },
   })
 
   const bulletPlayerCollide = (b, p) => {
@@ -70,7 +71,7 @@ export const RoadScene = ({ canvas, data, onNext, onWin, onLose }) => {
     },
     update() {
       player.update()
-      map.update()
+      // map.update()
       background.update()
 
       enemies.update(player)
@@ -96,7 +97,7 @@ export const RoadScene = ({ canvas, data, onNext, onWin, onLose }) => {
     render() {
       background.render()
       player.sprite.render()
-      map.render()
+      // map.render()
       enemies.pool.render()
       particles.pool.render()
       bullets.pool.render()

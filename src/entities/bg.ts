@@ -27,9 +27,9 @@ export const Background = ({ canvas, getSpeed }) => {
       mountain.dx = getSpeed() * -1
       if (mountain.x < -400) {
         mountain.x = canvas.width
-        mountain.scaleX = Math.random() * 0.5 + 0.5
-        mountain.scaleY = Math.random() * 0.5 + 0.2
-        mountain.y = GROUND_Y - 129 + 160 * (1 - mountain.scaleY)
+        mountain.scaleX = Math.random() * 1.5 + 1
+        mountain.scaleY = Math.random() * 0.6 + 0.4
+        mountain.y = GROUND_Y - 129 + 180 * (1 - mountain.scaleY)
       }
     },
     shutdown() {},
