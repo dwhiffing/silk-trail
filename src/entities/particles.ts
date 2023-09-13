@@ -23,7 +23,13 @@ class Particle extends Sprite {
 
   draw() {
     this.context.beginPath()
-    this.context.arc(-this.width, -this.width, this.width * 2, 0, Math.PI * 2)
+    this.context.arc(
+      -this.width / 2,
+      -this.width / 2,
+      this.width,
+      0,
+      Math.PI * 2,
+    )
     this.context.fillStyle = `rgba(255,255,255,${this.opacity})`
     this.context.closePath()
     this.context.fill()

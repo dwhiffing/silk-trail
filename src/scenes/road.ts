@@ -91,7 +91,7 @@ export const RoadScene = ({ canvas, data, onNext, onWin, onLose }) => {
         bulletPlayerCollide,
       )
       const width = canvas.width
-      map.x = width * player.sprite.progress
+      map.x = width * (player.sprite.progress / LEVELS[data.levelIndex].len)
     },
     render() {
       background.render()
