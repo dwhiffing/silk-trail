@@ -1141,10 +1141,10 @@ klaw-sync@^6.0.0:
   dependencies:
     graceful-fs "^4.1.11"
 
-kontra@^9.0.0:
-  version "9.0.0"
-  resolved "https://registry.yarnpkg.com/kontra/-/kontra-9.0.0.tgz#ed11952ba94336c489d89530ce1f0c2a0e02b819"
-  integrity sha512-/8A3vsLP4OuSHlNTaF4f9tq7+AG0F2OqtlUcfQwwlRVtmrIpm1jVeKORu5EpKRxciLVG/9RkOAOgCwPwN0fVhw==
+kontra@^8.0.0:
+  version "8.0.0"
+  resolved "https://registry.yarnpkg.com/kontra/-/kontra-8.0.0.tgz#661b46b650ed86c9c1a71e723b54dc2a7ab1e30b"
+  integrity sha512-7Go/K4S+6gtyillSKSkSlNq46neuIWGvof9PYyzBwiBKGrs+1GHzsDknaeIID3GulV+sK1oKcV0hB2CyyO7ePQ==
 
 lazystream@^1.0.0:
   version "1.0.1"
