@@ -40,7 +40,7 @@ export const MapScene = ({ canvas, data, onNext }) => {
 
   const onNextLevel = () => {
     playSound('nextLevel')
-    onNext()
+    setTimeout(() => onNext(), 50)
   }
 
   const start = Text({
