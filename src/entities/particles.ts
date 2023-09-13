@@ -2,11 +2,11 @@ import { Pool } from 'kontra'
 import { Sprite } from './sprite'
 
 export const Particles = () => {
-  let pool = Pool({ create: () => new Particle(), maxSize: 200 })
+  let pool = Pool({ create: () => new Particle() })
   return {
     pool,
     spawn({ x, y, size = 1, ttl = 50, opacity = 1 }) {
-      pool.get({ x, y, width: size, ttl, opacity, initialOpacity: opacity })
+      pool.get({ x, y, width: size, ttl, opacity, io: opacity })
     },
   }
 }
@@ -18,22 +18,14 @@ class Particle extends Sprite {
 
   update() {
     super.update()
-    this.opacity -= this.initialOpacity / this.ttl
+    this.opacity -= this.io / this.ttl
   }
 
   draw() {
-    this.context.rect(-this.width, -this.width, this.width * 2, this.width * 2)
-    var g = this.context.createRadialGradient(
-      -this.width + this.width,
-      -this.width + this.width,
-      this.width / 1.5,
-      -this.width + this.width,
-      -this.width + this.width,
-      this.width,
-    )
-    g.addColorStop(0, `rgba(255,255,255,${this.opacity})`)
-    g.addColorStop(1, `rgba(255,255,255,0)`)
-    this.context.fillStyle = g
+    this.context.beginPath()
+    this.context.arc(-this.width, -this.width, this.width * 2, 0, Math.PI * 2)
+    this.context.fillStyle = `rgba(255,255,255,${this.opacity})`
+    this.context.closePath()
     this.context.fill()
   }
 }

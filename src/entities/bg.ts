@@ -88,7 +88,7 @@ export class Mountain extends Sprite {
     if (this.opacity === 0) return
 
     this.context.scale(this.scaleX, this.scaleY)
-    this.drawPath('M106 1L1 154H209L106 1Z', 'transparent', '#B78F73', 1)
+    this.svg('M106 1L1 154H209L106 1Z', 'transparent', '#B78F73', 1)
   }
 }
 
@@ -102,31 +102,31 @@ export class Path extends Sprite {
 
     this.context.scale(1.35, 1.35)
     this.context.translate(0, -30)
-    this.drawPath(
+    this.svg(
       'M48 199L91 221L109 232L116 244L149 251L171 291',
       this.levelIndex === 0 ? '#f00' : this.levelIndex > 0 ? '#000' : '#0003',
       '',
       5,
     )
-    this.drawPath(
+    this.svg(
       'M193 296L209 287L243 284L264 260L294 249',
       this.levelIndex === 1 ? '#f00' : this.levelIndex > 1 ? '#000' : '#0003',
       '',
       5,
     )
-    this.drawPath(
+    this.svg(
       'M316 242L400 216H437L467 234',
       this.levelIndex === 2 ? '#f00' : this.levelIndex > 2 ? '#000' : '#0003',
       '',
       5,
     )
-    this.drawPath(
+    this.svg(
       'M486 250L507 280L541 293H586L633 298L662 287',
       this.levelIndex === 3 ? '#f00' : this.levelIndex > 3 ? '#000' : '#0003',
       '',
       5,
     )
-    this.drawPath(
+    this.svg(
       'M684 283L711 290L734 287L755 294L785 252V234L807 191L796 156',
       this.levelIndex === 4 ? '#f00' : this.levelIndex > 4 ? '#000' : '#0003',
       '',

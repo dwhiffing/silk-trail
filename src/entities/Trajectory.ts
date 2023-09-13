@@ -4,15 +4,15 @@ import { Sprite } from './sprite'
 
 export class Trajectory {
   sprites: Pool
-  angleSprite: AngleSprite
-  trajectorySprite: TrajectorySprite
+  as: AngleSprite
+  ts: TrajectorySprite
   speed: number
   stage: number
   angle: number
 
   constructor(properties) {
-    this.trajectorySprite = new TrajectorySprite(properties)
-    this.angleSprite = new AngleSprite(properties)
+    this.ts = new TrajectorySprite(properties)
+    this.as = new AngleSprite(properties)
     this.stage = 0
     this.speed = properties.speed
     this.angle = properties.angle
@@ -21,19 +21,19 @@ export class Trajectory {
   update() {
     if (this.stage === 0) return
 
-    this.angleSprite.angle = this.angle
-    this.angleSprite.speed = this.speed
-    this.angleSprite.update()
+    this.as.angle = this.angle
+    this.as.speed = this.speed
+    this.as.update()
 
-    this.trajectorySprite.angle = this.angle
-    this.trajectorySprite.speed = this.speed
-    this.trajectorySprite.update()
+    this.ts.angle = this.angle
+    this.ts.speed = this.speed
+    this.ts.update()
   }
 
   render() {
     if (this.stage === 0) return
-    this.angleSprite.render()
-    this.trajectorySprite.render()
+    this.as.render()
+    this.ts.render()
   }
 }
 class AngleSprite extends Sprite {

@@ -20,7 +20,7 @@ export const Player = ({ canvas, data, bullets }) => {
   let canBlock = true
   const catchItem = (item) => {
     playSound('catch')
-    data.items.unshift(item.type)
+    data.items.unshift(item.name)
     onSwap()
   }
   on('player-catch-item', catchItem)
@@ -35,7 +35,7 @@ export const Player = ({ canvas, data, bullets }) => {
     speed = _speed
     trajectory.angle = _angle
 
-    const _item = constants.ITEM_TYPES[item.type]
+    const _item = constants.ITEM_TYPES[item.name]
     trajectory.speed = _speed * (1 / _item.weight)
   }
   let trajectory = new Trajectory({
@@ -99,10 +99,12 @@ export const Player = ({ canvas, data, bullets }) => {
   }
 
   const onSwap = () => {
+    if (!item?.name) return
+
     playSound('swap')
     if (trajectory.stage !== 0) trajectory.stage = 0
     if (item) {
-      data.items.push(item.type)
+      data.items.push(item.name)
       item.ttl = 0
     }
     getItem()
@@ -133,7 +135,7 @@ export const Player = ({ canvas, data, bullets }) => {
       sprite.update()
       trajectory.update()
       sprite.progress += constants.BASE_MOVEMENT_SPEED * sprite.speed
-      if (sprite.progress >= constants.LEVELS[data.levelIndex].totalLength)
+      if (sprite.progress >= constants.LEVELS[data.levelIndex].len)
         emit('level-end')
       const totalWeight = data.items
         .map((k) => constants.ITEM_TYPES[k].weight)
@@ -187,14 +189,14 @@ class PlayerSprite extends Sprite {
     this.context.scale(-1, 1)
     this.context.rotate(0.2)
     this.context.translate(0, this.block ? -30 : 0)
-    this.drawPath(BODY_PATH, '#B6AC88', this.color, 1, -150, -150)
-    this.drawPath(FACE_PATH, '#B6AC88', '#DEA248', 1, -150, -150)
+    this.svg(BODY_PATH, '#B6AC88', this.color, 1, -150, -150)
+    this.svg(FACE_PATH, '#B6AC88', '#DEA248', 1, -150, -150)
     this.context.translate(-0, this.block ? 30 : 0)
     this.context.rotate(-0.2)
     this.context.scale(1, 1)
     this.context.translate(5, -20)
     this.context.rotate((this._frame / -10) * (this.speed / 4))
-    this.drawPath(
+    this.svg(
       'M16 16L85 85M85 16L16 85M51 2V99M99 50H2',
       '#501502',
       '#7D1F01',
@@ -212,10 +214,10 @@ class PlayerSprite extends Sprite {
     this.context.translate(-5, 20)
     this.context.translate(-s, -(s * 2))
 
-    this.drawPath('M19 67H142L158 1H1L19 67Z', '#000', '#7D1F01', 2, -30, 25)
+    this.svg('M19 67H142L158 1H1L19 67Z', '#000', '#7D1F01', 2, -30, 25)
     this.context.translate(s, s * 2)
     this.context.rotate((this._frame / -10) * (this.speed / 4))
-    this.drawPath(
+    this.svg(
       'M16 16L85 85M85 16L16 85M51 2V99M99 50H2',
       '#501502',
       '#7D1F01',

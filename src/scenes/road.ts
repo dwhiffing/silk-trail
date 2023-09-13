@@ -43,16 +43,16 @@ export const RoadScene = ({ canvas, data, onNext, onWin, onLose }) => {
   })
 
   const bulletPlayerCollide = (b, p) => {
-    b.takeDamage(b.health)
+    b.hurt(b.health)
     if (p.block) return emit('player-catch-item', b)
-    p.takeDamage(1)
+    p.hurt(1)
     emit('player-damaged')
     playSound('playerHit')
   }
 
   const bulletEnemyCollide = (b, e) => {
-    b.takeDamage(b.health)
-    e.takeDamage(b.damage, true)
+    b.hurt(b.health)
+    e.hurt(b.damage, true)
     playSound('playerHit')
   }
 

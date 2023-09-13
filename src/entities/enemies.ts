@@ -10,7 +10,7 @@ import {
 import { Sprite } from './sprite'
 
 export const Enemies = ({ canvas, level, particles, bullets }) => {
-  let pool = Pool({ create: () => new Enemy(), maxSize: 10 })
+  let pool = Pool({ create: () => new Enemy() })
   let toSpawn = 0
   let target
   let waveIndex = 0
@@ -59,7 +59,7 @@ export const Enemies = ({ canvas, level, particles, bullets }) => {
             ? enemy.speed - target.speed
             : 0
       })
-      if (wave && target.progress / level.totalLength > wave.progress) {
+      if (wave && target.progress / level.len > wave.progress) {
         spawn(player, wave)
         wave = level.waves[++waveIndex]
       }
@@ -86,7 +86,7 @@ class CamelRiderSprite extends Sprite {
     const y2 = this.height * -0.4
     this.context.translate(x2, y2)
     const index = Math.round((this._frame % k) / k)
-    this.drawPath(
+    this.svg(
       index === 0
         ? 'M11 216L6 205L24 169L53 146L64 120L104 95L147 91L172 106L190 111L207 103L221 91L216 84L212 77L220 79L223 84L236 86L247 88L254 95L252 99L241 101L229 110L212 120L194 127L180 135L200 153L227 178L236 176L237 178L232 185L225 187L202 166L198 189V194L194 200H190L194 187L197 161L190 155L180 152L159 144L127 147L104 135L96 151L78 182L93 216L104 221L105 225H93L69 182L78 158V146L33 169L13 205L16 212L11 216Z'
         : 'M99 189L94 192L73 189L89 203H94L91 209L85 207L56 184L59 168L58 153L55 142L67 108L90 91L118 84L155 89L191 112L212 108L228 96L223 89L219 82L226 84L230 89L243 91L254 93L261 100L259 103L248 105L224 119L206 128L189 130L175 142L171 186L136 197V202L135 205H129V197L160 181V146L138 170L131 177L124 205L116 204L111 200L120 195H124L127 170L149 141L87 135L78 153L73 180L94 186L96 183L99 189Z',
@@ -98,9 +98,9 @@ class CamelRiderSprite extends Sprite {
     const y = index === 0 ? -5 : 1
     const x = index === 0 ? -10 : -5
     this.context.translate(x, y)
-    this.drawPath(BODY_PATH, '#B6AC88', this.color, 1)
-    this.drawPath(FACE_PATH, '#84530A', '#DEA248', 1)
-    this.drawPath('M164 82L227 103', '#84530A', undefined, 3)
+    this.svg(BODY_PATH, '#B6AC88', this.color, 1)
+    this.svg(FACE_PATH, '#84530A', '#DEA248', 1)
+    this.svg('M164 82L227 103', '#84530A', undefined, 3)
     this.context.translate(-x, -y)
     this.context.translate(-x2, -y2)
     this.drawDebug()
@@ -123,7 +123,7 @@ class Enemy extends CamelRiderSprite {
       width: 40,
       height: 80,
       speed: 5,
-      health: 100,
+      health: 10,
       damage: 10,
       ...properties,
       anchor: { x: 0.5, y: 1 },
@@ -141,7 +141,8 @@ class Enemy extends CamelRiderSprite {
     emit('delay', 'color', 20, () => {
       this.color = '#fff'
       let item
-      if (this.ttl > 0) item = this.bullets.spawn(this.x, this.y - 40, 'axe')
+      if (this.ttl > 0)
+        item = this.bullets.spawn(this.x, this.y - 40, 'copper-axe')
       this.bullets.shoot(
         item,
         xValues[index],
@@ -159,8 +160,8 @@ class Enemy extends CamelRiderSprite {
     this.particles.spawn({
       x: this.x + this.width / 2,
       y: this.y - this.width / 2,
-      size: this.width,
-      ttl: 0,
+      size: this.width * 3,
+      ttl: 30,
     })
 
     super.die()

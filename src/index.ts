@@ -26,7 +26,7 @@ onPointer('up', () => {
     music = zzfxP(...zzfxM(...MUSIC))
     music.loop = true
     // TODO: remove me
-    // a.click()
+    a.click()
   }
 })
 

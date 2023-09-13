@@ -1,15 +1,18 @@
 export const STARTING_ITEMS = [
-  'empty',
-  'rock',
-  'axe',
-  'rock',
-  'axe',
-  'rock',
-  'ingot',
-  'ingot',
-  'ingot',
-  'ingot',
-  'ingot',
+  // 'rock',
+  // 'empty',
+  // 'rock',
+  // 'rock',
+  // 'rock',
+  // 'rock',
+  // 'rock',
+  // 'rock',
+  // 'rock',
+  // 'rock',
+  // 'rock',
+  // 'rock',
+  // 'rock',
+  // 'rock',
 ]
 export const STARTING_DATA = { levelIndex: 0, gold: 100, items: STARTING_ITEMS }
 export const GRAVITY = 0.175
@@ -32,11 +35,11 @@ export const ATTACK_RANGE = 900
 const SHOP_ITEMS = [[], [], [], [], [], []]
 
 const MARKETS = [
-  { ingot: 0.1, gem: 1.3 },
-  { ingot: 0.1, gem: 1.3 },
-  { ingot: 0.1, gem: 1.3 },
-  { ingot: 0.1, gem: 1.3 },
-  { ingot: 0.1, gem: 1.3 },
+  { amethyst: 0.1, ruby: 1.3 },
+  { amethyst: 0.1, ruby: 1.3 },
+  { amethyst: 0.1, ruby: 1.3 },
+  { amethyst: 0.1, ruby: 1.3 },
+  { amethyst: 0.1, ruby: 1.3 },
 ]
 
 const iToType = (t) => ({
@@ -47,6 +50,7 @@ const iToType = (t) => ({
   weight: t[4],
   value: t[5],
   color: t[6],
+  image: t[7],
   name: t[7],
 })
 const iToWave = (l) => ({ count: l[0], progress: l[1] })
@@ -54,20 +58,64 @@ const iToLevel = (l) => ({
   x: l[0],
   y: l[1],
   name: l[2],
-  totalLength: l[3],
+  len: l[3],
   waves: l[4],
   items: l[5],
   market: l[6],
 })
 
+const gem = iToType([32, 32, 10, 1, 0.8, 100, '#fff', 'gem'])
+const axe = iToType([32, 64, 10, 5, 1.3, 10, '#fff', 'axe'])
+const ingot = iToType([32, 64, 10, 1, 1, 10, '#fff', 'ingot'])
 export const ITEM_TYPES = {
   empty: iToType([0, 0, 0, 0, 0, 0, '#000', 'empty']),
-  // bag: iToType([32, 32, 10, 1, 0.8, 1, '#ff0', 'bag']),
-  gem: iToType([32, 32, 10, 1, 0.8, 100, '#fff', 'gem']),
-  ingot: iToType([32, 64, 10, 5, 1.3, 10, '#fff', 'ingot']),
-  axe: iToType([36, 64, 10, 10, 1, 10, '#ff0', 'axe']),
   rock: iToType([20, 20, 10, 5, 0.7, 10, '#666', 'rock']),
 }
+const GEM_TYPES = {
+  topaz: ['#ff0', 0.5],
+  amethyst: ['#f0f', 1],
+  emerald: ['#0f0', 1.5],
+  sapphire: ['#00f', 2],
+  ruby: ['#f00', 3],
+  diamond: ['#0ff', 4],
+}
+
+const METAL_TYPES = {
+  copper: ['#fa0', 0.5],
+  silver: ['#aaa', 1],
+  gold: ['#ff0', 2],
+}
+Object.entries(GEM_TYPES).forEach(([k, v]) => {
+  const t = gem
+  ITEM_TYPES[k] = {
+    ...t,
+    image: 'gem',
+    name: k,
+    // @ts-ignore
+    value: t.value * v[1],
+    color: v[0],
+  }
+})
+Object.entries(METAL_TYPES).forEach(([k, v]) => {
+  const t = ingot
+  const a = axe
+  ITEM_TYPES[k + '-ingot'] = {
+    ...t,
+    name: k + '-ingot',
+    image: 'ingot',
+    // @ts-ignore
+    value: t.value * v[1],
+    color: v[0],
+  }
+  ITEM_TYPES[k + '-axe'] = {
+    ...a,
+    name: k + '-axe',
+    image: 'axe',
+    // @ts-ignore
+    value: a.value * v[1],
+    color: v[0],
+  }
+})
 
 export const LEVELS = [
   iToLevel([

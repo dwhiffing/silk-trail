@@ -11,7 +11,7 @@ export class Sprite extends SpriteClass {
     this._frame = 0
   }
 
-  takeDamage(n) {
+  hurt(n) {
     if (this.health <= 0 || this.color === '#f00') return
 
     if (n > 0) this.health -= n
@@ -27,7 +27,7 @@ export class Sprite extends SpriteClass {
     this.opacity = 0
   }
 
-  drawPath(
+  svg(
     _path: string,
     strokeStyle?: string,
     fillStyle?: string,

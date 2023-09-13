@@ -5,20 +5,20 @@ import { Sprite } from './sprite'
 
 export const Bullets = ({ particles }) => {
   let pool = Pool({
-    create: () => new Bullet({ anchor: { x: 0.5, y: 0.5 } }),
-    maxSize: 10,
+    create: () => new Bullet(),
   })
 
   const spawn = (x: number, y: number, itemKey: string) => {
     if (!ITEM_TYPES[itemKey]) return
-    const { health, size, size2, damage, color } = ITEM_TYPES[itemKey]
+    const { health, size, size2, image, damage, color } = ITEM_TYPES[itemKey]
     return pool.get({
       x,
       y,
       damage,
       color,
       health,
-      type: itemKey,
+      type: image,
+      name: itemKey,
       active: false,
       ttl: Infinity,
       isEnemyBullet: false,
@@ -98,18 +98,18 @@ export class Bullet extends Sprite {
       this.context.fill()
       this.context.stroke()
       // } else if (this.type === 'bag') {
-      //   this.drawPath(BAG_STROKE, '#000', this.color, 0, s2, s2)
-      //   this.drawPath('M38 15H29L26 9H40L38 15Z', '#000', this.color, 0, s2, s2)
-      //   this.drawPath('M28 17H38.5', 'transparent', 'red', 0, s * 0.5, s * 0.5)
+      //   this.svg(BAG_STROKE, '#000', this.color, 0, s2, s2)
+      //   this.svg('M38 15H29L26 9H40L38 15Z', '#000', this.color, 0, s2, s2)
+      //   this.svg('M28 17H38.5', 'transparent', 'red', 0, s * 0.5, s * 0.5)
     } else if (this.type === 'gem') {
-      this.drawPath(GEM_FILL, 'transparent', this.color, 0, s2, s2)
-      this.drawPath(GEM_STROKE, '#000', 'transparent', 0, s2, s2)
+      this.svg(GEM_FILL, 'transparent', this.color, 0, s2, s2)
+      this.svg(GEM_STROKE, '#000', 'transparent', 0, s2, s2)
     } else if (this.type === 'ingot') {
-      this.drawPath(INGOT_FILL, 'transparent', this.color, 0, s2, s2)
-      this.drawPath(INGOT_STROKE, '#000', 'transparent', 0, s2, s2)
+      this.svg(INGOT_FILL, 'transparent', this.color, 0, s2, s2)
+      this.svg(INGOT_STROKE, '#000', 'transparent', 0, s2, s2)
     } else if (this.type === 'axe') {
       const s2 = -(this.size / 2)
-      this.drawPath(AXE_PATH, '#000', this.color, 1, s2, s2)
+      this.svg(AXE_PATH, '#000', this.color, 1, s2, s2)
     }
     this.context.rotate(this._frame / 5)
     this.context.translate(-s, -s)
@@ -124,8 +124,6 @@ const AXE_PATH =
 const INGOT_STROKE =
   'M15 33L11 48H35M15 33H30M15 33L35 17H48M30 33L35 48M30 33L48 17M35 48L53 31L48 17'
 
-const BAG_STROKE =
-  'M26 50L19 47L20 29L23 23L29 19H38L44 23L46 29L47 47L42 50L34 51L26 50Z'
 const INGOT_FILL = 'M11 48L15 33L35 17H48L53 31L35 48H11Z'
 const GEM_FILL = 'M32 8L53 20L53 44L32 56L11 44V20L20 25L11 20L32 8Z'
 const GEM_STROKE =
