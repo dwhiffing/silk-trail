@@ -92,10 +92,10 @@ const startLose = () => {
   })
 }
 
-// startMenu()
+startMenu()
 // startRoad()
 // startShop()
-startMap()
+// startMap()
 // startWin()
 // startLose()
 

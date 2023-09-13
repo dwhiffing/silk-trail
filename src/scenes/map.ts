@@ -8,7 +8,6 @@ export const MapScene = ({ canvas, data, onNext }) => {
   const dots: any[] = []
 
   LEVELS.forEach((_, i) => {
-    const o = width / LEVELS.length
     const y = _.y - 40
     const dot = new Circle({
       x: _.x,

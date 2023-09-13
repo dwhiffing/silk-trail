@@ -1,20 +1,13 @@
 export const STARTING_ITEMS = [
   'rock',
   'empty',
-  'rock',
-  'rock',
-  'rock',
-  'rock',
-  'rock',
-  'rock',
-  'rock',
-  'rock',
-  'rock',
-  'rock',
-  'rock',
-  'rock',
+  ...new Array(6).fill('').flatMap((m) => ['rock', 'copper-axe']),
 ]
-export const STARTING_DATA = { levelIndex: 0, gold: 100, items: STARTING_ITEMS }
+export const STARTING_DATA = {
+  levelIndex: 0,
+  gold: 1000,
+  items: STARTING_ITEMS,
+}
 export const GRAVITY = 0.175
 export const GROUND_Y = 455
 export const MIN_SPEED = 3
@@ -27,20 +20,10 @@ export const BASE_MOVEMENT_SPEED = 0.0001
 export const BASE_SPEED_CHANGE = 0.12
 export const BASE_ANGLE_CHANGE = 0.02
 export const MAX_HP = 5
-export const MAX_WEIGHT = 20
+export const MAX_WEIGHT = 18
 export const ENEMY_BUFFER = 240
 export const PLAYER_BUFFER = 300
 export const ATTACK_RANGE = 900
-// express shop/player stock via index + multiplier
-const SHOP_ITEMS = [[], [], [], [], [], []]
-
-const MARKETS = [
-  { amethyst: 0.1, ruby: 1.3 },
-  { amethyst: 0.1, ruby: 1.3 },
-  { amethyst: 0.1, ruby: 1.3 },
-  { amethyst: 0.1, ruby: 1.3 },
-  { amethyst: 0.1, ruby: 1.3 },
-]
 
 const iToType = (t) => ({
   size: t[0],
@@ -64,14 +47,14 @@ const iToLevel = (l) => ({
   market: l[6],
 })
 
-const gem = iToType([32, 32, 10, 1, 0.8, 100, '#fff', 'gem'])
-const axe = iToType([32, 64, 10, 5, 1.3, 10, '#fff', 'axe'])
-const ingot = iToType([32, 64, 10, 1, 1, 10, '#fff', 'ingot'])
+const gem = iToType([32, 32, 10, 1, 0.2, 100, '#fff', 'gem'])
+const axe = iToType([32, 64, 10, 10, 1.3, 25, '#fff', 'axe'])
+const ingot = iToType([32, 64, 10, 15, 1, 10, '#fff', 'ingot'])
 export const ITEM_TYPES = {
   empty: iToType([0, 0, 0, 0, 0, 0, '#000', 'empty']),
-  rock: iToType([20, 20, 10, 5, 0.7, 10, '#666', 'rock']),
+  rock: iToType([20, 20, 10, 5, 0.7, 1, '#666', 'rock']),
 }
-const GEM_TYPES = {
+export const GEM_TYPES = {
   topaz: ['#ff0', 0.5],
   amethyst: ['#f0f', 1],
   emerald: ['#0f0', 1.5],
@@ -81,9 +64,9 @@ const GEM_TYPES = {
 }
 
 const METAL_TYPES = {
-  copper: ['#fa0', 0.5],
-  silver: ['#aaa', 1],
-  gold: ['#ff0', 2],
+  copper: ['#fa0', 1, 1],
+  silver: ['#aaa', 2, 2],
+  gold: ['#ff0', 5, 3],
 }
 Object.entries(GEM_TYPES).forEach(([k, v]) => {
   const t = gem
@@ -105,6 +88,8 @@ Object.entries(METAL_TYPES).forEach(([k, v]) => {
     image: 'ingot',
     // @ts-ignore
     value: t.value * v[1],
+    // @ts-ignore
+    damage: t.damage * v[2],
     color: v[0],
   }
   ITEM_TYPES[k + '-axe'] = {
@@ -113,55 +98,17 @@ Object.entries(METAL_TYPES).forEach(([k, v]) => {
     image: 'axe',
     // @ts-ignore
     value: a.value * v[1],
+    // @ts-ignore
+    damage: t.damage * v[2],
     color: v[0],
   }
 })
 
 export const LEVELS = [
-  iToLevel([
-    50,
-    260,
-    'ISKENDERUN',
-    0.75,
-    [iToWave([1, 0.1]), iToWave([1, 0.5])],
-    SHOP_ITEMS[0],
-    MARKETS[0],
-  ]),
-  iToLevel([
-    245,
-    400,
-    'BAGHDAD',
-    1,
-    [iToWave([1, 0.1]), iToWave([2, 0.5])],
-    SHOP_ITEMS[0],
-    MARKETS[0],
-  ]),
-  iToLevel([
-    412,
-    330,
-    'TEHRAN',
-    1.25,
-    [iToWave([2, 0.1]), iToWave([2, 0.33]), iToWave([2, 0.5])],
-    SHOP_ITEMS[1],
-    MARKETS[1],
-  ]),
-  iToLevel([
-    645,
-    325,
-    'MASHHAD',
-    1.5,
-    [iToWave([2, 0.1]), iToWave([3, 0.33]), iToWave([3, 0.5])],
-    SHOP_ITEMS[2],
-    MARKETS[2],
-  ]),
-  iToLevel([
-    908,
-    380,
-    'KABEL',
-    1.75,
-    [iToWave([3, 0.1]), iToWave([4, 0.33]), iToWave([4, 0.5])],
-    SHOP_ITEMS[3],
-    MARKETS[3],
-  ]),
-  iToLevel([1080, 195, 'KASHI', 1.75, [], SHOP_ITEMS[4], MARKETS[4]]),
+  iToLevel([50, 260, 'ISKENDERUN', 0.75]),
+  iToLevel([245, 400, 'BAGHDAD', 1]),
+  iToLevel([412, 330, 'TEHRAN', 1.25]),
+  iToLevel([645, 325, 'MASHHAD', 1.5]),
+  iToLevel([908, 380, 'KABEL', 1.75]),
+  iToLevel([1080, 195, 'KASHI', 1.75]),
 ]

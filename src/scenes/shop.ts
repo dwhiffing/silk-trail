@@ -1,17 +1,40 @@
 import { Text, Sprite, track } from 'kontra'
 import { Background } from '../entities/bg'
-import { ITEM_TYPES, LEVELS } from '../constants'
+import { GEM_TYPES, ITEM_TYPES, LEVELS } from '../constants'
 import { playSound } from '../utils'
 
 const yt = 70
 const yt2 = 20
 const xt = 50
-
+function shuffleArray(array) {
+  for (var i = array.length - 1; i > 0; i--) {
+    var j = Math.floor(Math.random() * (i + 1))
+    var temp = array[i]
+    array[i] = array[j]
+    array[j] = temp
+  }
+  return array
+}
 export const ShopScene = ({ canvas, data, onNext }) => {
   const { width, height } = canvas
   const background = Background({ canvas, getSpeed: () => 0.1 })
-  let shopItems = LEVELS[data.levelIndex].items
-  let market = LEVELS[data.levelIndex].market
+  let market = {}
+  const keys = shuffleArray(Object.keys(GEM_TYPES))
+  const keys2 = shuffleArray(Object.keys(ITEM_TYPES)).filter(
+    (t) => t !== 'empty',
+  )
+  let shopItems = []
+  keys2.forEach((k) => {
+    const t = k.match(/axe|ingot|rock/)
+    const max = t ? 12 : 3
+    const min = t ? 5 : 0
+    const n = Math.floor(Math.random() * max) + min
+    for (let i = 0; i < n; i++) shopItems.push(k)
+  })
+  for (let i = 0; i < 6; i++) {
+    const key = keys[i]
+    market[key] = i < 3 ? 0.2 : 1.8
+  }
   const sw = width / 2 - xt * 1.5
   const sh = height - yt * 2
   const x2 = width / 2 + xt / 2
@@ -358,6 +381,7 @@ class ShopItem {
     this.weightLabel.text = item?.weight || ''
     this.valueLabel.text = item?.value ? `${item?.value * _v}` : ''
     this.damageLabel.text = item?.damage || ''
+    this.toggleColor('#fff')
     if (_v < 0.8) this.toggleColor('#f66')
     if (_v > 1.2) this.toggleColor('#6f6')
   }

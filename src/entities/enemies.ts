@@ -9,45 +9,37 @@ import {
 } from '../constants'
 import { Sprite } from './sprite'
 
-export const Enemies = ({ canvas, level, particles, bullets }) => {
-  let pool = Pool({ create: () => new Enemy() })
-  let toSpawn = 0
-  let target
-  let waveIndex = 0
-  let wave = level.waves[waveIndex]
+export const Enemies = ({ canvas, data, particles, player, bullets }) => {
+  let pool = Pool({
+    create: () => new Enemy({ health: 10 + data.levelIndex * 10 }),
+  })
+  let target = player.sprite
   const attack = () => {
     const enemies = pool.getAliveObjects() as Enemy[]
     const inRange = enemies.filter((e) => target.x - e.x < ATTACK_RANGE)
-
     const index = randInt(0, inRange.length - 1)
     inRange[index]?.attack()
     emit('delay', 'attack', 600 / (enemies.length + 1), attack)
   }
-  const spawn = (target, wave) => {
-    let { count = 1 } = wave
-    toSpawn += count
-    let x = -25
-    let y = GROUND_Y - 60
-    for (let i = 0; i < count; i++) {
-      const ttl = Infinity
-      pool.get({
-        x: x + i * -80,
-        y,
-        ttl,
-        opacity: 1,
-        target,
-        pool,
-        bullets,
-        particles,
-      })
-      toSpawn--
-    }
+  const spawnDelay = 550 - data.levelIndex * 25
+  const spawn = () => {
+    pool.get({
+      x: -25,
+      y: GROUND_Y - 60,
+      ttl: Infinity,
+      opacity: 1,
+      target,
+      pool,
+      bullets,
+      particles,
+    })
+    emit('delay', 'spawn', spawnDelay, spawn)
   }
-  emit('delay', 'attack', 10, attack), 0
+  emit('delay', 'attack', 10, attack)
+  emit('delay', 'spawn', spawnDelay, spawn)
   return {
     pool,
-    update(player) {
-      target = player.sprite
+    update() {
       const _enemies = (pool.getAliveObjects() as any[]).sort(
         (a, b) => a.x - b.x,
       )
@@ -60,13 +52,6 @@ export const Enemies = ({ canvas, level, particles, bullets }) => {
             ? enemy.speed - target.speed
             : 0
       })
-      if (wave && target.progress / level.len > wave.progress) {
-        spawn(player, wave)
-        wave = level.waves[++waveIndex]
-      }
-    },
-    getRemaining() {
-      return toSpawn + pool.getAliveObjects().length
     },
     attack,
     spawn,
@@ -123,7 +108,7 @@ class Enemy extends CamelRiderSprite {
       color: '#fff',
       width: 40,
       height: 80,
-      speed: 10,
+      speed: 5,
       health: 10,
       damage: 10,
       ...properties,
@@ -136,7 +121,7 @@ class Enemy extends CamelRiderSprite {
     this.color = '#f00'
     const xValues = [5, 8, 10]
     const yValues = [12, 12, 14]
-    const index = Math.floor((this.target.sprite.x - this.x) / 250) - 1
+    const index = Math.floor((this.target.x - this.x) / 250) - 1
     playSound('catch')
 
     emit('delay', 'color', 20, () => {
