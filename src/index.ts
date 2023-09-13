@@ -8,7 +8,7 @@ const { canvas } = init()
 
 initPointer()
 let scene
-let data = STARTING_DATA
+let data
 let music
 
 let a = document.getElementsByTagName('a')[0]
@@ -26,7 +26,7 @@ onPointer('up', () => {
     music = zzfxP(...zzfxM(...MUSIC))
     music.loop = true
     // TODO: remove me
-    a.click()
+    // a.click()
   }
 })
 
@@ -42,7 +42,6 @@ const startRoad = () => {
     data,
     onNext: () => {
       if (data.levelIndex++ >= LEVELS.length - 1) {
-        data = STARTING_DATA
         startWin(data.gold)
       } else {
         startShop()
@@ -59,7 +58,7 @@ const startMap = () => {
 }
 
 const startMenu = () => {
-  data = STARTING_DATA
+  data = { ...STARTING_DATA }
   scene && scene.shutdown()
   scene = MenuScene({
     canvas,

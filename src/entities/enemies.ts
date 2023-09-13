@@ -35,6 +35,8 @@ export const Enemies = ({ canvas, data, particles, player, bullets }) => {
     })
     emit('delay', 'spawn', spawnDelay, spawn)
   }
+  // emit('delay', 'attack', 100, attack)
+  // emit('delay', 'spawn', 20, spawn)
   emit('delay', 'attack', 10, attack)
   emit('delay', 'spawn', spawnDelay, spawn)
   return {
@@ -109,6 +111,7 @@ class Enemy extends CamelRiderSprite {
       width: 40,
       height: 80,
       speed: 5,
+      // speed: 15,
       health: 10,
       damage: 10,
       ...properties,
@@ -142,7 +145,7 @@ class Enemy extends CamelRiderSprite {
   }
 
   die() {
-    playSound('enemyExplode')
+    playSound('playerHit')
     this.particles.spawn({
       x: this.x + this.width / 2,
       y: this.y - this.width / 2,

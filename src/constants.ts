@@ -1,18 +1,17 @@
 export const STARTING_ITEMS = [
-  'rock',
   'empty',
   ...new Array(6).fill('').flatMap((m) => ['rock', 'copper-axe']),
 ]
 export const STARTING_DATA = {
   levelIndex: 0,
-  gold: 1000,
+  gold: 350,
   items: STARTING_ITEMS,
 }
 export const GRAVITY = 0.175
 export const GROUND_Y = 455
 export const MIN_SPEED = 3
 export const MAX_SPEED = 8
-export const MAX_WAGON_SPEED = 8
+export const MAX_WAGON_SPEED = 6
 export const SIZE = 102
 export const MIN_ANGLE = 3.2
 export const MAX_ANGLE = 4
@@ -48,8 +47,8 @@ const iToLevel = (l) => ({
 })
 
 const gem = iToType([32, 32, 10, 1, 0.2, 100, '#fff', 'gem'])
-const axe = iToType([32, 64, 10, 10, 1.3, 25, '#fff', 'axe'])
-const ingot = iToType([32, 64, 10, 15, 1, 10, '#fff', 'ingot'])
+const axe = iToType([32, 64, 10, 10, 0.9, 25, '#fff', 'axe'])
+const ingot = iToType([32, 64, 10, 15, 1.3, 10, '#fff', 'ingot'])
 export const ITEM_TYPES = {
   empty: iToType([0, 0, 0, 0, 0, 0, '#000', 'empty']),
   rock: iToType([20, 20, 10, 5, 0.7, 1, '#666', 'rock']),

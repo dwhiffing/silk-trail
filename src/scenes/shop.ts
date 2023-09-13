@@ -64,8 +64,13 @@ export const ShopScene = ({ canvas, data, onNext }) => {
   }
 
   const getSelected = () => {
+    const side = selectedItemId.split(':')[0]
     const index = +selectedItemId.split(':')[1]
-    return ITEM_TYPES[data.items[index]]
+    return ITEM_TYPES[
+      side !== 'shop'
+        ? data.items[index + playerPage * 10]
+        : shopItems[index + shopPage * 10]
+    ]
   }
 
   const onBuySell = () => {
@@ -74,14 +79,15 @@ export const ShopScene = ({ canvas, data, onNext }) => {
     if (!item) return
     playSound('click')
     if (selectedItemId.includes('player')) {
-      shopItems.push(data.items[index])
-      data.items = data.items.filter((d, i) => i !== index)
-      data.gold += item.value
+      const _i = index + playerPage * 10
+      shopItems.push(data.items[_i])
+      data.items = data.items.filter((d, i) => i !== _i)
+      data.gold += item.value * market[item.name] || 1
     } else if (data.gold >= item.value) {
-      // make sure can afford before buying
-      data.items.push(shopItems[index])
-      shopItems = shopItems.filter((d, i) => i !== index)
-      data.gold -= item.value
+      const _i = index + shopPage * 10
+      data.items.push(shopItems[_i])
+      shopItems = shopItems.filter((d, i) => i !== _i)
+      data.gold -= item.value * market[item.name] || 1
     }
     updateShop()
   }
@@ -112,16 +118,19 @@ export const ShopScene = ({ canvas, data, onNext }) => {
   const shopPageCount = Math.ceil(shopItems.length / PAGE_SIZE)
   const changePlayerPage = (n) => {
     playerPage = Math.max(0, Math.min(playerPageCount - 1, playerPage + n))
+    playerItemLabels.forEach((l) => l.setItem())
     updateShop()
   }
   const changeShopPage = (n) => {
     shopPage = Math.max(0, Math.min(shopPageCount - 1, shopPage + n))
+    shopItemLabels.forEach((l) => l.setItem())
     updateShop()
   }
   const updateShop = () => {
     const side = selectedItemId.split(':')[0]
-    playerItemLabels.forEach((l) => l.setItem())
-    shopItemLabels.forEach((l) => l.setItem())
+
+    playerItemLabels.forEach((i) => i.setItem())
+    shopItemLabels.forEach((i) => i.setItem())
     pCount.text = `${playerPage + 1}/${playerPageCount}`
     sCount.text = `${shopPage + 1}/${shopPageCount}`
     data.items
@@ -307,12 +316,13 @@ export const ShopScene = ({ canvas, data, onNext }) => {
 }
 
 class ShopItem {
-  nameLabel: Text
+  nlab: Text
   clickLabel: Text
-  weightLabel: Text
-  damageLabel: Text
-  valueLabel: Text
+  wlab: Text
+  dlab: Text
+  vlab: Text
   id: string
+  sel: boolean
   constructor(canvas, side, index, onDown) {
     const { width, height } = canvas
 
@@ -322,6 +332,7 @@ class ShopItem {
     this.id = `${side === 0 ? 'player' : 'shop'}:${index}`
     const color = '#fff'
     const text = ''
+    this.sel = false
     const font = '24px sans-serif'
     const anchor = { x: 0.5, y: 0 }
 
@@ -336,7 +347,7 @@ class ShopItem {
       onDown,
     })
 
-    this.nameLabel = Text({
+    this.nlab = Text({
       x: _x,
       y: _y,
       text,
@@ -345,7 +356,7 @@ class ShopItem {
       anchor: { x: 0, y: 0 },
     })
 
-    this.weightLabel = Text({
+    this.wlab = Text({
       x: _x + 225,
       y: _y,
       text,
@@ -354,7 +365,7 @@ class ShopItem {
       anchor,
     })
 
-    this.damageLabel = Text({
+    this.dlab = Text({
       x: _x + 340,
       y: _y,
       text,
@@ -363,7 +374,7 @@ class ShopItem {
       anchor,
     })
 
-    this.valueLabel = Text({
+    this.vlab = Text({
       x: _x + 450,
       y: _y,
       text,
@@ -377,34 +388,32 @@ class ShopItem {
   setItem(i: any, market: any) {
     const item = ITEM_TYPES[i]
     const _v = market?.[item?.name] || 1
-    this.nameLabel.text = item?.name || ''
-    this.weightLabel.text = item?.weight || ''
-    this.valueLabel.text = item?.value ? `${item?.value * _v}` : ''
-    this.damageLabel.text = item?.damage || ''
+    this.nlab.text = item?.name || ''
+    this.wlab.text = item?.weight || ''
+    this.vlab.text = item?.value ? `${item?.value * _v}` : ''
+    this.dlab.text = item?.damage || ''
     this.toggleColor('#fff')
     if (_v < 0.8) this.toggleColor('#f66')
     if (_v > 1.2) this.toggleColor('#6f6')
   }
 
   toggleSelect() {
-    const isSelected = this.nameLabel.color === '#ff0'
-    this.toggleColor(isSelected ? '#fff' : '#ff0')
+    this.sel = !this.sel
+    this.nlab.font = this.sel ? 'bold 24px sans-serif' : '24px sans-serif'
   }
 
   toggleColor(color: string) {
-    this.nameLabel.color = color
-    this.weightLabel.color = color
-    this.valueLabel.color = color
-    this.damageLabel.color = color
+    this.nlab.color = color
+    this.wlab.color = color
+    this.vlab.color = color
+    this.dlab.color = color
   }
 
-  update(dt?: number) {}
-
   render() {
-    this.nameLabel.render()
+    this.nlab.render()
     this.clickLabel.render()
-    this.weightLabel.render()
-    this.damageLabel.render()
-    this.valueLabel.render()
+    this.wlab.render()
+    this.dlab.render()
+    this.vlab.render()
   }
 }

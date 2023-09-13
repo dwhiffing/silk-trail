@@ -1,4 +1,4 @@
-import { emit, off, on, onPointer } from 'kontra'
+import { emit, off, on, onPointer, offPointer } from 'kontra'
 import { playSound } from '../utils'
 import * as constants from '../constants'
 import { BODY_PATH, FACE_PATH } from './enemies'
@@ -46,17 +46,19 @@ export const Player = ({ canvas, data, bullets }) => {
   })
 
   const getItem = () => {
+    let index = 0
     if (swapItem) {
       swapItem.x = _x()
       swapItem.y = _y()
       swapItem.small = false
       item = swapItem
+      index = 1
     } else {
       const itemKey = data.items[0]
       item = bullets.spawn(_x(), _y(), itemKey)
     }
     data.items = data.items.slice(1)
-    swapItem = bullets.spawn(_x() + 90, _y() + 30, data.items[0])
+    swapItem = bullets.spawn(_x() + 90, _y() + 30, data.items[index])
     if (swapItem) swapItem.small = true
   }
   getItem()
@@ -64,10 +66,10 @@ export const Player = ({ canvas, data, bullets }) => {
   const onThrow = () => {
     if (data.items.length === 0) return
     if (trajectory.stage === 0) {
-      playSound('clickDisabled')
+      playSound('click')
       updateTrajectory(constants.MIN_ANGLE, constants.MIN_SPEED)
     } else if (trajectory.stage === 1) {
-      playSound('clickDisabled')
+      playSound('click')
     } else if (trajectory.stage === 2) {
       playSound('catch')
       bullets.shoot(
@@ -160,6 +162,7 @@ export const Player = ({ canvas, data, bullets }) => {
       }
     },
     shutdown() {
+      offPointer('down')
       off('player-catch-item', catchItem)
     },
   }
