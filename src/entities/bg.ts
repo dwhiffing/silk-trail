@@ -1,4 +1,4 @@
-import { GROUND_Y } from '../constants'
+import { GROUND_Y, LEVELS } from '../constants'
 import { Sprite } from './sprite'
 
 export const Background = ({ canvas, getSpeed }) => {
@@ -99,39 +99,16 @@ export class Path extends Sprite {
 
   draw() {
     if (this.opacity === 0) return
-
-    this.context.scale(1.35, 1.35)
-    this.context.translate(0, -30)
-    this.svg(
-      'M48 199L91 221L109 232L116 244L149 251L171 291',
-      this.levelIndex === 0 ? '#f00' : this.levelIndex > 0 ? '#000' : '#0003',
-      '',
-      5,
-    )
-    this.svg(
-      'M193 296L209 287L243 284L264 260L294 249',
-      this.levelIndex === 1 ? '#f00' : this.levelIndex > 1 ? '#000' : '#0003',
-      '',
-      5,
-    )
-    this.svg(
-      'M316 242L400 216H437L467 234',
-      this.levelIndex === 2 ? '#f00' : this.levelIndex > 2 ? '#000' : '#0003',
-      '',
-      5,
-    )
-    this.svg(
-      'M486 250L507 280L541 293H586L633 298L662 287',
-      this.levelIndex === 3 ? '#f00' : this.levelIndex > 3 ? '#000' : '#0003',
-      '',
-      5,
-    )
-    this.svg(
-      'M684 283L711 290L734 287L755 294L785 252V234L807 191L796 156',
-      this.levelIndex === 4 ? '#f00' : this.levelIndex > 4 ? '#000' : '#0003',
-      '',
-      5,
-    )
+    this.context.lineWidth = 10
+    LEVELS.forEach((l, i, a) => {
+      this.context.beginPath()
+      this.context.strokeStyle =
+        this.levelIndex === i ? '#f00' : this.levelIndex > i ? '#000' : '#0003'
+      this.context.moveTo(l.x, l.y - 40)
+      this.context.lineTo(a[i + 1]?.x, a[i + 1]?.y - 40)
+      this.context.closePath()
+      this.context.stroke()
+    })
   }
 }
 

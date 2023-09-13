@@ -65,7 +65,7 @@ const startMenu = () => {
     canvas,
     data,
     heading: 'The Silk Trail',
-    description: `Created by Daniel Whiffing`,
+    description: `By Dan Whiffing`,
     button1: startMap,
   })
 }
@@ -92,10 +92,10 @@ const startLose = () => {
   })
 }
 
-startMenu()
+// startMenu()
 // startRoad()
 // startShop()
-// startMap()
+startMap()
 // startWin()
 // startLose()
 
